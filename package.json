@@ -1,0 +1,19 @@
+{
+  "name": "decopro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@decopro/core": "workspace:*",
+    "@decopro/rest": "workspace:*",
+    "reflect-metadata": "^0.2.2",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.3"
+  }
+}
