@@ -22,12 +22,12 @@ export const PROTOCOL_TOKEN = `PROTOCOL_TOKEN` as InjectionToken<
 >;
 export const Protocol = createClassDecorator(PROTOCOL_TOKEN);
 
-// 关键字
-export interface KeywordOptions {
+// 特殊符号
+export interface FlagOptions {
   falg: string;
   description: string;
 }
-export const KEYWORK_TOKEN = `KEYWORK_TOKEN` as InjectionToken<
-  ClassMetadata<KeywordOptions>
+export const FLAG_TOKEN = `FLAG_TOKEN` as InjectionToken<
+  ClassMetadata<FlagOptions>
 >;
-export const Keyword = createClassDecorator(KEYWORK_TOKEN);
+export const Flag = createClassDecorator(FLAG_TOKEN);
