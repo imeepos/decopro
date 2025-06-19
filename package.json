@@ -10,10 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@decopro/commander": "workspace:*",
     "@decopro/core": "workspace:*",
     "@decopro/rest": "workspace:*",
+    "commander": "^14.0.0",
     "reflect-metadata": "^0.2.2",
     "tsup": "^8.5.0",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.3",
+    "zod": "^3.25.67"
   }
 }

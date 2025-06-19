@@ -4,7 +4,7 @@ export interface ClassMetadata<O> {
   target: Type<any>;
   options: O;
 }
-export const CLASS_TOKEN = `CLASS_TOKEN` as InjectionToken<
+export const CLASS_TOKEN = Symbol.for(`CLASS_TOKEN`) as InjectionToken<
   InjectionToken<ClassMetadata<any>>
 >;
 export function createClassDecorator<O>(
@@ -27,7 +27,7 @@ export function createClassDecorator<O>(
     };
   };
 }
-export const PROPERTY_TOKEN = `PROPERTY_TOKEN` as InjectionToken<
+export const PROPERTY_TOKEN = Symbol.for(`PROPERTY_TOKEN`) as InjectionToken<
   InjectionToken<PropertyMetadata<any>>
 >;
 export interface PropertyMetadata<O> {
@@ -52,7 +52,7 @@ export function createPropertyDecorator<O>(
   };
 }
 
-export const METHOD_TOKEN = `METHOD_TOKEN` as InjectionToken<
+export const METHOD_TOKEN = Symbol.for(`METHOD_TOKEN`) as InjectionToken<
   InjectionToken<MethodMetadata<any>>
 >;
 export interface MethodMetadata<O> {
@@ -79,7 +79,7 @@ export function createMethodDecorator<O>(
   };
 }
 
-export const PARAMETER_TOKEN = `PARAMETER_TOKEN` as InjectionToken<
+export const PARAMETER_TOKEN = Symbol.for(`PARAMETER_TOKEN`) as InjectionToken<
   InjectionToken<ParameterMetadata<any>>
 >;
 export interface ParameterMetadata<O> {

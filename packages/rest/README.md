@@ -1,1 +1,1 @@
-# @decopro/common
+# @decopro/rest

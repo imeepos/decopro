@@ -1,19 +1,19 @@
-import {container, registry} from "tsyringe";
-import {Injector} from "./injector";
-import {APP_INIT, CORE_MODULE, isAppInit} from "./tokens";
-import {Type} from "./types";
+import { container, registry } from "tsyringe";
+import { Injector } from "./injector";
+import { APP_INIT, CORE_MODULE, isAppInit } from "./tokens";
+import { Type } from "./types";
 
-@registry([{token: Injector, useFactory: (d) => new Injector(d)}])
-export class CoreModule {}
+@registry([{ token: Injector, useFactory: (d) => new Injector(d) }])
+export class CoreModule { }
 
 export async function bootstrap(modules: Type<any>[]) {
-  container.register(CORE_MODULE, {useValue: CoreModule});
-  modules.map((module) => container.register(CORE_MODULE, {useValue: module}));
+  container.register(CORE_MODULE, { useValue: CoreModule });
+  modules.map((module) => container.register(CORE_MODULE, { useValue: module }));
   const injector = container.resolve(Injector);
   const appInits = injector.getAll(APP_INIT);
 
   // 创建映射：target -> 初始化任务信息
-  const initMap = new Map<any, {instance: any; deps: any[]}>();
+  const initMap = new Map<any, { instance: any; deps: any[] }>();
 
   // 初始化映射表
   for (const init of appInits) {
@@ -62,14 +62,14 @@ export async function bootstrap(modules: Type<any>[]) {
   for (const [target] of initMap) {
     const order = topologicalSort(target, visited);
     for (const target of order) {
-      const {instance} = initMap.get(target)!;
+      const { instance } = initMap.get(target)!;
       await instance.onInit(); // 按拓扑顺序执行初始化
     }
   }
 }
 
 export * from "tsyringe";
-export {Injector};
+export { Injector };
 export * from "./types";
 export * from "./decorator";
 export * from "./tokens";
