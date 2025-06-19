@@ -47,9 +47,6 @@ importers:
       '@decopro/core':
         specifier: workspace:*
         version: link:../core
-      '@types/node':
-        specifier: ^24.0.3
-        version: 24.0.3
       zod:
         specifier: ^3.25.67
         version: 3.25.67
