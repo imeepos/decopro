@@ -1,4 +1,10 @@
-import {Type, createClassDecorator} from "@decopro/core";
+import {
+  Injector,
+  Type,
+  container,
+  createClassDecorator,
+  inject
+} from "@decopro/core";
 
 export const Ast = createClassDecorator(`Ast`);
 export interface Context {}
@@ -14,4 +20,13 @@ export async function runAst<T, C extends Context>(
   ctx: C
 ): Promise<T> {
   return visitor.visit(ast, ctx);
+}
+export function astToJson(ast: Ast, type: Type<Ast>) {
+  const injector = container.resolve(Injector);
+  return injector.toJson(ast, type);
+}
+
+export function jsonToAst(json: any): Ast {
+  const injector = container.resolve(Injector);
+  return injector.fromJson(json);
 }
