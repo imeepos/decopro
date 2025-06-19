@@ -14,6 +14,7 @@
     "@decopro/commander": "workspace:*",
     "@decopro/core": "workspace:*",
     "@decopro/rest": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.13.0",
     "@types/node": "^24.0.3",
     "axios": "^1.10.0",
     "commander": "^14.0.0",

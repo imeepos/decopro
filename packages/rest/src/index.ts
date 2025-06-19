@@ -17,6 +17,7 @@ export const BODY_TOKEN = Symbol.for(`BODY_TOKEN`) as InjectionToken<
   ParameterMetadata<BodyOptions>
 >;
 export const Body = createParameterDecorator(BODY_TOKEN);
+export const BODY = Symbol.for(`BODY`) as InjectionToken<any>;
 
 export interface QueryOptions {
   key?: string;
@@ -26,6 +27,7 @@ export const QUERY_TOKEN = Symbol.for(`QUERY_TOKEN`) as InjectionToken<
   ParameterMetadata<QueryOptions>
 >;
 export const Query = createParameterDecorator(BODY_TOKEN);
+export const QUERY = Symbol.for(`QUERY`) as InjectionToken<any>;
 
 export interface ParamOptions {
   key?: string;
@@ -35,6 +37,7 @@ export const PARAM_TOKEN = Symbol.for(`PARAM_TOKEN`) as InjectionToken<
   ParameterMetadata<ParamOptions>
 >;
 export const Param = createParameterDecorator(PARAM_TOKEN);
+export const PARAM = Symbol.for(`PARAM`) as InjectionToken<any>;
 
 export interface HeaderOptions {
   key?: string;
@@ -44,6 +47,7 @@ export const HEADER_TOKEN = Symbol.for(`HEADER_TOKEN`) as InjectionToken<
   ParameterMetadata<HeaderOptions>
 >;
 export const Header = createParameterDecorator(HEADER_TOKEN);
+export const HEADER = Symbol.for(`HEADER`) as InjectionToken<any>;
 
 export interface ControllerOptions {
   path?: string;
@@ -68,6 +72,15 @@ export const POST_TOKEN = Symbol.for(`POST_TOKEN`) as InjectionToken<
   MethodMetadata<PostOptions>
 >;
 export const Post = createMethodDecorator(POST_TOKEN);
+
+
+export interface SseOptions {
+  path?: string;
+}
+export const SSE_TOKEN = Symbol.for(`SSE_TOKEN`) as InjectionToken<
+  MethodMetadata<SseOptions>
+>;
+export const Sse = createMethodDecorator(SSE_TOKEN);
 
 export interface PutOptions {
   path?: string;

@@ -1,6 +1,6 @@
 import { AppInit, inject, Injector, OnInit } from "@decopro/core";
 import commander from 'commander'
-import { ACTION_TOKEN, ARGUMENT_TOKEN, COMMANDER_TOKEN, OPTION_TOKEN } from "./decorator";
+import { ACTION_TOKEN, ARGUMENT_TOKEN, COMMANDER_TOKEN, OPTION_TOKEN } from "@decopro/commander";
 
 @AppInit({})
 export class CommanderAppInit implements OnInit {
