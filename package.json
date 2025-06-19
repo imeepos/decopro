@@ -13,6 +13,7 @@
     "@decopro/commander": "workspace:*",
     "@decopro/core": "workspace:*",
     "@decopro/rest": "workspace:*",
+    "@types/node": "^24.0.3",
     "commander": "^14.0.0",
     "reflect-metadata": "^0.2.2",
     "tsup": "^8.5.0",

@@ -1,22 +1,22 @@
 import "reflect-metadata";
-import { Input, bootstrap } from "@decopro/core";
-import { Commander, Argument, Action, Option, CommanderAppInit } from "@decopro/commander";
+import { Injector, Input, bootstrap, inject } from "@decopro/core";
+import { Commander, Action, Option, CommanderAppInit, Argument } from "@decopro/commander";
 import { z } from 'zod'
 @Commander({
   name: `start`,
-  description: `启动服务器`
+  description: `启动命令`
 })
 export class StartCommander {
 
   @Argument({
-    name: `command`,
-    description: `启动的服务`
+    name: `[type]`,
+    description: `启动类型 mcp-server`
   })
   @Input({})
-  command: string;
+  type: `mcp-server`;
 
   @Option({
-    flags: `--port`,
+    flags: `--port [port]`,
     description: `端口号`,
     zod: z.coerce.number()
   })
@@ -24,21 +24,22 @@ export class StartCommander {
   port: number;
 
   @Option({
-    flags: '--host',
+    flags: '--host [host]',
     description: `主机地址`,
     zod: z.coerce.string()
   })
   @Input({})
   host: string;
 
-  constructor() { }
-
+  constructor(@inject(Injector) private injector: Injector) { }
   @Action({})
   async action() {
-    console.log({})
+    console.log(this.injector.toJson(this, StartCommander))
   }
 }
-
-bootstrap([
-  CommanderAppInit,
-])
+async function main() {
+  await bootstrap([
+    CommanderAppInit,
+  ])
+}
+main()

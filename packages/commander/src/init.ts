@@ -33,7 +33,12 @@ export class CommanderAppInit implements OnInit {
                 }
                 c.addOption(ins)
             })
-            c.action(async () => {
+            c.action(async (...args: any[]) => {
+                // 最后一个是command对象
+                args.pop()
+                // 倒数第二个是options
+                const options = args.pop()
+                // 其余的是argument
                 const _actions = injector.getAll(ACTION_TOKEN).filter(it => it.target === command.target)
                 const instance = injector.get(command.target)
                 const actions = _actions.map(action => {
@@ -43,10 +48,21 @@ export class CommanderAppInit implements OnInit {
                     }
                     throw new Error(`${command.target.name}.${action.property.toString()} is not found`)
                 })
-                await Promise.all(actions.map(action => action()))
+                _options.map(option => {
+                    const value = Reflect.get(options, option.property)
+                    Reflect.set(instance, option.property, value)
+                })
+                _arguments.map((arg, idx) => {
+                    const value = Reflect.get(args, idx)
+                    Reflect.set(instance, arg.property, value)
+                })
+                await Promise.all(actions.map(action => action(...args)))
             })
             commander.program.addCommand(c)
         })
+        if (process.argv.length === 2) {
+            return commander.program.help()
+        }
         commander.program.parse()
     }
 

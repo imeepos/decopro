@@ -14,11 +14,18 @@ export class HelloWorld {
   title: string = `hello`;
 }
 
-const injector = container.resolve(Injector);
-const controllers = injector.getAll(CONTROLLER_TOKEN);
-const json = injector.toJson(new HelloWorld(), HelloWorld);
-const instance = injector.fromJson(json);
-console.log({json, instance, controllers});
+export async function main(){
+  await bootstrap([
+    CommanderAppInit,
+  ])
+  const injector = container.resolve(Injector);
+  const controllers = injector.getAll(CONTROLLER_TOKEN);
+  const json = injector.toJson(new HelloWorld(), HelloWorld);
+  const instance = injector.fromJson(json);
+  console.log({json, instance, controllers});
+}
+
+main()
 ```
 
 # commander
@@ -64,7 +71,11 @@ export class StartCommander {
   }
 }
 
-bootstrap([
-  CommanderAppInit,
-])
+async function main(){
+  await bootstrap([
+    CommanderAppInit,
+  ])
+}
+
+main()
 ```
