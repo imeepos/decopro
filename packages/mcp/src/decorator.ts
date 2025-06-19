@@ -47,14 +47,20 @@ export const Prompt = createClassDecorator(PROMPT_TOKEN);
  * agent
  */
 export interface AgentOptions {
-  // ai agent name
-  name: string;
+  token: string;
   description: string;
   tools: Type<any>[];
   prompts: Type<any>[];
   resources: Type<any>[];
+  children: Type<any>[];
 }
 export const AGENT_TOKEN = `AGENT_TOKEN` as InjectionToken<
   ClassMetadata<AgentOptions>
 >;
 export const Agent = createClassDecorator(AGENT_TOKEN);
+
+export interface WorkflowOptions {}
+export const WORKFLOW_TOKEN = `WORKFLOW_TOKEN` as InjectionToken<
+  ClassMetadata<WorkflowOptions>
+>;
+export const Workflow = createClassDecorator(WORKFLOW_TOKEN);

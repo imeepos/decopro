@@ -5,3 +5,4 @@ export * from "./askAgent";
 export * from "./callTool";
 export * from "./getPrompt";
 export * from "./getResource";
+export * from "./runWorkflow";
