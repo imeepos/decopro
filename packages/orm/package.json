@@ -1,0 +1,17 @@
+{
+  "name": "@decopro/orm",
+  "version": "1.0.1",
+  "description": "",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@decopro/core": "workspace:*",
+    "zod": "^3.25.67"
+  }
+}
