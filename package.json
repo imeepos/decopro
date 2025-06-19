@@ -17,6 +17,7 @@
     "@decopro/mcp": "workspace:*",
     "@decopro/dpml": "workspace:*",
     "@decopro/orm": "workspace:*",
+    "@decopro/ast": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.13.0",
     "@types/node": "^24.0.3",
     "axios": "^1.10.0",
