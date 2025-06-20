@@ -1,18 +1,25 @@
 {
-  "name": "@decopro/mcp",
-  "version": "1.0.2",
+  "name": "@demos/mcp",
+  "version": "1.0.1",
   "description": "",
   "main": "src/index.ts",
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {},
+  "scripts": {
+    "start": "tsx src/main.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@decopro/ast": "workspace:*",
+    "@decopro/commander": "workspace:*",
     "@decopro/core": "workspace:*",
+    "@decopro/mcp": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.13.0",
+    "@types/express": "^5.0.3",
+    "express": "^5.1.0",
     "zod": "^3.25.67"
   }
 }

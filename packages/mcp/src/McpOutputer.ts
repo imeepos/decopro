@@ -1,15 +1,15 @@
 import { injectable } from "@decopro/core";
-
+import { CallToolResult } from '@modelcontextprotocol/sdk/types'
 
 @injectable()
 export class McpOutputer {
-    toSuccess(text: unknown) {
+    toSuccess(text: unknown): CallToolResult {
         return this.convertToMCPFormat(text);
     }
-    toError(message: unknown) {
+    toError(message: unknown): CallToolResult {
         return this.handleError(message);
     }
-    private handleError(error: unknown) {
+    private handleError(error: unknown): CallToolResult {
         const errorMessage = error instanceof Error
             ? error.message
             : String(error);
@@ -23,7 +23,7 @@ export class McpOutputer {
             isError: true
         };
     }
-    private convertToMCPFormat(input: unknown) {
+    private convertToMCPFormat(input: unknown): CallToolResult {
         try {
             const text = this.toString(input);
             return {
@@ -38,7 +38,7 @@ export class McpOutputer {
             return this.handleError(error);
         }
     }
-    private toString(input: unknown) {
+    private toString(input: unknown): string {
         // 处理null和undefined
         if (input === null) return 'null';
         if (input === undefined) return 'undefined';

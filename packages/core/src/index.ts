@@ -11,7 +11,6 @@ export async function bootstrap(modules: Type<any>[]) {
   modules.map((module) => container.register(CORE_MODULE, { useValue: module }));
   const injector = container.resolve(Injector);
   const appInits = injector.getAll(APP_INIT);
-
   // 创建映射：target -> 初始化任务信息
   const initMap = new Map<any, { instance: any; deps: any[] }>();
 

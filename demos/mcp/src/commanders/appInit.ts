@@ -1,9 +1,17 @@
-import { AppInit, inject, Injector, OnInit } from "@decopro/core";
+import { AppInit, inject, Injector, OnInit, Type } from "@decopro/core";
 import commander from 'commander'
 import { ACTION_TOKEN, ARGUMENT_TOKEN, COMMANDER_TOKEN, OPTION_TOKEN } from "@decopro/commander";
+import { StartMcpServer } from "./mcp-server";
+import { StartMcpClient } from "./mcp-client";
 
-@AppInit({})
+@AppInit({
+    deps: []
+})
 export class CommanderAppInit implements OnInit {
+    private readonly commanders: Type<any>[] = [
+        StartMcpServer,
+        StartMcpClient
+    ]
     constructor(@inject(Injector) private injector: Injector) { }
     async onInit(): Promise<void> {
         const injector = this.injector;
@@ -60,9 +68,6 @@ export class CommanderAppInit implements OnInit {
             })
             commander.program.addCommand(c)
         })
-        if (process.argv.length === 2) {
-            return commander.program.help()
-        }
         commander.program.parse()
     }
 }
