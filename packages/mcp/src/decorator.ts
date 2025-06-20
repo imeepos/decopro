@@ -8,7 +8,7 @@ import {
   createMethodDecorator,
   createParameterDecorator
 } from "@decopro/core";
-import { ToolAnnotations } from "@modelcontextprotocol/sdk/types";
+import { Resource as McpResource, ToolAnnotations } from "@modelcontextprotocol/sdk/types";
 import { ZodRawShape, ZodTypeAny } from "zod";
 
 export interface McpArgOptions {
@@ -41,20 +41,28 @@ export const Tool = createMethodDecorator(TOOL_TOKEN);
 /**
  * resource 静态资源
  */
-export interface ResourceOptions { }
+import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
+export type ResourceMetadata = Omit<McpResource, "uri" | "name">;
+export interface ResourceOptions {
+  name: string, uriOrTemplate: string | ResourceTemplate, config: ResourceMetadata
+}
 export const RESOURCE_TOKEN = `RESOURCE_TOKEN` as InjectionToken<
-  ClassMetadata<ResourceOptions>
+  MethodMetadata<ResourceOptions>
 >;
-export const Resource = createClassDecorator(RESOURCE_TOKEN);
+export const Resource = createMethodDecorator(RESOURCE_TOKEN);
 
 /**
  * prompt
  */
-export interface PromptOptions { }
+export interface PromptOptions {
+  name: string;
+  title?: string;
+  description?: string;
+}
 export const PROMPT_TOKEN = `PROMPT_TOKEN` as InjectionToken<
-  ClassMetadata<PromptOptions>
+  MethodMetadata<PromptOptions>
 >;
-export const Prompt = createClassDecorator(PROMPT_TOKEN);
+export const Prompt = createMethodDecorator(PROMPT_TOKEN);
 
 /**
  * agent

@@ -3,6 +3,8 @@ import commander from 'commander'
 import { ACTION_TOKEN, ARGUMENT_TOKEN, COMMANDER_TOKEN, OPTION_TOKEN } from "@decopro/commander";
 import { StartMcpServer } from "./mcp-server";
 import { StartMcpClient } from "./mcp-client";
+import { StartMcpSseServer } from "./mcp-server-sse";
+import { StartMcpHttpServer } from "./mcp-server-http";
 
 @AppInit({
     deps: []
@@ -10,7 +12,9 @@ import { StartMcpClient } from "./mcp-client";
 export class CommanderAppInit implements OnInit {
     private readonly commanders: Type<any>[] = [
         StartMcpServer,
-        StartMcpClient
+        StartMcpClient,
+        StartMcpSseServer,
+        StartMcpHttpServer
     ]
     constructor(@inject(Injector) private injector: Injector) { }
     async onInit(): Promise<void> {
