@@ -10,6 +10,7 @@ import { StartMcpServer } from "./mcp-server";
 import { StartMcpClient } from "./mcp-client";
 import { StartMcpSseServer } from "./mcp-server-sse";
 import { StartMcpHttpServer } from "./mcp-server-http";
+import { TestCommand } from "./test";
 
 @AppInit({
     deps: []
@@ -19,7 +20,8 @@ export class CommanderAppInit implements OnInit {
         StartMcpServer,
         StartMcpClient,
         StartMcpSseServer,
-        StartMcpHttpServer
+        StartMcpHttpServer,
+        TestCommand
     ];
     constructor(@inject(Injector) private injector: Injector) {}
     async onInit(): Promise<void> {

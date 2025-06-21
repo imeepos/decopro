@@ -70,10 +70,10 @@ export const Prompt = createMethodDecorator(PROMPT_TOKEN);
 export interface AgentOptions {
   token: string;
   description: string;
-  tools: Type<any>[];
-  prompts: Type<any>[];
-  resources: Type<any>[];
-  children: Type<any>[];
+  tools?: Type<any>[];
+  prompts?: Type<any>[];
+  resources?: Type<any>[];
+  children?: Type<any>[];
 }
 export const AGENT_TOKEN = `AGENT_TOKEN` as InjectionToken<
   ClassMetadata<AgentOptions>
