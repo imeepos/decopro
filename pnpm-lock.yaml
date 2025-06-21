@@ -126,6 +126,24 @@ importers:
         specifier: ^3.25.67
         version: 3.25.67
 
+  packages/n8n:
+    dependencies:
+      '@decopro/core':
+        specifier: workspace:*
+        version: link:../core
+      zod:
+        specifier: ^3.25.67
+        version: 3.25.67
+
+  packages/nakama:
+    dependencies:
+      '@decopro/core':
+        specifier: workspace:*
+        version: link:../core
+      zod:
+        specifier: ^3.25.67
+        version: 3.25.67
+
   packages/orm:
     dependencies:
       '@decopro/core':

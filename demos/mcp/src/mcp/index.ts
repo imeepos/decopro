@@ -1,1 +1,1 @@
-export * from './appInit'
+export * from "./appInit";
