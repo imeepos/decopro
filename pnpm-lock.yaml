@@ -26,6 +26,12 @@ importers:
       '@decopro/orm':
         specifier: workspace:*
         version: link:packages/orm
+      '@decopro/platform-axios':
+        specifier: workspace:*
+        version: link:packages/platform-axios
+      '@decopro/platform-node':
+        specifier: workspace:*
+        version: link:packages/platform-node
       '@decopro/rest':
         specifier: workspace:*
         version: link:packages/rest
@@ -154,6 +160,24 @@ importers:
         version: 3.25.67
 
   packages/orm:
+    dependencies:
+      '@decopro/core':
+        specifier: workspace:*
+        version: link:../core
+      zod:
+        specifier: ^3.25.67
+        version: 3.25.67
+
+  packages/platform-axios:
+    dependencies:
+      '@decopro/core':
+        specifier: workspace:*
+        version: link:../core
+      zod:
+        specifier: ^3.25.67
+        version: 3.25.67
+
+  packages/platform-node:
     dependencies:
       '@decopro/core':
         specifier: workspace:*

@@ -15,13 +15,6 @@ export const TEST_TOKEN = `TEST_TOKEN` as InjectionToken<
 >;
 export const Test = createMethodDecorator(TEST_TOKEN);
 
-export interface TestInjectableOptions {
-    description?: string;
-}
-export const TEST_INJECTABLE = `TEST_INJECTABLE` as InjectionToken<
-    ClassMetadata<TestInjectableOptions>
->;
-export const TestInjectable = createClassDecorator(TEST_INJECTABLE);
 
 export async function runTest(injector: Injector) {
     const testMethods = injector.getAll(TEST_TOKEN);

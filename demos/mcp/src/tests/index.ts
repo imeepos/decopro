@@ -1,8 +1,9 @@
-import { Injector, inject } from "@decopro/core";
-import { Test, TestInjectable } from "@decopro/test";
+import { Injector, inject, injectable } from "@decopro/core";
+import { Test } from "@decopro/test";
 import { RunJsCodeTool } from "../mcp/tools";
 
-@TestInjectable({})
+
+@injectable()
 export class McpTest {
     constructor(@inject(Injector) private injector: Injector) {}
     @Test({})

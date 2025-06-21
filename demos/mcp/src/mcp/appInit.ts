@@ -12,7 +12,7 @@ import { RunJsCodeTool } from "./tools/RunJsCodeTool";
 import { EnvResource } from "./resources";
 import { NowaPrompt } from "./prompts";
 import { mcpServerFactory } from "./mcpServerFactory";
-import { DemoAgent } from "./agents";
+import { NowaAgent } from "./agents";
 
 @registry([
     {
@@ -26,10 +26,8 @@ export class McpAppInit implements AppInit {
         RunJsCodeTool,
         EnvResource,
         NowaPrompt,
-        DemoAgent
+        NowaAgent
     ];
     constructor(@inject(Injector) private injector: Injector) {}
-    async onInit(): Promise<void> {
-        console.log(`mcp app init success`);
-    }
+    async onInit(): Promise<void> {}
 }

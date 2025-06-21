@@ -4,8 +4,8 @@ import { Agent } from "@decopro/mcp";
     tools: [],
     prompts: [],
     resources: [],
-    token: ``,
+    token: `nowa`,
     description: ``,
     children: []
 })
-export class DemoAgent {}
+export class NowaAgent {}

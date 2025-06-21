@@ -19,6 +19,8 @@
     "@decopro/orm": "workspace:*",
     "@decopro/ast": "workspace:*",
     "@decopro/test": "workspace:*",
+    "@decopro/platform-node": "workspace:*",
+    "@decopro/platform-axios": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.13.0",
     "@types/node": "^24.0.3",
     "axios": "^1.10.0",
