@@ -1,5 +1,5 @@
 {
-    "name": "@demos/mcp",
+    "name": "@decopro/demo_mcp",
     "version": "1.0.1",
     "description": "",
     "main": "dist/index.js",
