@@ -3,7 +3,7 @@ import { Injector, inject } from "@decopro/core";
 import { runTest } from "@decopro/test";
 @Commander({
     name: `test`,
-    description: `测试`
+    description: `单元测试`
 })
 export class TestCommand {
     constructor(@inject(Injector) private injector: Injector) { }

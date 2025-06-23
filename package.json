@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsx src/main.ts",
     "test": "decopro test",
-    "docs": "decopro docs"
+    "docs": "decopro docs",
+    "decopro": "decopro"
   },
   "keywords": [],
   "author": "",

@@ -7,7 +7,7 @@ import { z } from "zod";
 
 @Commander({
     name: `docs`,
-    description: `文档`
+    description: `生成文档`
 })
 export class DocsCommand {
     @Option({
@@ -15,7 +15,7 @@ export class DocsCommand {
         description: `项目地址`,
         zod: z.coerce.string()
     })
-    path: string;
+    path: string = process.cwd();
     constructor(@inject(Injector) private injector: Injector) { }
     @Action({})
     async run() {

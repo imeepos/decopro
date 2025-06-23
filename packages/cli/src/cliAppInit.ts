@@ -8,6 +8,7 @@ import {
 } from "@decopro/commander";
 import { TestCommand } from "./testCommand";
 import { DocsCommand } from "./docsCommand";
+import { McpServerCommand } from "./mcpServerCommand";
 
 @AppInit({
     deps: []
@@ -15,7 +16,8 @@ import { DocsCommand } from "./docsCommand";
 export class CliAppInit implements OnInit {
     private static readonly commanders: Type<any>[] = [
         TestCommand,
-        DocsCommand
+        DocsCommand,
+        McpServerCommand
     ];
     constructor(@inject(Injector) private injector: Injector) { }
     static forRoot(types: Type<any>[] = []) {

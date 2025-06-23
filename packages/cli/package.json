@@ -1,6 +1,6 @@
 {
     "name": "@decopro/cli",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "",
     "main": "src/index.ts",
     "publishConfig": {
@@ -17,7 +17,10 @@
         "@decopro/commander": "workspace:*",
         "@decopro/core": "workspace:*",
         "@decopro/test": "workspace:*",
+        "@modelcontextprotocol/sdk": "^1.13.0",
+        "@types/express": "^5.0.3",
         "commander": "^14.0.0",
+        "express": "^5.1.0",
         "glob": "^11.0.3",
         "reflect-metadata": "^0.2.2",
         "tsx": "^4.20.3",
