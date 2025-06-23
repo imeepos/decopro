@@ -7,8 +7,7 @@
   "scripts": {
     "build": "turbo run build",
     "clean": "turbo run clean",
-    "upgrade": "changeset",
-    "version": "changeset version"
+    "upgrade": "pnpm run -w build && changeset version && pnpm install && changeset publish"
   },
   "keywords": [],
   "author": "",
