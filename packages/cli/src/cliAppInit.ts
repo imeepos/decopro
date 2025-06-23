@@ -12,10 +12,14 @@ import { TestCommand } from "./testCommand";
     deps: []
 })
 export class CliAppInit implements OnInit {
-    private readonly commanders: Type<any>[] = [
+    private static readonly commanders: Type<any>[] = [
         TestCommand
     ];
     constructor(@inject(Injector) private injector: Injector) { }
+    static forRoot(types: Type<any>[] = []) {
+        this.commanders.push(...types)
+        return this;
+    }
     async onInit(): Promise<void> {
         const injector = this.injector;
         const commands = injector.getAll(COMMANDER_TOKEN);

@@ -7,7 +7,7 @@
         "access": "public"
     },
     "bin": {
-        "decopro": "src/index.ts"
+        "decopro": "src/bin.ts"
     },
     "scripts": {},
     "keywords": [],
