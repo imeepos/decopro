@@ -9,7 +9,9 @@
     "bin": {
         "decopro": "src/bin.ts"
     },
-    "scripts": {},
+    "scripts": {
+        "build": "tsup"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
