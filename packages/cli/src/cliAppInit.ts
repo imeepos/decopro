@@ -7,13 +7,15 @@ import {
     OPTION_TOKEN
 } from "@decopro/commander";
 import { TestCommand } from "./testCommand";
+import { DocsCommand } from "./docsCommand";
 
 @AppInit({
     deps: []
 })
 export class CliAppInit implements OnInit {
     private static readonly commanders: Type<any>[] = [
-        TestCommand
+        TestCommand,
+        DocsCommand
     ];
     constructor(@inject(Injector) private injector: Injector) { }
     static forRoot(types: Type<any>[] = []) {
