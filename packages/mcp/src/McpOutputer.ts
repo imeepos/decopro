@@ -1,5 +1,5 @@
 import { injectable } from "@decopro/core";
-import { CallToolResult } from '@modelcontextprotocol/sdk/types'
+import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 @injectable()
 export class McpOutputer {
@@ -10,13 +10,12 @@ export class McpOutputer {
         return this.handleError(message);
     }
     private handleError(error: unknown): CallToolResult {
-        const errorMessage = error instanceof Error
-            ? error.message
-            : String(error);
+        const errorMessage =
+            error instanceof Error ? error.message : String(error);
         return {
             content: [
                 {
-                    type: 'text',
+                    type: "text",
                     text: `❌ 执行失败: ${errorMessage}`
                 }
             ],
@@ -29,7 +28,7 @@ export class McpOutputer {
             return {
                 content: [
                     {
-                        type: 'text',
+                        type: "text",
                         text: text
                     }
                 ]
@@ -40,21 +39,25 @@ export class McpOutputer {
     }
     private toString(input: unknown): string {
         // 处理null和undefined
-        if (input === null) return 'null';
-        if (input === undefined) return 'undefined';
+        if (input === null) return "null";
+        if (input === undefined) return "undefined";
 
         // 处理字符串
-        if (typeof input === 'string') {
+        if (typeof input === "string") {
             return input;
         }
 
         // 处理有toString方法的对象（如PouchOutput）
-        if (input && typeof input.toString === 'function' && input.toString !== Object.prototype.toString) {
+        if (
+            input &&
+            typeof input.toString === "function" &&
+            input.toString !== Object.prototype.toString
+        ) {
             return input.toString();
         }
 
         // 处理数组和普通对象
-        if (typeof input === 'object') {
+        if (typeof input === "object") {
             return JSON.stringify(input, null, 2);
         }
 

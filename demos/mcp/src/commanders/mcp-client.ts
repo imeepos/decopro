@@ -41,8 +41,8 @@ export class StartMcpClient {
         console.log({ listResources, listPrompts, listResourceTemplates });
         const listTools = await client.listTools();
         console.log({ listTools });
-        client.fallbackNotificationHandler
-        client.fallbackRequestHandler
+        client.fallbackNotificationHandler;
+        client.fallbackRequestHandler;
         const res = await client.callTool({
             name: `runJsCode`,
             arguments: { code: `console.log('hello world')` }

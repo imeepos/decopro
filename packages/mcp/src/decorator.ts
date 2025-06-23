@@ -1,25 +1,28 @@
 import {
-  ClassMetadata,
-  InjectionToken,
-  MethodMetadata,
-  ParameterMetadata,
-  Type,
-  createClassDecorator,
-  createMethodDecorator,
-  createParameterDecorator
+    ClassMetadata,
+    InjectionToken,
+    MethodMetadata,
+    ParameterMetadata,
+    Type,
+    createClassDecorator,
+    createMethodDecorator,
+    createParameterDecorator
 } from "@decopro/core";
-import { Resource as McpResource, ToolAnnotations } from "@modelcontextprotocol/sdk/types";
+import {
+    Resource as McpResource,
+    ToolAnnotations
+} from "@modelcontextprotocol/sdk/types";
 import { ZodRawShape, ZodTypeAny } from "zod";
 
 export interface McpArgOptions {
-  name: string;
-  zod: ZodTypeAny;
+    name: string;
+    zod: ZodTypeAny;
 }
 export function isMcpArgOptions(val: any): val is McpArgOptions {
-  return val && val.zod
+    return val && val.zod;
 }
 export const MCP_ARG_TOKEN = Symbol.for(`MCP_ARG_TOKEN`) as InjectionToken<
-  ParameterMetadata<McpArgOptions | ZodRawShape>
+    ParameterMetadata<McpArgOptions | ZodRawShape>
 >;
 export const McpArg = createParameterDecorator(MCP_ARG_TOKEN);
 
@@ -28,13 +31,13 @@ export const McpArg = createParameterDecorator(MCP_ARG_TOKEN);
  */
 
 export interface ToolOptions<R = any> {
-  token: InjectionToken<R>;
-  title?: string;
-  description?: string;
-  annotations?: ToolAnnotations;
+    token: InjectionToken<R>;
+    title?: string;
+    description?: string;
+    annotations?: ToolAnnotations;
 }
 export const TOOL_TOKEN = `TOOL_TOKEN` as InjectionToken<
-  MethodMetadata<ToolOptions>
+    MethodMetadata<ToolOptions>
 >;
 export const Tool = createMethodDecorator(TOOL_TOKEN);
 
@@ -44,10 +47,12 @@ export const Tool = createMethodDecorator(TOOL_TOKEN);
 import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 export type ResourceMetadata = Omit<McpResource, "uri" | "name">;
 export interface ResourceOptions {
-  name: string, uriOrTemplate: string | ResourceTemplate, config: ResourceMetadata
+    name: string;
+    uriOrTemplate: string | ResourceTemplate;
+    config: ResourceMetadata;
 }
 export const RESOURCE_TOKEN = `RESOURCE_TOKEN` as InjectionToken<
-  MethodMetadata<ResourceOptions>
+    MethodMetadata<ResourceOptions>
 >;
 export const Resource = createMethodDecorator(RESOURCE_TOKEN);
 
@@ -55,12 +60,12 @@ export const Resource = createMethodDecorator(RESOURCE_TOKEN);
  * prompt
  */
 export interface PromptOptions {
-  name: string;
-  title?: string;
-  description?: string;
+    name: string;
+    title?: string;
+    description?: string;
 }
 export const PROMPT_TOKEN = `PROMPT_TOKEN` as InjectionToken<
-  MethodMetadata<PromptOptions>
+    MethodMetadata<PromptOptions>
 >;
 export const Prompt = createMethodDecorator(PROMPT_TOKEN);
 
@@ -68,20 +73,20 @@ export const Prompt = createMethodDecorator(PROMPT_TOKEN);
  * agent
  */
 export interface AgentOptions {
-  token: string;
-  description: string;
-  tools?: Type<any>[];
-  prompts?: Type<any>[];
-  resources?: Type<any>[];
-  children?: Type<any>[];
+    token: string;
+    description: string;
+    tools?: Type<any>[];
+    prompts?: Type<any>[];
+    resources?: Type<any>[];
+    children?: Type<any>[];
 }
 export const AGENT_TOKEN = `AGENT_TOKEN` as InjectionToken<
-  ClassMetadata<AgentOptions>
+    ClassMetadata<AgentOptions>
 >;
 export const Agent = createClassDecorator(AGENT_TOKEN);
 
-export interface WorkflowOptions { }
+export interface WorkflowOptions {}
 export const WORKFLOW_TOKEN = `WORKFLOW_TOKEN` as InjectionToken<
-  ClassMetadata<WorkflowOptions>
+    ClassMetadata<WorkflowOptions>
 >;
 export const Workflow = createClassDecorator(WORKFLOW_TOKEN);

@@ -15,7 +15,6 @@ export const TEST_TOKEN = `TEST_TOKEN` as InjectionToken<
 >;
 export const Test = createMethodDecorator(TEST_TOKEN);
 
-
 export async function runTest(injector: Injector) {
     const testMethods = injector.getAll(TEST_TOKEN);
     const result = await Promise.all(

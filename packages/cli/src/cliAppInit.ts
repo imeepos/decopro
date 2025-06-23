@@ -19,9 +19,9 @@ export class CliAppInit implements OnInit {
         DocsCommand,
         McpServerCommand
     ];
-    constructor(@inject(Injector) private injector: Injector) { }
+    constructor(@inject(Injector) private injector: Injector) {}
     static forRoot(types: Type<any>[] = []) {
-        this.commanders.push(...types)
+        this.commanders.push(...types);
         return this;
     }
     async onInit(): Promise<void> {
@@ -80,7 +80,8 @@ export class CliAppInit implements OnInit {
                             return method.bind(instance);
                         }
                         throw new Error(
-                            `${command.target.name
+                            `${
+                                command.target.name
                             }.${action.property.toString()} is not found`
                         );
                     });
@@ -95,7 +96,7 @@ export class CliAppInit implements OnInit {
                     await Promise.all(actions.map((action) => action(...args)));
                 });
                 commander.program.addCommand(c);
-            } catch (e) { }
+            } catch (e) {}
         });
         commander.program.parse(process.argv);
     }

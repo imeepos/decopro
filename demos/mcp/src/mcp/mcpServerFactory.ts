@@ -1,6 +1,17 @@
 import { DependencyContainer, Injector } from "@decopro/core";
-import { McpServer, ReadResourceCallback, ReadResourceTemplateCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { MCP_ARG_TOKEN, McpOutputer, PROMPT_TOKEN, RESOURCE_TOKEN, TOOL_TOKEN, isMcpArgOptions } from "@decopro/mcp";
+import {
+    McpServer,
+    ReadResourceCallback,
+    ReadResourceTemplateCallback
+} from "@modelcontextprotocol/sdk/server/mcp.js";
+import {
+    MCP_ARG_TOKEN,
+    McpOutputer,
+    PROMPT_TOKEN,
+    RESOURCE_TOKEN,
+    TOOL_TOKEN,
+    isMcpArgOptions
+} from "@decopro/mcp";
 import { ZodRawShape } from "zod";
 export const SERVER_OPTION = {
     name: `mcp-server`,
@@ -53,10 +64,7 @@ export const mcpServerFactory = (d: DependencyContainer) => {
                         }
                     });
                     const instance = injector.get(tool.target);
-                    const _method = Reflect.get(
-                        instance,
-                        tool.property
-                    );
+                    const _method = Reflect.get(instance, tool.property);
                     if (_method && typeof _method === "function") {
                         const result = await _method(..._argumetns);
                         return outputer.toSuccess(result);
@@ -153,4 +161,4 @@ export const mcpServerFactory = (d: DependencyContainer) => {
     });
     mcpServer.sendPromptListChanged();
     return mcpServer;
-}
+};

@@ -15,8 +15,7 @@ export type CompilerWorkflowContext = DirectedGraph<Ast>;
  */
 @injectable()
 export class CompilerWorkflowVisitor
-    implements
-        WorkflowVisitor<CompilerWorkflowContext, CompilerWorkflowContext>
+    implements WorkflowVisitor<CompilerWorkflowContext, CompilerWorkflowContext>
 {
     private async runWithTask(cb: () => Promise<void>) {
         try {

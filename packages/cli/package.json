@@ -2,14 +2,14 @@
     "name": "@decopro/cli",
     "version": "1.0.4",
     "description": "",
-    "main": "src/index.js",
-    "module": "./dist/index.mjs",
-    "types": "src/index.d.ts",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
     "publishConfig": {
         "access": "public"
     },
     "bin": {
-        "decopro": "src/bin.js"
+        "decopro": "dist/bin.js"
     },
     "scripts": {
         "build": "tsup",

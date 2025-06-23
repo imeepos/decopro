@@ -1,8 +1,8 @@
-import {InjectionToken} from "@decopro/core";
+import { InjectionToken } from "@decopro/core";
 
 export async function toolCall<R>(
-  name: InjectionToken<R>,
-  args: any
+    name: InjectionToken<R>,
+    args: any
 ): Promise<R> {
-  throw new Error(`not implements`);
+    throw new Error(`not implements`);
 }

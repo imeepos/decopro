@@ -1,1 +1,1 @@
-export * from './NowaPrompt'
+export * from "./NowaPrompt";

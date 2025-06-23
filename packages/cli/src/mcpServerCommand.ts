@@ -23,7 +23,7 @@ export class McpServerCommand {
     } = {};
     name: string = `mcp-server`;
     version: string = `1.0`;
-    constructor(@inject(Injector) private injector: Injector) { }
+    constructor(@inject(Injector) private injector: Injector) {}
 
     @Action({})
     async action() {

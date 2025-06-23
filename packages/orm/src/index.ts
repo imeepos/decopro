@@ -1,4 +1,4 @@
-import {createClassDecorator, createPropertyDecorator} from "@decopro/core";
+import { createClassDecorator, createPropertyDecorator } from "@decopro/core";
 
 export const Entity = createClassDecorator(`ENTITY`);
 export const Column = createPropertyDecorator(`Column`);

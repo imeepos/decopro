@@ -1,8 +1,4 @@
 {
-    "tests": [
-        "**/*.test.ts"
-    ],
-    "tools": [
-        "**/*.tool.ts"
-    ]
+    "tests": ["**/*.test.ts"],
+    "tools": ["**/*.tool.ts"]
 }

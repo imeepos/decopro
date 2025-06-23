@@ -1,2 +1,2 @@
-export * from './cliAppInit'
-export * from './testCommand'
+export * from "./cliAppInit";
+export * from "./testCommand";

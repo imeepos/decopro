@@ -1,15 +1,12 @@
 import { injectable } from "@decopro/core";
 import { Prompt } from "@decopro/mcp";
 
-
 @injectable()
 export class NowaPrompt {
     @Prompt({
-        name: 'nowa'
+        name: "nowa"
     })
     async prompt() {
-        return [
-            { content: ``, role: 'user' }
-        ]
+        return [{ content: ``, role: "user" }];
     }
 }

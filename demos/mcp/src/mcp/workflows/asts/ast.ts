@@ -52,10 +52,7 @@ export class DownloadProjectProductTaskAst implements Ast {
         description: `直播ID`
     })
     projectId: string;
-    visit<O, C>(
-        visitor: WorkflowVisitor<O, C>,
-        ctx: C
-    ): Promise<O> {
+    visit<O, C>(visitor: WorkflowVisitor<O, C>, ctx: C): Promise<O> {
         return visitor.visitDownloadProjectProductTaskAst(this, ctx);
     }
 }
@@ -70,10 +67,7 @@ export class CreateProductAssetTaskAst implements Ast {
     status: "wait" | "runing" | "success" | "failed" = "wait";
     @Input({})
     assetId: string;
-    visit<O, C>(
-        visitor: WorkflowVisitor<O, C>,
-        ctx: C
-    ): Promise<O> {
+    visit<O, C>(visitor: WorkflowVisitor<O, C>, ctx: C): Promise<O> {
         return visitor.visitCreateProductAssetTaskAst(this, ctx);
     }
 }
@@ -88,10 +82,7 @@ export class CreateHighLightTaskAst implements Ast {
     status: "wait" | "runing" | "success" | "failed" = "wait";
     @Input({})
     highLight: string;
-    visit<O, C>(
-        visitor: WorkflowVisitor<O, C>,
-        ctx: C
-    ): Promise<O> {
+    visit<O, C>(visitor: WorkflowVisitor<O, C>, ctx: C): Promise<O> {
         return visitor.visitCreateHighLightTaskAst(this, ctx);
     }
 }
@@ -104,10 +95,7 @@ export class MergeVideoTaskAst implements Ast {
     id: string = crypto.randomUUID();
     @Input({})
     status: "wait" | "runing" | "success" | "failed" = "wait";
-    visit<O, C>(
-        visitor: WorkflowVisitor<O, C>,
-        ctx: C
-    ): Promise<O> {
+    visit<O, C>(visitor: WorkflowVisitor<O, C>, ctx: C): Promise<O> {
         return visitor.visitMergeVideoTaskAst(this, ctx);
     }
 }
@@ -120,10 +108,7 @@ export class CloneVideoTaskAst implements Ast {
     id: string = crypto.randomUUID();
     @Input({})
     status: "wait" | "runing" | "success" | "failed" = "wait";
-    visit<O, C>(
-        visitor: WorkflowVisitor<O, C>,
-        ctx: C
-    ): Promise<O> {
+    visit<O, C>(visitor: WorkflowVisitor<O, C>, ctx: C): Promise<O> {
         return visitor.visitCloneVideoTaskAst(this, ctx);
     }
 }
