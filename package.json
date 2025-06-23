@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean",
     "start": "tsx src/main.ts",
     "test": "decopro test",
     "docs": "decopro docs",
@@ -14,8 +17,10 @@
   "license": "ISC",
   "dependencies": {
     "@decopro/ast": "workspace:*",
+    "@decopro/cli": "workspace:*",
     "@decopro/commander": "workspace:*",
     "@decopro/core": "workspace:*",
+    "@decopro/docs": "workspace:*",
     "@decopro/dpml": "workspace:*",
     "@decopro/mcp": "workspace:*",
     "@decopro/orm": "workspace:*",
@@ -23,8 +28,6 @@
     "@decopro/platform-node": "workspace:*",
     "@decopro/rest": "workspace:*",
     "@decopro/test": "workspace:*",
-    "@decopro/docs": "workspace:*",
-    "@decopro/cli": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.13.0",
     "@types/node": "^24.0.3",
     "axios": "^1.10.0",
@@ -32,6 +35,7 @@
     "reflect-metadata": "^0.2.2",
     "tsup": "^8.5.0",
     "tsx": "^4.20.3",
+    "turbo": "^2.5.4",
     "typedoc": "^0.28.5",
     "typedoc-plugin-markdown": "^4.7.0",
     "zod": "^3.25.67"

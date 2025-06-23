@@ -12,7 +12,8 @@
         "decopro": "src/bin.js"
     },
     "scripts": {
-        "build": "tsup"
+        "build": "tsup",
+        "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules"
     },
     "keywords": [],
     "author": "",

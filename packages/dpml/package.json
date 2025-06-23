@@ -6,9 +6,12 @@
   "module": "./dist/index.mjs",
   "types": "src/index.d.ts",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "tsup"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

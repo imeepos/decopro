@@ -1,8 +1,0 @@
-{
-    "entryPoints": ["./**/*.ts"],
-    "out": "docs",
-    "plugin": ["typedoc-plugin-markdown"],
-    "hidePageHeader": true,
-    "hideBreadcrumbs": true,
-    "publicPath": "/api/"
-}

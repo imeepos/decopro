@@ -8,7 +8,10 @@
     "publishConfig": {
         "access": "public"
     },
-    "scripts": {},
+    "scripts": {
+        "build": "tsup",
+        "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
