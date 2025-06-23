@@ -10,6 +10,7 @@ import {Type} from "./types";
 export interface InputOptions<T = any> {
   name?: string;
   target?: () => Type<T>;
+  description?: string;
 }
 export const INPUT_TOKEN = Symbol.for(`INPUT_TOKEN`) as InjectionToken<
   PropertyMetadata<InputOptions>

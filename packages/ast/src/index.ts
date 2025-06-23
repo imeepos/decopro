@@ -12,16 +12,15 @@ export const AST_TOKEN = `AST_TOKEN` as InjectionToken<
     ClassMetadata<AstOptions>
 >;
 export const Ast = createClassDecorator(AST_TOKEN);
-export interface Context {}
 export interface Ast {
     id: string;
     status: "wait" | `runing` | "success" | "failed";
-    visit<O, C extends Context>(visitor: Visitor<O, C>, ctx: C): Promise<O>;
+    visit<O, C>(visitor: Visitor<O, C>, ctx: C): Promise<O>;
 }
-export interface Visitor<O = any, C extends Context = any> {
+export interface Visitor<O = any, C = any> {
     visit(ast: Ast, ctx: C): Promise<O>;
 }
-export async function runAst<T, C extends Context>(
+export async function runAst<T, C>(
     ast: Ast,
     visitor: Visitor<T, C>,
     ctx: C
@@ -29,7 +28,7 @@ export async function runAst<T, C extends Context>(
     return visitor.visit(ast, ctx);
 }
 
-export async function runAstJson<T, C extends Context>(
+export async function runAstJson<T, C>(
     json: unknown,
     visitor: Visitor<T, C>,
     ctx: C
