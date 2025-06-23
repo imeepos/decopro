@@ -14,10 +14,11 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@decopro/core": "workspace:*",
         "@decopro/commander": "workspace:*",
+        "@decopro/core": "workspace:*",
         "@decopro/test": "workspace:*",
         "commander": "^14.0.0",
+        "glob": "^11.0.3",
         "reflect-metadata": "^0.2.2",
         "tsx": "^4.20.3",
         "typescript": "^5.8.3",
