@@ -11,6 +11,9 @@ importers:
       '@decopro/ast':
         specifier: workspace:*
         version: link:packages/ast
+      '@decopro/cli':
+        specifier: workspace:*
+        version: link:packages/cli
       '@decopro/commander':
         specifier: workspace:*
         version: link:packages/commander
@@ -110,6 +113,21 @@ importers:
       '@decopro/core':
         specifier: workspace:*
         version: link:../core
+      zod:
+        specifier: ^3.25.67
+        version: 3.25.67
+
+  packages/cli:
+    dependencies:
+      '@decopro/core':
+        specifier: workspace:*
+        version: link:../core
+      tsx:
+        specifier: ^4.20.3
+        version: 4.20.3
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
       zod:
         specifier: ^3.25.67
         version: 3.25.67

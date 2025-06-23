@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsx src/main.ts",
-    "test": "tsx src/test2.ts",
+    "test": "decopro test",
     "docs": "tsx src/docs.ts"
   },
   "keywords": [],
@@ -23,6 +23,7 @@
     "@decopro/rest": "workspace:*",
     "@decopro/test": "workspace:*",
     "@decopro/docs": "workspace:*",
+    "@decopro/cli": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.13.0",
     "@types/node": "^24.0.3",
     "axios": "^1.10.0",
