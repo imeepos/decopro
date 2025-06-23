@@ -5,22 +5,24 @@
   "main": "index.js",
   "scripts": {
     "start": "tsx src/main.ts",
-    "test": "tsx src/test2.ts"
+    "test": "tsx src/test2.ts",
+    "docs": "tsx src/docs.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@decopro/ast": "workspace:*",
     "@decopro/commander": "workspace:*",
     "@decopro/core": "workspace:*",
-    "@decopro/rest": "workspace:*",
-    "@decopro/mcp": "workspace:*",
     "@decopro/dpml": "workspace:*",
+    "@decopro/mcp": "workspace:*",
     "@decopro/orm": "workspace:*",
-    "@decopro/ast": "workspace:*",
-    "@decopro/test": "workspace:*",
-    "@decopro/platform-node": "workspace:*",
     "@decopro/platform-axios": "workspace:*",
+    "@decopro/platform-node": "workspace:*",
+    "@decopro/rest": "workspace:*",
+    "@decopro/test": "workspace:*",
+    "@decopro/docs": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.13.0",
     "@types/node": "^24.0.3",
     "axios": "^1.10.0",
@@ -28,6 +30,8 @@
     "reflect-metadata": "^0.2.2",
     "tsup": "^8.5.0",
     "tsx": "^4.20.3",
+    "typedoc": "^0.28.5",
+    "typedoc-plugin-markdown": "^4.7.0",
     "zod": "^3.25.67"
   }
 }
