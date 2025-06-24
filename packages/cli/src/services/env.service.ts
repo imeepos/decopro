@@ -7,13 +7,12 @@ import { exists } from "fs-extra";
 @singleton()
 export class EnvService {
     config: { token: string; refresh_token: string };
-    constructor() {
+    constructor() {}
+
+    async onInit() {
         config({
             path: join(this.decopro, ".env")
         });
-    }
-
-    async onInit() {
         const configPath = join(this.decopro, "config.json");
         const isExisits = await exists(configPath);
         if (isExisits) {
@@ -30,7 +29,15 @@ export class EnvService {
     }
 
     get baseUrl() {
-        return this.get(`API_URL`) || `https://nakama.bowong.cc`;
+        return this.get(`NAKAMA_HOST`) || `https://nakama.bowong.cc`;
+    }
+
+    get SILICONFLOW_KEY() {
+        return this.get(`SILICONFLOW_KEY`);
+    }
+
+    get SILICONFLOW_HOST() {
+        return this.get(`SILICONFLOW_HOST`);
     }
 
     get homeDir() {
@@ -39,5 +46,9 @@ export class EnvService {
 
     get decopro() {
         return join(this.homeDir, ".decopro");
+    }
+
+    get REGISTRY() {
+        return this.get(`REGISTRY`);
     }
 }

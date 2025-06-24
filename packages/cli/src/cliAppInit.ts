@@ -12,6 +12,7 @@ import { McpServerCommand } from "./mcpServerCommand";
 import { LoginCommand } from "./loginCommand";
 import { EnvService } from "./services";
 import { ConfigCommand } from "./configCommand";
+import { OnlineCommand } from "./onlineCommand";
 
 @AppInit({
     deps: []
@@ -22,7 +23,8 @@ export class CliAppInit implements OnInit {
         DocsCommand,
         McpServerCommand,
         LoginCommand,
-        ConfigCommand
+        ConfigCommand,
+        OnlineCommand
     ];
     constructor(@inject(Injector) private injector: Injector) {}
     static forRoot(types: Type<any>[] = []) {

@@ -11,8 +11,8 @@ import { ensureDir, writeFile } from "fs-extra";
 export class LoginCommand {
     constructor(@inject(EnvService) private env: EnvService) {}
     @Option({
-        flags: `--email [email	]`,
-        description: `油箱`,
+        flags: `--email [email]`,
+        description: `邮箱`,
         zod: z.coerce.string()
     })
     email: string;
@@ -27,13 +27,14 @@ export class LoginCommand {
     @Action({})
     async run() {
         const url = `${this.env.baseUrl}/v2/account/authenticate/email?create=false&=`;
+        const data = {
+            email: this.email || this.env.get("EMAIL"),
+            password: this.password || this.env.get("PASSWORD")
+        };
         const response = await fetch(url, {
             method: "post",
             keepalive: true,
-            body: JSON.stringify({
-                email: this.email,
-                password: this.password
-            }),
+            body: JSON.stringify(data),
             headers: {
                 Authorization: `Basic ZGVmYXVsdGtleTo=`,
                 [`Content-Type`]: `application/json`
@@ -41,19 +42,25 @@ export class LoginCommand {
         });
         const body = await response.json();
         const { token, refresh_token } = body;
+        if (!token) {
+            console.log(`登陆失败`, data);
+            return;
+        }
         const root = join(this.env.homeDir, ".decopro");
         await ensureDir(root);
-        await writeFile(
-            join(root, "config.json"),
-            JSON.stringify(
-                {
-                    token,
-                    refresh_token
-                },
-                null,
-                2
-            )
-        );
-        console.log(`登陆成功: ${token} path: ${join(root, "config.json")}`);
+        if (token) {
+            await writeFile(
+                join(root, "config.json"),
+                JSON.stringify(
+                    {
+                        token,
+                        refresh_token
+                    },
+                    null,
+                    2
+                )
+            );
+            console.log(`登陆成功，保存路径: ${join(root, "config.json")}`);
+        }
     }
 }
