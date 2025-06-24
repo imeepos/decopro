@@ -9,6 +9,9 @@ import {
 import { TestCommand } from "./testCommand";
 import { DocsCommand } from "./docsCommand";
 import { McpServerCommand } from "./mcpServerCommand";
+import { LoginCommand } from "./loginCommand";
+import { EnvService } from "./services";
+import { ConfigCommand } from "./configCommand";
 
 @AppInit({
     deps: []
@@ -17,7 +20,9 @@ export class CliAppInit implements OnInit {
     private static readonly commanders: Type<any>[] = [
         TestCommand,
         DocsCommand,
-        McpServerCommand
+        McpServerCommand,
+        LoginCommand,
+        ConfigCommand
     ];
     constructor(@inject(Injector) private injector: Injector) {}
     static forRoot(types: Type<any>[] = []) {
@@ -25,6 +30,8 @@ export class CliAppInit implements OnInit {
         return this;
     }
     async onInit(): Promise<void> {
+        const env = this.injector.get(EnvService);
+        await env.onInit();
         const injector = this.injector;
         const commands = injector.getAll(COMMANDER_TOKEN);
         commands.map((command) => {

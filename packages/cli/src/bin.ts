@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env node
 import "reflect-metadata";
 import { bootstrap } from "@decopro/core";
 import { CliAppInit } from "./cliAppInit";
