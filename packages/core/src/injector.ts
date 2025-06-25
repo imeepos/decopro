@@ -24,9 +24,10 @@ export class Injector {
         return new Injector(this.injector.createChildContainer());
     }
 
-    toJson<T>(instance: T, type: Type<T>) {
+    toJson<T>(instance: T, _type?: Type<T>) {
         if (!instance) return instance;
         if (typeof instance !== "object") return instance;
+        const type = _type || instance.constructor;
         const inputs = this.getAll(INPUT_TOKEN).filter(
             (it) => it.target === type
         );

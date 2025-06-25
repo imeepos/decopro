@@ -91,19 +91,19 @@ export class Tokenizer {
     }
 
     private handleResourceReference(input: string) {
-        // 更宽松的资源引用匹配规则，允许路径中包含 / . - 等特殊字符
-        const refRegex = /^(@!|@\?|@|\[\@\])([a-zA-Z][a-zA-Z0-9_-]*):([^\s]+)/;
+        const refRegex = /^(@[!?]?)([a-zA-Z][a-zA-Z0-9_-]*):(\/\/[^\s]+)/;
         const match = refRegex.exec(input.substring(this.pos));
-        if (!match) {
+
+        if (match) {
+            const [fullMatch, refType, protocol, location] = match;
+            this.tokens.push({
+                type: "ResourceRef",
+                value: `${refType}${protocol}:${location}`
+            });
+            this.pos += fullMatch.length;
+        } else {
             this.handleText(input);
-            return;
         }
-        const [fullMatch, refType, protocol, location] = match;
-        this.tokens.push({
-            type: "ResourceRef",
-            value: `${refType}${protocol}:${location}`
-        });
-        this.pos += fullMatch.length;
     }
 
     private handleText(input: string) {
