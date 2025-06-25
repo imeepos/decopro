@@ -25,23 +25,37 @@ export class Injector {
     }
 
     toJson<T>(instance: T, type: Type<T>) {
+        if (!instance) return instance;
+        if (typeof instance !== "object") return instance;
         const inputs = this.getAll(INPUT_TOKEN).filter(
             (it) => it.target === type
         );
         const obj = { __typeName: type.name };
         inputs.map((input) => {
             const val = Reflect.get(instance as object, input.property);
-            const target = input.options.target;
-            if (target) {
-                const type = target();
-                const typeValue = this.toJson(val, type);
+            if (Array.isArray(val)) {
                 Reflect.set(
                     obj,
                     input.options.name || input.property,
-                    typeValue
+                    val.map((v) => {
+                        return this.toJson(v, v.constructor);
+                    })
                 );
             } else {
-                Reflect.set(obj, input.options.name || input.property, val);
+                let target = val.constructor;
+                if (input.options && input.options.target)
+                    target = input.options.target();
+                if (target) {
+                    const type = target;
+                    const typeValue = this.toJson(val, type);
+                    Reflect.set(
+                        obj,
+                        input.options.name || input.property,
+                        typeValue
+                    );
+                } else {
+                    Reflect.set(obj, input.options.name || input.property, val);
+                }
             }
         });
         return obj;
