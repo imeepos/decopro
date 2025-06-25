@@ -13,8 +13,6 @@ export const AST_TOKEN = `AST_TOKEN` as InjectionToken<
 >;
 export const Ast = createClassDecorator(AST_TOKEN);
 export interface Ast {
-    id: string;
-    status: "wait" | `runing` | "success" | "failed";
     visit<O, C>(visitor: Visitor<O, C>, ctx: C): Promise<O>;
 }
 export interface Visitor<O = any, C = any> {

@@ -203,6 +203,9 @@ importers:
 
   packages/dpml:
     dependencies:
+      '@decopro/ast':
+        specifier: workspace:*
+        version: link:../ast
       '@decopro/core':
         specifier: workspace:*
         version: link:../core
