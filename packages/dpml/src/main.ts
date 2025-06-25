@@ -156,4 +156,4 @@ const promptString = `
 
 const ast = parsePrompt(promptString);
 const injector = container.resolve(Injector);
-console.log(JSON.stringify(injector.toJson(ast, PromptElement), null, 2)); // 输出完整的 AST 结构
+// console.log(JSON.stringify(injector.toJson(ast, PromptElement), null, 2));
