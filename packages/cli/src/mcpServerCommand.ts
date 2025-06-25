@@ -1,16 +1,21 @@
 import { Action, Commander, Option } from "@decopro/commander";
-import { inject, Injector } from "@decopro/core";
+import { inject, Injector, Type } from "@decopro/core";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import express, { Request, Response } from "express";
 import { z } from "zod";
+import { ReadPrompt } from "./prompts";
 @Commander({
     name: `mcp`,
     description: `启动mcp http and sse server`
 })
 export class McpServerCommand {
+    private prompts: Type<any>[] = [
+        ReadPrompt
+    ]
+
     @Option({
         flags: `--port [port]`,
         description: `启动端口号`,

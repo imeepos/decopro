@@ -2,12 +2,12 @@
 import "reflect-metadata";
 import { bootstrap } from "@decopro/core";
 import { CliAppInit } from "./cliAppInit";
+import { McpAppInit } from "./mcpAppInit";
 export interface Decopro {
     tests?: string[];
 }
 async function main() {
-    const root = process.cwd();
-    await bootstrap([CliAppInit]);
+    await bootstrap([CliAppInit, McpAppInit]);
 }
 
 main();
