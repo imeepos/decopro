@@ -8,7 +8,7 @@ import express, { Request, Response } from "express";
 import { z } from "zod";
 import { ReadPrompt } from "./prompts";
 @Commander({
-    name: `mcpServer`,
+    name: `mcp`,
     description: `启动mcp http and sse server`
 })
 export class McpServerCommand {

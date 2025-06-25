@@ -2,7 +2,6 @@ import {
     AppInit,
     inject,
     Injector,
-    registry,
     Type,
 } from "@decopro/core";
 
@@ -11,7 +10,6 @@ import { EnvResource } from "./resources";
 import { NowaPrompt } from "./prompts";
 import { NowaAgent } from "./agents";
 
-@registry([])
 @AppInit({})
 export class McpAppInit implements AppInit {
     private readonly tools: Type<any>[] = [
