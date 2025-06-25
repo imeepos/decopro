@@ -7,7 +7,7 @@ import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import express, { Request, Response } from "express";
 import { z } from "zod";
 @Commander({
-    name: `mcpServer`,
+    name: `mcp`,
     description: `启动mcp http and sse server`
 })
 export class McpServerCommand {
