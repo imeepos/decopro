@@ -4,3 +4,4 @@ export * from "./session";
 export * from "./socket";
 export * from "./web_socket_adapter";
 export { ChannelMessage } from "./client";
+export * from './rpc'
