@@ -27,6 +27,6 @@ export class ReadPrompt {
         description: `阅读资料`
     })
     async read() {
-        return [{ role: "system", content: `` }];
+        return [{ role: "system", content: xml }];
     }
 }

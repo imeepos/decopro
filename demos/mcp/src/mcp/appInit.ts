@@ -10,7 +10,6 @@ import { EnvResource } from "./resources";
 import { NowaPrompt } from "./prompts";
 import { NowaAgent } from "./agents";
 
-
 @AppInit({})
 export class McpAppInit implements AppInit {
     private readonly tools: Type<any>[] = [

@@ -10,13 +10,15 @@
         "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules"
     },
     "scripts": {
-        "build": "tsup"
+        "build": "tsup",
+        "test": "tsx src/main.ts"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
         "@decopro/core": "workspace:*",
+        "@decopro/ast": "workspace:*",
         "zod": "^3.25.67"
     }
 }
