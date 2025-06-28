@@ -59,6 +59,9 @@ importers:
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
+      tslib:
+        specifier: ^2.6.0
+        version: 2.8.1
       zod:
         specifier: ^3.25.67
         version: 3.25.67

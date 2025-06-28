@@ -1,5 +1,5 @@
 import { AppInit, inject, Injector, OnInit } from "@decopro/core";
-import commander from "commander";
+import { Command, program, Argument, Option } from "commander";
 import {
     ACTION_TOKEN,
     ARGUMENT_TOKEN,
@@ -9,12 +9,12 @@ import {
 
 @AppInit({})
 export class CommanderAppInit implements OnInit {
-    constructor(@inject(Injector) private injector: Injector) {}
+    constructor(@inject(Injector) private injector: Injector) { }
     async onInit(): Promise<void> {
         const injector = this.injector;
         const commands = injector.getAll(COMMANDER_TOKEN);
         commands.map((command) => {
-            const c = new commander.Command();
+            const c = new Command();
             const options = command.options;
             if (options.name) c.name(options.name);
             if (options.alias) c.alias(options.alias);
@@ -25,8 +25,8 @@ export class CommanderAppInit implements OnInit {
                 .filter((it) => it.target === command.target);
             _arguments.map((arg) => {
                 const options = arg.options;
-                const ins = new commander.Argument(
-                    options.name,
+                const ins = new Argument(
+                    options.name!,
                     options.description
                 );
                 if (options.defaultValue)
@@ -38,13 +38,14 @@ export class CommanderAppInit implements OnInit {
                 .filter((it) => it.target === command.target);
             _options.map((arg) => {
                 const options = arg.options;
-                const ins = new commander.Option(
-                    options.flags,
+                const ins = new Option(
+                    options.flags!,
                     options.description
                 );
                 if (options.zod) {
                     ins.argParser((value, previous) => {
-                        return options.zod.parse(value);
+                        if(options.zod) return options.zod.parse(value);
+                        return value;
                     });
                 }
                 c.addOption(ins);
@@ -78,11 +79,11 @@ export class CommanderAppInit implements OnInit {
                 });
                 await Promise.all(actions.map((action) => action(...args)));
             });
-            commander.program.addCommand(c);
+            program.addCommand(c);
         });
         if (process.argv.length === 2) {
-            return commander.program.help();
+            return program.help();
         }
-        commander.program.parse();
+        program.parse();
     }
 }

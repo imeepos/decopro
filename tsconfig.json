@@ -10,6 +10,7 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
+        "allowJs": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "strictFunctionTypes": true,
@@ -25,9 +26,8 @@
         "removeComments": false,
         "importHelpers": true,
         "resolveJsonModule": true,
-        "isolatedModules": true,
-        "incremental": true
+        "isolatedModules": true
     },
-    "include": ["packages/*/src/**/*", "demos/*/src/**/*"],
+    "include": ["packages/*/src/**/*", "demos/*/src/**/*", "src/**/*"],
     "exclude": ["node_modules", "dist", "coverage"]
 }
