@@ -145,9 +145,11 @@ async function main() {
                 });
             }
             
-            // 生成大模型友好的知识库文件
+            // 生成大模型友好的知识库文件（排除测试文件）
             const knowledgePath = path.join(outputDir, "knowledge-base.json");
-            const allKnowledges = projectDoc.packages.flatMap(p => p.knowledges);
+            const allKnowledges = projectDoc.packages
+                .flatMap(p => p.knowledges)
+                .filter(k => k.category !== "test");
             fs.writeFileSync(knowledgePath, JSON.stringify(allKnowledges, null, 2));
             log(`✅ Knowledge base saved to: ${knowledgePath}`);
         }

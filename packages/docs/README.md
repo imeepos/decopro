@@ -9,8 +9,9 @@ AI/LLM-optimized documentation generator for the Decopro framework.
 - 🏗️ **Architecture Aware**: Analyzes project structure and dependencies
 - 📝 **Multiple Formats**: Outputs JSON and Markdown formats
 - 🔍 **Smart Categorization**: Automatically categorizes code by purpose and type
-- 💡 **Example Extraction**: Pulls code examples from JSDoc comments and tests
+- 💡 **Example Extraction**: Pulls code examples from JSDoc comments (excludes test code)
 - 🏷️ **Intelligent Tagging**: Auto-tags code with relevant keywords
+- 🚫 **Test-Free**: Automatically excludes test files and test code from documentation
 
 ## Installation
 

@@ -86,6 +86,14 @@ export function generateTSKnowledges(projectRoot: string): Knowledge[] {
         if (file.includes("node_modules")) {
             return;
         }
+
+        const relativePath = path.relative(projectRoot, file);
+
+        // 跳过测试文件
+        if (isTestFile(relativePath)) {
+            return;
+        }
+
         const sourceFile = program.getSourceFile(file);
         if (!sourceFile) return;
 
@@ -97,7 +105,6 @@ export function generateTSKnowledges(projectRoot: string): Knowledge[] {
         });
 
         const hash = createHash("md5").update(sourceFile.text).digest("hex");
-        const relativePath = path.relative(projectRoot, file);
 
         // 分析文件类型和标签
         const category = determineFileCategory(relativePath, sourceFile);
@@ -337,11 +344,18 @@ function getAllTSFiles(dir: string): string[] {
     });
 }
 
+// 检查是否为测试文件
+function isTestFile(filePath: string): boolean {
+    return filePath.includes("__tests__") ||
+           filePath.includes(".test.") ||
+           filePath.includes(".spec.") ||
+           filePath.includes("/test/") ||
+           filePath.includes("\\test\\") ||
+           /\.(test|spec)\.(ts|tsx|js|jsx)$/.test(filePath);
+}
+
 // 确定文件类别
 function determineFileCategory(filePath: string, sourceFile: ts.SourceFile): string {
-    if (filePath.includes("__tests__") || filePath.includes(".test.") || filePath.includes(".spec.")) {
-        return "test";
-    }
     if (filePath.includes("examples") || filePath.includes("demo")) {
         return "example";
     }
@@ -395,7 +409,6 @@ function extractFileTags(sourceFile: ts.SourceFile, filePath: string): string[] 
     if (filePath.includes("rest")) tags.push("rest", "api");
     if (filePath.includes("core")) tags.push("core");
     if (filePath.includes("cli")) tags.push("cli", "command");
-    if (filePath.includes("test")) tags.push("test");
 
     // 基于内容的标签
     if (text.includes("@Entity")) tags.push("entity", "database");
@@ -419,7 +432,7 @@ function extractCodeExamples(sourceFile: ts.SourceFile): string[] {
     const examples: string[] = [];
     const text = sourceFile.getFullText();
 
-    // 提取 JSDoc 中的 @example 标签
+    // 只提取 JSDoc 中的 @example 标签，不包含测试代码
     const exampleRegex = /@example\s*\n([\s\S]*?)(?=\n\s*\*\s*@|\n\s*\*\/)/g;
     let match;
     while ((match = exampleRegex.exec(text)) !== null) {
@@ -430,18 +443,6 @@ function extractCodeExamples(sourceFile: ts.SourceFile): string[] {
             .trim();
         if (example) {
             examples.push(example);
-        }
-    }
-
-    // 提取测试用例作为示例
-    if (sourceFile.fileName.includes("test")) {
-        const testRegex = /it\s*\(\s*["'`]([^"'`]+)["'`]\s*,\s*(?:async\s+)?\(\s*\)\s*=>\s*\{([\s\S]*?)\n\s*\}\s*\)/g;
-        while ((match = testRegex.exec(text)) !== null) {
-            const testName = match[1];
-            const testCode = match[2].trim();
-            if (testCode.length < 500) { // 只包含较短的测试用例
-                examples.push(`// Test: ${testName}\n${testCode}`);
-            }
         }
     }
 
@@ -539,8 +540,9 @@ function extractMainExports(packageRoot: string): string[] {
 function generateAPIReference(knowledges: Knowledge[]): string {
     const sections: string[] = [];
 
-    // 按类别分组
-    const categories = knowledges.reduce((acc, k) => {
+    // 过滤掉测试文件，按类别分组
+    const filteredKnowledges = knowledges.filter(k => k.category !== "test");
+    const categories = filteredKnowledges.reduce((acc, k) => {
         if (!acc[k.category]) acc[k.category] = [];
         acc[k.category].push(k);
         return acc;
@@ -571,9 +573,12 @@ function generateAPIReference(knowledges: Knowledge[]): string {
 function extractUsageExamples(knowledges: Knowledge[]): string[] {
     const examples: string[] = [];
 
-    knowledges.forEach(k => {
-        examples.push(...k.examples);
-    });
+    // 只从非测试文件中提取示例
+    knowledges
+        .filter(k => k.category !== "test")
+        .forEach(k => {
+            examples.push(...k.examples);
+        });
 
     return examples;
 }
@@ -582,8 +587,9 @@ function extractUsageExamples(knowledges: Knowledge[]): string[] {
 function generateArchitectureOverview(knowledges: Knowledge[]): string {
     const overview: string[] = [];
 
-    // 统计各类别的文件数量
-    const categoryStats = knowledges.reduce((acc, k) => {
+    // 过滤掉测试文件，统计各类别的文件数量
+    const filteredKnowledges = knowledges.filter(k => k.category !== "test");
+    const categoryStats = filteredKnowledges.reduce((acc, k) => {
         acc[k.category] = (acc[k.category] || 0) + 1;
         return acc;
     }, {} as Record<string, number>);
@@ -599,8 +605,8 @@ function generateArchitectureOverview(knowledges: Knowledge[]): string {
 
     overview.push("");
 
-    // 分析依赖关系
-    const allDeps = knowledges.flatMap(k => k.dependencies);
+    // 分析依赖关系（排除测试文件）
+    const allDeps = filteredKnowledges.flatMap(k => k.dependencies);
     const depCounts = allDeps.reduce((acc, dep) => {
         acc[dep] = (acc[dep] || 0) + 1;
         return acc;
@@ -734,8 +740,9 @@ function generateProjectAPIOverview(packages: PackageDocumentation[]): string {
             overview.push("");
         }
 
-        // 按类别显示知识点
-        const categories = pkg.knowledges.reduce((acc, k) => {
+        // 按类别显示知识点（排除测试文件）
+        const filteredKnowledges = pkg.knowledges.filter(k => k.category !== "test");
+        const categories = filteredKnowledges.reduce((acc, k) => {
             if (!acc[k.category]) acc[k.category] = [];
             acc[k.category].push(k);
             return acc;
