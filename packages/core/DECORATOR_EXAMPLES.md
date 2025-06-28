@@ -68,10 +68,10 @@ class UserModel {
     age: number = 0;
 
     @ValidatedInput({
-        enum: ['admin', 'user', 'guest'],
-        defaultValue: 'user'
+        enum: ["admin", "user", "guest"],
+        defaultValue: "user"
     })
-    role: string = 'user';
+    role: string = "user";
 }
 ```
 
@@ -152,7 +152,7 @@ class RequestHandler {
 ```typescript
 import { conditional, Injectable } from "@decopro/core";
 
-const isDevelopment = process.env.NODE_ENV === 'development';
+const isDevelopment = process.env.NODE_ENV === "development";
 
 @conditional(isDevelopment, Injectable({ singleton: true }))
 class DebugService {
@@ -187,11 +187,11 @@ class TimestampedService {
 ```typescript
 import { async, Injectable } from "@decopro/core";
 
-@async(async (options) => {
+@(async(async (options) => {
     // 异步初始化逻辑
     const config = await loadConfig();
     return Injectable({ ...options, deps: [config] });
-})()
+})())
 class AsyncService {}
 ```
 
@@ -213,12 +213,12 @@ class OptimizedModel {
 ### 1. 用户管理系统
 
 ```typescript
-import { 
-    ValidatedInput, 
-    RequiredInput, 
+import {
+    ValidatedInput,
+    RequiredInput,
     ReadonlyInput,
     Singleton,
-    Injectable 
+    Injectable
 } from "@decopro/core";
 
 // 用户模型
@@ -243,10 +243,10 @@ class User {
     email: string = "";
 
     @ValidatedInput({
-        enum: ['admin', 'user', 'guest'],
-        defaultValue: 'user'
+        enum: ["admin", "user", "guest"],
+        defaultValue: "user"
     })
-    role: string = 'user';
+    role: string = "user";
 
     @ValidatedInput({
         min: 13,
@@ -285,11 +285,11 @@ class UserService {
 ### 2. 配置管理系统
 
 ```typescript
-import { 
-    ReadonlyInput, 
+import {
+    ReadonlyInput,
     ValidatedInput,
     conditional,
-    deepMergeOptions 
+    deepMergeOptions
 } from "@decopro/core";
 
 // 数据库配置
@@ -324,10 +324,7 @@ class DatabaseConfig {
 }
 
 // 应用配置
-@conditional(
-    process.env.NODE_ENV === 'production',
-    Singleton()
-)
+@conditional(process.env.NODE_ENV === "production", Singleton())
 class AppConfig {
     @ReadonlyInput({ name: "appName" })
     name: string = "DecoPro App";
@@ -336,10 +333,10 @@ class AppConfig {
     version: string = "1.0.0";
 
     @ValidatedInput({
-        enum: ['development', 'staging', 'production'],
-        defaultValue: 'development'
+        enum: ["development", "staging", "production"],
+        defaultValue: "development"
     })
-    environment: string = 'development';
+    environment: string = "development";
 
     @ValidatedInput({
         target: () => DatabaseConfig,

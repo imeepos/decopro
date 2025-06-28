@@ -1,4 +1,5 @@
 import {
+    BaseMethodOptions,
     ClassMetadata,
     InjectionToken,
     MethodMetadata,
@@ -30,7 +31,7 @@ export const McpArg = createParameterDecorator(MCP_ARG_TOKEN);
  * tool
  */
 
-export interface ToolOptions<R = any> {
+export interface ToolOptions<R = any> extends BaseMethodOptions {
     token: InjectionToken<R>;
     title?: string;
     description?: string;
@@ -46,7 +47,7 @@ export const Tool = createMethodDecorator(TOOL_TOKEN);
  */
 import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 export type ResourceMetadata = Omit<McpResource, "uri" | "name">;
-export interface ResourceOptions {
+export interface ResourceOptions extends BaseMethodOptions {
     name: string;
     uriOrTemplate: string | ResourceTemplate;
     config: ResourceMetadata;
@@ -59,7 +60,7 @@ export const Resource = createMethodDecorator(RESOURCE_TOKEN);
 /**
  * prompt
  */
-export interface PromptOptions {
+export interface PromptOptions extends BaseMethodOptions {
     name: string;
     title?: string;
     description?: string;

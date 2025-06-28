@@ -13,7 +13,7 @@
         "lint": "turbo run lint",
         "lint:fix": "turbo run lint:fix",
         "type-check": "turbo run type-check",
-        "dev": "turbo run dev",
+        "dev": "turbo run dev --concurrency=20",
         "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
         "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
         "upgrade": "pnpm run -w build && changeset version && pnpm install && changeset publish",

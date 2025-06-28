@@ -26,15 +26,8 @@
         "importHelpers": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "incremental": true,
-        "tsBuildInfoFile": ".tsbuildinfo"
+        "incremental": true
     },
     "include": ["packages/*/src/**/*", "demos/*/src/**/*"],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "coverage",
-        "**/*.test.ts",
-        "**/*.spec.ts"
-    ]
+    "exclude": ["node_modules", "dist", "coverage"]
 }

@@ -34,7 +34,9 @@ export const CLASS_TOKEN = Symbol.for(`CLASS_TOKEN`) as InjectionToken<
  * @param token 注入令牌
  * @param defaultOptions 默认选项
  */
-export function createClassDecorator<O extends BaseDecoratorOptions = BaseDecoratorOptions>(
+export function createClassDecorator<
+    O extends BaseDecoratorOptions = BaseDecoratorOptions
+>(
     token: InjectionToken<ClassMetadata<O>>,
     defaultOptions?: Partial<O>
 ): ClassDecoratorFactory<O> {
@@ -100,7 +102,9 @@ export const PROPERTY_TOKEN = Symbol.for(`PROPERTY_TOKEN`) as InjectionToken<
  * @param token 注入令牌
  * @param defaultOptions 默认选项
  */
-export function createPropertyDecorator<O extends BasePropertyOptions = BasePropertyOptions>(
+export function createPropertyDecorator<
+    O extends BasePropertyOptions = BasePropertyOptions
+>(
     token: InjectionToken<PropertyMetadata<O>>,
     defaultOptions?: Partial<O>
 ): PropertyDecoratorFactory<O> {
@@ -143,7 +147,13 @@ export interface BaseMethodOptions {
     timeout?: number;
     retries?: number;
     cache?: boolean;
-    middleware?: Array<(target: any, property: string | symbol, descriptor: PropertyDescriptor) => void>;
+    middleware?: Array<
+        (
+            target: any,
+            property: string | symbol,
+            descriptor: PropertyDescriptor
+        ) => void
+    >;
 }
 
 /**
@@ -163,7 +173,9 @@ export const METHOD_TOKEN = Symbol.for(`METHOD_TOKEN`) as InjectionToken<
  * @param token 注入令牌
  * @param defaultOptions 默认选项
  */
-export function createMethodDecorator<O extends BaseMethodOptions = BaseMethodOptions>(
+export function createMethodDecorator<
+    O extends BaseMethodOptions = BaseMethodOptions
+>(
     token: InjectionToken<MethodMetadata<O>>,
     defaultOptions?: Partial<O>
 ): MethodDecoratorFactory<O> {
@@ -228,7 +240,9 @@ export const PARAMETER_TOKEN = Symbol.for(`PARAMETER_TOKEN`) as InjectionToken<
  * @param token 注入令牌
  * @param defaultOptions 默认选项
  */
-export function createParameterDecorator<O extends BaseParameterOptions = BaseParameterOptions>(
+export function createParameterDecorator<
+    O extends BaseParameterOptions = BaseParameterOptions
+>(
     token: InjectionToken<ParameterMetadata<O>>,
     defaultOptions?: Partial<O>
 ): ParameterDecoratorFactory<O> {
@@ -266,7 +280,8 @@ export function conditional<T extends (...args: any[]) => any>(
     decorator: T
 ): T {
     return ((...args: any[]) => {
-        const shouldApply = typeof condition === 'function' ? condition() : condition;
+        const shouldApply =
+            typeof condition === "function" ? condition() : condition;
         if (shouldApply) {
             return decorator(...args);
         }
@@ -294,11 +309,13 @@ export function async<O>(
     return (options?: O) => {
         return (target) => {
             // 异步装饰器的处理逻辑
-            asyncDecorator(options).then(decorator => {
-                decorator(target);
-            }).catch(error => {
-                console.error('Async decorator failed:', error);
-            });
+            asyncDecorator(options)
+                .then((decorator) => {
+                    decorator(target);
+                })
+                .catch((error) => {
+                    console.error("Async decorator failed:", error);
+                });
             return target;
         };
     };
@@ -312,7 +329,10 @@ const decoratorCache = new WeakMap<any, any>();
 export function cached<T extends (...args: any[]) => any>(decorator: T): T {
     return ((...args: any[]) => {
         const key = JSON.stringify(args);
-        if (decoratorCache.has(decorator) && decoratorCache.get(decorator)[key]) {
+        if (
+            decoratorCache.has(decorator) &&
+            decoratorCache.get(decorator)[key]
+        ) {
             return decoratorCache.get(decorator)[key];
         }
 
@@ -336,8 +356,11 @@ export function validateOptions<O>(
 ): (options: O) => O {
     return (options: O) => {
         const result = validator(options);
-        if (result === false || typeof result === 'string') {
-            const message = typeof result === 'string' ? result : errorMessage || 'Invalid decorator options';
+        if (result === false || typeof result === "string") {
+            const message =
+                typeof result === "string"
+                    ? result
+                    : errorMessage || "Invalid decorator options";
             throw new Error(message);
         }
         return options;
@@ -371,10 +394,10 @@ export function deepMergeOptions<T, U = Partial<T>>(
             const defaultValue = (defaultOptions as any)[key];
 
             if (
-                typeof userValue === 'object' &&
+                typeof userValue === "object" &&
                 userValue !== null &&
                 !Array.isArray(userValue) &&
-                typeof defaultValue === 'object' &&
+                typeof defaultValue === "object" &&
                 defaultValue !== null &&
                 !Array.isArray(defaultValue)
             ) {

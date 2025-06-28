@@ -1,24 +1,27 @@
 {
-  "name": "@decopro/rest",
-  "version": "1.0.3",
-  "description": "",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "build": "tsup",
-    "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules",
-    "build:watch": "tsup --watch",
-    "dev": "tsup --watch --sourcemap"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@decopro/core": "workspace:*",
-    "zod": "^3.25.67"
-  }
+    "name": "@decopro/rest",
+    "version": "1.0.3",
+    "description": "",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "src/index.ts",
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "tsup",
+        "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules",
+        "build:watch": "tsup --watch",
+        "dev": "tsup --watch --sourcemap",
+        "build:prod": "NODE_ENV=production tsup",
+        "test": "echo \"No tests specified\" && exit 0",
+        "lint": "echo \"No linting configured for this package\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@decopro/core": "workspace:*",
+        "zod": "^3.25.67"
+    }
 }

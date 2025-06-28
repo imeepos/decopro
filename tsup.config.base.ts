@@ -79,7 +79,7 @@ export function createTsupConfig(options: Partial<Options> = {}): Options {
 
         // 允许覆盖配置
         ...options
-    });
+    }) as Options;
 }
 
 /**

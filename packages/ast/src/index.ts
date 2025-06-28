@@ -1,11 +1,12 @@
 import {
+    BaseDecoratorOptions,
     ClassMetadata,
     InjectionToken,
     Injector,
     container,
     createClassDecorator
 } from "@decopro/core";
-export interface AstOptions {
+export interface AstOptions extends BaseDecoratorOptions {
     description?: string;
 }
 export const AST_TOKEN = `AST_TOKEN` as InjectionToken<

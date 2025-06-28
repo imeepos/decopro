@@ -3,9 +3,20 @@ import { defineConfig } from "tsup";
 export default defineConfig({
     entry: ["src/index.ts"],
     format: ["cjs", "esm"],
-    dts: false,
     clean: true,
-    splitting: false,
+    sourcemap: true,
+    minify: process.env.NODE_ENV === "production",
+    splitting: true,
     treeshake: true,
-    external: ["@decopro/core", "reflect-metadata", "tsyringe"]
+    dts: false,
+    target: "es2020",
+    outDir: "dist",
+    external: ["@decopro/core", "reflect-metadata", "tsyringe"],
+    esbuildOptions(options) {
+        options.conditions = ["module"];
+        options.mainFields = ["module", "main"];
+    },
+    onSuccess: async () => {
+        console.log("✅ @decopro/core build completed");
+    }
 });

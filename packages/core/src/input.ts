@@ -6,7 +6,7 @@ import {
     createPropertyDecorator,
     BasePropertyOptions,
     BaseDecoratorOptions,
-    IPropertyDecorator,
+    IPropertyDecorator
 } from "./decorator";
 import { Type } from "./types";
 
@@ -64,20 +64,32 @@ export const Input = createPropertyDecorator(INPUT_TOKEN, defaultInputOptions);
 /**
  * 创建带验证的 Input 装饰器
  */
-export function ValidatedInput<T = any>(options: InputOptions<T>): IPropertyDecorator {
+export function ValidatedInput<T = any>(
+    options: InputOptions<T>
+): IPropertyDecorator {
     // 验证必需字段
     if (options.required && options.defaultValue === undefined) {
-        throw new Error('Required field must have a default value or be explicitly handled');
+        throw new Error(
+            "Required field must have a default value or be explicitly handled"
+        );
     }
 
     // 验证数值范围
-    if (typeof options.min === 'number' && typeof options.max === 'number' && options.min > options.max) {
-        throw new Error('Minimum value cannot be greater than maximum value');
+    if (
+        typeof options.min === "number" &&
+        typeof options.max === "number" &&
+        options.min > options.max
+    ) {
+        throw new Error("Minimum value cannot be greater than maximum value");
     }
 
     // 验证长度范围
-    if (typeof options.minLength === 'number' && typeof options.maxLength === 'number' && options.minLength > options.maxLength) {
-        throw new Error('Minimum length cannot be greater than maximum length');
+    if (
+        typeof options.minLength === "number" &&
+        typeof options.maxLength === "number" &&
+        options.minLength > options.maxLength
+    ) {
+        throw new Error("Minimum length cannot be greater than maximum length");
     }
 
     return Input(options);
@@ -87,8 +99,12 @@ export function ValidatedInput<T = any>(options: InputOptions<T>): IPropertyDeco
  * 创建只读 Input 装饰器
  */
 export function ReadonlyInput<T = any>(): IPropertyDecorator;
-export function ReadonlyInput<T = any>(options: Omit<InputOptions<T>, 'readonly'>): IPropertyDecorator;
-export function ReadonlyInput<T = any>(options?: Omit<InputOptions<T>, 'readonly'>): IPropertyDecorator {
+export function ReadonlyInput<T = any>(
+    options: Omit<InputOptions<T>, "readonly">
+): IPropertyDecorator;
+export function ReadonlyInput<T = any>(
+    options?: Omit<InputOptions<T>, "readonly">
+): IPropertyDecorator {
     const finalOptions: InputOptions<T> = { readonly: true, ...options };
     return Input(finalOptions);
 }
@@ -97,8 +113,12 @@ export function ReadonlyInput<T = any>(options?: Omit<InputOptions<T>, 'readonly
  * 创建必需 Input 装饰器
  */
 export function RequiredInput<T = any>(): IPropertyDecorator;
-export function RequiredInput<T = any>(options: Omit<InputOptions<T>, 'required'>): IPropertyDecorator;
-export function RequiredInput<T = any>(options?: Omit<InputOptions<T>, 'required'>): IPropertyDecorator {
+export function RequiredInput<T = any>(
+    options: Omit<InputOptions<T>, "required">
+): IPropertyDecorator;
+export function RequiredInput<T = any>(
+    options?: Omit<InputOptions<T>, "required">
+): IPropertyDecorator {
     const finalOptions: InputOptions<T> = { required: true, ...options };
     return Input(finalOptions);
 }
@@ -112,7 +132,7 @@ export interface InjectableOptions extends BaseDecoratorOptions {
     /** 是否为单例 */
     singleton?: boolean;
     /** 作用域 */
-    scope?: 'transient' | 'singleton' | 'container';
+    scope?: "transient" | "singleton" | "container";
     /** 工厂函数 */
     factory?: (...args: any[]) => any;
     /** 依赖项 */
@@ -128,23 +148,31 @@ export const INJECTABLE_TOKEN = Symbol.for(
  */
 const defaultInjectableOptions: Partial<InjectableOptions> = {
     singleton: false,
-    scope: 'transient'
+    scope: "transient"
 };
 
 /**
  * Injectable 装饰器 - 支持可选参数和高级配置
  */
-export const Injectable = createClassDecorator(INJECTABLE_TOKEN, defaultInjectableOptions);
-export const Inject = (token: InjectionToken<any>, options?: {
-    isOptional?: boolean;
-}) => inject(token, options)
+export const Injectable = createClassDecorator(
+    INJECTABLE_TOKEN,
+    defaultInjectableOptions
+);
+export const Inject = (
+    token: InjectionToken<any>,
+    options?: {
+        isOptional?: boolean;
+    }
+) => inject(token, options);
 /**
  * 创建单例 Injectable 装饰器
  */
-export function Singleton(options?: Omit<InjectableOptions, 'singleton' | 'scope'>): ClassDecorator {
+export function Singleton(
+    options?: Omit<InjectableOptions, "singleton" | "scope">
+): ClassDecorator {
     const finalOptions: InjectableOptions = {
         singleton: true,
-        scope: 'singleton' as const,
+        scope: "singleton" as const,
         ...options
     };
     return Injectable(finalOptions);
@@ -153,9 +181,11 @@ export function Singleton(options?: Omit<InjectableOptions, 'singleton' | 'scope
 /**
  * 创建瞬态 Injectable 装饰器
  */
-export function Transient(options?: Omit<InjectableOptions, 'scope'>): ClassDecorator {
+export function Transient(
+    options?: Omit<InjectableOptions, "scope">
+): ClassDecorator {
     const finalOptions: InjectableOptions = {
-        scope: 'transient' as const,
+        scope: "transient" as const,
         ...options
     };
     return Injectable(finalOptions);

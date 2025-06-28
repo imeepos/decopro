@@ -4,15 +4,15 @@ import { AppInit } from "../tokens";
 import { Injectable } from "../input";
 import { inject } from "tsyringe";
 
-describe('Bootstrap Dependencies Injection', () => {
-    it('should properly inject deps into AppInit modules', async () => {
+describe("Bootstrap Dependencies Injection", () => {
+    it("should properly inject deps into AppInit modules", async () => {
         const initOrder: string[] = [];
 
         // 创建一个基础服务
         @Injectable()
         class DatabaseService {
             connect() {
-                return 'database-connected';
+                return "database-connected";
             }
         }
 
@@ -21,12 +21,14 @@ describe('Bootstrap Dependencies Injection', () => {
             deps: [DatabaseService]
         })
         class DatabaseModule implements AppInit {
-            constructor(@inject(DatabaseService) private dbService: DatabaseService) {}
+            constructor(
+                @inject(DatabaseService) private dbService: DatabaseService
+            ) {}
 
             async onInit(): Promise<void> {
                 const result = this.dbService.connect();
-                expect(result).toBe('database-connected');
-                initOrder.push('DatabaseModule');
+                expect(result).toBe("database-connected");
+                initOrder.push("DatabaseModule");
             }
         }
 
@@ -36,26 +38,28 @@ describe('Bootstrap Dependencies Injection', () => {
         })
         class UserModule implements AppInit {
             async onInit(): Promise<void> {
-                initOrder.push('UserModule');
+                initOrder.push("UserModule");
             }
         }
 
         // 启动应用
-        const injector = await bootstrap([DatabaseModule, UserModule], { debug: true });
+        const injector = await bootstrap([DatabaseModule, UserModule], {
+            debug: true
+        });
 
         // 验证初始化顺序
-        expect(initOrder).toEqual(['DatabaseModule', 'UserModule']);
+        expect(initOrder).toEqual(["DatabaseModule", "UserModule"]);
         expect(injector).toBeDefined();
     });
 
-    it('should handle complex dependency chains', async () => {
+    it("should handle complex dependency chains", async () => {
         const initOrder: string[] = [];
 
         // 基础服务
         @Injectable()
         class ConfigService {
             getConfig() {
-                return { env: 'test' };
+                return { env: "test" };
             }
         }
 
@@ -71,12 +75,14 @@ describe('Bootstrap Dependencies Injection', () => {
             deps: [ConfigService]
         })
         class ConfigModule implements AppInit {
-            constructor(@inject(ConfigService) private configService: ConfigService) {}
+            constructor(
+                @inject(ConfigService) private configService: ConfigService
+            ) {}
 
             async onInit(): Promise<void> {
                 const config = this.configService.getConfig();
-                expect(config.env).toBe('test');
-                initOrder.push('ConfigModule');
+                expect(config.env).toBe("test");
+                initOrder.push("ConfigModule");
             }
         }
 
@@ -84,12 +90,14 @@ describe('Bootstrap Dependencies Injection', () => {
             deps: [LoggerService]
         })
         class LoggerModule implements AppInit {
-            constructor(@inject(LoggerService) private loggerService: LoggerService) {}
+            constructor(
+                @inject(LoggerService) private loggerService: LoggerService
+            ) {}
 
             async onInit(): Promise<void> {
-                const result = this.loggerService.log('Logger initialized');
-                expect(result).toBe('[LOG] Logger initialized');
-                initOrder.push('LoggerModule');
+                const result = this.loggerService.log("Logger initialized");
+                expect(result).toBe("[LOG] Logger initialized");
+                initOrder.push("LoggerModule");
             }
         }
 
@@ -99,41 +107,48 @@ describe('Bootstrap Dependencies Injection', () => {
         })
         class AppModule implements AppInit {
             async onInit(): Promise<void> {
-                initOrder.push('AppModule');
+                initOrder.push("AppModule");
             }
         }
 
         // 启动应用
-        const injector = await bootstrap([ConfigModule, LoggerModule, AppModule], { debug: true });
+        const injector = await bootstrap(
+            [ConfigModule, LoggerModule, AppModule],
+            { debug: true }
+        );
 
         // 验证初始化顺序（ConfigModule 和 LoggerModule 可以并行，但都要在 AppModule 之前）
         expect(initOrder).toHaveLength(3);
-        expect(initOrder.slice(0, 2)).toEqual(expect.arrayContaining(['ConfigModule', 'LoggerModule']));
-        expect(initOrder[2]).toBe('AppModule');
+        expect(initOrder.slice(0, 2)).toEqual(
+            expect.arrayContaining(["ConfigModule", "LoggerModule"])
+        );
+        expect(initOrder[2]).toBe("AppModule");
         expect(injector).toBeDefined();
     });
 
-    it('should handle modules without dependencies', async () => {
+    it("should handle modules without dependencies", async () => {
         const initOrder: string[] = [];
 
         @AppInit({})
         class SimpleModule implements AppInit {
             async onInit(): Promise<void> {
-                initOrder.push('SimpleModule');
+                initOrder.push("SimpleModule");
             }
         }
 
         @AppInit()
         class AnotherSimpleModule implements AppInit {
             async onInit(): Promise<void> {
-                initOrder.push('AnotherSimpleModule');
+                initOrder.push("AnotherSimpleModule");
             }
         }
 
         const injector = await bootstrap([SimpleModule, AnotherSimpleModule]);
 
         expect(initOrder).toHaveLength(2);
-        expect(initOrder).toEqual(expect.arrayContaining(['SimpleModule', 'AnotherSimpleModule']));
+        expect(initOrder).toEqual(
+            expect.arrayContaining(["SimpleModule", "AnotherSimpleModule"])
+        );
         expect(injector).toBeDefined();
     });
 });

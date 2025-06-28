@@ -17,6 +17,7 @@
 ### 1. 装饰器工厂函数重载
 
 #### 优化前
+
 ```typescript
 // 只支持必需参数
 @Input({ name: "userName", required: true })
@@ -24,6 +25,7 @@ name: string = "";
 ```
 
 #### 优化后
+
 ```typescript
 // 支持可选参数和无参数调用
 @Input() // 🎉 无参数调用
@@ -36,6 +38,7 @@ email: string = "";
 ### 2. 增强的类型定义
 
 #### 新的基础接口
+
 ```typescript
 export interface BasePropertyOptions {
     name?: string;
@@ -52,16 +55,20 @@ export interface PropertyDecoratorFactory<O> {
 ```
 
 #### 类型安全的装饰器创建
+
 ```typescript
-export function createPropertyDecorator<O extends BasePropertyOptions = BasePropertyOptions>(
+export function createPropertyDecorator<
+    O extends BasePropertyOptions = BasePropertyOptions
+>(
     token: InjectionToken<PropertyMetadata<O>>,
     defaultOptions?: Partial<O>
-): PropertyDecoratorFactory<O>
+): PropertyDecoratorFactory<O>;
 ```
 
 ### 3. 高级 Input 装饰器变体
 
 #### ValidatedInput - 带验证的输入装饰器
+
 ```typescript
 @ValidatedInput({
     required: true,
@@ -75,12 +82,14 @@ name: string = "";
 ```
 
 #### ReadonlyInput - 只读输入装饰器
+
 ```typescript
 @ReadonlyInput({ name: "appVersion" })
 version: string = "1.0.0";
 ```
 
 #### RequiredInput - 必需输入装饰器
+
 ```typescript
 @RequiredInput({
     defaultValue: "localhost",
@@ -92,6 +101,7 @@ host: string = "";
 ### 4. Injectable 装饰器增强
 
 #### Singleton - 单例装饰器
+
 ```typescript
 @Singleton() // 🎉 自动配置为单例
 class DatabaseService {}
@@ -104,6 +114,7 @@ class CacheService {}
 ```
 
 #### Transient - 瞬态装饰器
+
 ```typescript
 @Transient() // 🎉 每次都创建新实例
 class RequestHandler {}
@@ -112,14 +123,16 @@ class RequestHandler {}
 ### 5. 装饰器工具函数
 
 #### 条件装饰器
+
 ```typescript
-const isDevelopment = process.env.NODE_ENV === 'development';
+const isDevelopment = process.env.NODE_ENV === "development";
 
 @conditional(isDevelopment, Injectable({ singleton: true }))
 class DebugService {}
 ```
 
 #### 装饰器组合
+
 ```typescript
 const serviceDecorator = compose(
     Injectable({ singleton: true }),
@@ -134,15 +147,17 @@ class TimestampedService {}
 ```
 
 #### 异步装饰器
+
 ```typescript
-@async(async (options) => {
+@(async(async (options) => {
     const config = await loadConfig();
     return Injectable({ ...options, deps: [config] });
-})()
+})())
 class AsyncService {}
 ```
 
 #### 缓存装饰器
+
 ```typescript
 const CachedInput = cached(createPropertyDecorator(INPUT_TOKEN));
 
@@ -157,56 +172,62 @@ class OptimizedModel {
 ### 类型系统优化
 
 1. **泛型约束增强**
-   ```typescript
-   export function createClassDecorator<O extends BaseDecoratorOptions = BaseDecoratorOptions>
-   ```
+
+    ```typescript
+    export function createClassDecorator<O extends BaseDecoratorOptions = BaseDecoratorOptions>
+    ```
 
 2. **函数重载支持**
-   ```typescript
-   function decorator(): ClassDecorator;
-   function decorator(options: O): ClassDecorator;
-   function decorator(options?: O): ClassDecorator
-   ```
+
+    ```typescript
+    function decorator(): ClassDecorator;
+    function decorator(options: O): ClassDecorator;
+    function decorator(options?: O): ClassDecorator;
+    ```
 
 3. **深度类型合并**
-   ```typescript
-   export function deepMergeOptions<T, U = Partial<T>>(
-       defaultOptions: T,
-       userOptions?: U
-   ): T & U
-   ```
+    ```typescript
+    export function deepMergeOptions<T, U = Partial<T>>(
+        defaultOptions: T,
+        userOptions?: U
+    ): T & U;
+    ```
 
 ### 错误处理改进
 
 1. **结构化错误信息**
-   ```typescript
-   export abstract class DecoProError extends Error {
-       public readonly code: string;
-       public readonly timestamp: Date;
-   }
-   ```
+
+    ```typescript
+    export abstract class DecoProError extends Error {
+        public readonly code: string;
+        public readonly timestamp: Date;
+    }
+    ```
 
 2. **验证错误处理**
-   ```typescript
-   export function validateOptions<O>(
-       validator: (options: O) => boolean | string,
-       errorMessage?: string
-   ): (options: O) => O
-   ```
+    ```typescript
+    export function validateOptions<O>(
+        validator: (options: O) => boolean | string,
+        errorMessage?: string
+    ): (options: O) => O;
+    ```
 
 ## 📈 性能提升
 
 ### 构建性能
+
 - **类型检查优化**: 更严格的类型约束减少运行时错误
 - **装饰器缓存**: 避免重复计算装饰器元数据
 - **条件装饰器**: 减少不必要的装饰器处理
 
 ### 开发体验
+
 - **智能提示**: 完整的 TypeScript 类型支持
 - **错误提示**: 详细的编译时和运行时错误信息
 - **代码补全**: IDE 友好的装饰器 API
 
 ### 运行时性能
+
 - **懒加载**: 按需创建装饰器实例
 - **内存优化**: 优化的元数据存储
 - **缓存机制**: 装饰器结果缓存
@@ -214,38 +235,41 @@ class OptimizedModel {
 ## 🧪 测试覆盖
 
 ### 测试统计
+
 - **测试套件**: 2 个
 - **测试用例**: 23 个
 - **通过率**: 100%
 - **覆盖范围**: 装饰器核心功能、高级特性、错误处理
 
 ### 测试场景
+
 1. **基础装饰器功能**
-   - 无参数调用
-   - 带参数调用
-   - 默认选项应用
+    - 无参数调用
+    - 带参数调用
+    - 默认选项应用
 
 2. **高级装饰器变体**
-   - ValidatedInput 验证逻辑
-   - ReadonlyInput 只读属性
-   - RequiredInput 必需字段
-   - Singleton 单例模式
-   - Transient 瞬态模式
+    - ValidatedInput 验证逻辑
+    - ReadonlyInput 只读属性
+    - RequiredInput 必需字段
+    - Singleton 单例模式
+    - Transient 瞬态模式
 
 3. **装饰器工具函数**
-   - 条件装饰器逻辑
-   - 装饰器组合功能
-   - 选项验证机制
-   - 深度合并算法
+    - 条件装饰器逻辑
+    - 装饰器组合功能
+    - 选项验证机制
+    - 深度合并算法
 
 4. **复杂应用场景**
-   - 用户管理系统
-   - 配置管理系统
-   - 服务依赖注入
+    - 用户管理系统
+    - 配置管理系统
+    - 服务依赖注入
 
 ## 🚀 使用示例
 
 ### 完整的用户管理系统
+
 ```typescript
 // 用户模型
 class User {
@@ -269,10 +293,10 @@ class User {
     email: string = "";
 
     @ValidatedInput({
-        enum: ['admin', 'user', 'guest'],
-        defaultValue: 'user'
+        enum: ["admin", "user", "guest"],
+        defaultValue: "user"
     })
-    role: string = 'user';
+    role: string = "user";
 }
 
 // 用户服务

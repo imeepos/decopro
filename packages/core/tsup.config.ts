@@ -1,14 +1,15 @@
+import path from "path";
 import { defineConfig } from "tsup";
 
 export default defineConfig({
     entry: ["src/index.ts"],
     format: ["cjs", "esm"],
-    dts: false,
     clean: true,
     sourcemap: true,
     minify: process.env.NODE_ENV === "production",
-    splitting: false,
+    splitting: true,
     treeshake: true,
+    dts: false,
     target: "es2020",
     outDir: "dist",
     external: ["reflect-metadata", "tsyringe"],

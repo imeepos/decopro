@@ -16,27 +16,26 @@ import {
     deepMergeOptions
 } from "../decorator";
 import { AppInit } from "../tokens";
-import { inject } from "tsyringe";
 
-describe('Advanced Decorator Features', () => {
-    describe('Input Decorator Variations', () => {
-        it('should support optional parameters', () => {
+describe("Advanced Decorator Features", () => {
+    describe("Input Decorator Variations", () => {
+        it("should support optional parameters", () => {
             class TestClass {
                 @Input() // 无参数调用
-                simpleProperty: string = '';
+                simpleProperty: string = "";
 
-                @Input({ name: 'customName' }) // 带参数调用
-                namedProperty: string = '';
+                @Input({ name: "customName" }) // 带参数调用
+                namedProperty: string = "";
             }
 
             expect(TestClass).toBeDefined();
         });
 
-        it('should support validated input', () => {
+        it("should support validated input", () => {
             class TestClass {
                 @ValidatedInput({
                     required: true,
-                    defaultValue: 'default',
+                    defaultValue: "default",
                     min: 0,
                     max: 100
                 })
@@ -46,27 +45,27 @@ describe('Advanced Decorator Features', () => {
             expect(TestClass).toBeDefined();
         });
 
-        it('should support readonly input', () => {
+        it("should support readonly input", () => {
             class TestClass {
-                @ReadonlyInput({ name: 'readonlyProp' })
-                readonlyProperty: string = 'readonly';
+                @ReadonlyInput({ name: "readonlyProp" })
+                readonlyProperty: string = "readonly";
             }
 
             expect(TestClass).toBeDefined();
         });
 
-        it('should support required input', () => {
+        it("should support required input", () => {
             class TestClass {
-                @RequiredInput({ defaultValue: 'required' })
-                requiredProperty: string = '';
+                @RequiredInput({ defaultValue: "required" })
+                requiredProperty: string = "";
             }
 
             expect(TestClass).toBeDefined();
         });
     });
 
-    describe('Injectable Decorator Variations', () => {
-        it('should support optional parameters', () => {
+    describe("Injectable Decorator Variations", () => {
+        it("should support optional parameters", () => {
             @Injectable() // 无参数调用
             class SimpleService {}
 
@@ -77,7 +76,7 @@ describe('Advanced Decorator Features', () => {
             expect(ConfiguredService).toBeDefined();
         });
 
-        it('should support singleton decorator', () => {
+        it("should support singleton decorator", () => {
             @Singleton()
             class SingletonService {}
 
@@ -88,7 +87,7 @@ describe('Advanced Decorator Features', () => {
             expect(ConfiguredSingletonService).toBeDefined();
         });
 
-        it('should support transient decorator', () => {
+        it("should support transient decorator", () => {
             @Transient()
             class TransientService {}
 
@@ -96,24 +95,21 @@ describe('Advanced Decorator Features', () => {
         });
     });
 
-    describe('Decorator Utilities', () => {
-        it('should support conditional decorators', () => {
+    describe("Decorator Utilities", () => {
+        it("should support conditional decorators", () => {
             const shouldApply = true;
-            
+
             @conditional(shouldApply, Injectable())
             class ConditionalService {}
 
             expect(ConditionalService).toBeDefined();
         });
 
-        it('should support decorator composition', () => {
-            const combinedDecorator = compose(
-                Injectable(),
-                (target: any) => {
-                    target.prototype.composed = true;
-                    return target;
-                }
-            );
+        it("should support decorator composition", () => {
+            const combinedDecorator = compose(Injectable(), (target: any) => {
+                target.prototype.composed = true;
+                return target;
+            });
 
             @combinedDecorator
             class ComposedService {}
@@ -121,16 +117,20 @@ describe('Advanced Decorator Features', () => {
             expect(ComposedService).toBeDefined();
         });
 
-        it('should validate options correctly', () => {
-            const validator = validateOptions<{ min: number; max: number }>((options) => {
-                return options.min <= options.max || 'Min must be <= Max';
-            });
+        it("should validate options correctly", () => {
+            const validator = validateOptions<{ min: number; max: number }>(
+                (options) => {
+                    return options.min <= options.max || "Min must be <= Max";
+                }
+            );
 
             expect(() => validator({ min: 5, max: 10 })).not.toThrow();
-            expect(() => validator({ min: 10, max: 5 })).toThrow('Min must be <= Max');
+            expect(() => validator({ min: 10, max: 5 })).toThrow(
+                "Min must be <= Max"
+            );
         });
 
-        it('should deep merge options correctly', () => {
+        it("should deep merge options correctly", () => {
             const defaultOptions = {
                 a: 1,
                 b: {
@@ -160,18 +160,18 @@ describe('Advanced Decorator Features', () => {
         });
     });
 
-    describe('Complex Decorator Scenarios', () => {
-        it('should handle complex input validation', () => {
+    describe("Complex Decorator Scenarios", () => {
+        it("should handle complex input validation", () => {
             class UserModel {
                 @ValidatedInput({
                     required: true,
-                    defaultValue: '',
+                    defaultValue: "",
                     minLength: 2,
                     maxLength: 50,
                     pattern: /^[a-zA-Z\s]+$/,
                     validator: (value: string) => value.trim().length > 0
                 })
-                name: string = '';
+                name: string = "";
 
                 @ValidatedInput({
                     required: true,
@@ -184,32 +184,34 @@ describe('Advanced Decorator Features', () => {
 
                 @ValidatedInput({
                     required: false,
-                    enum: ['admin', 'user', 'guest'],
-                    defaultValue: 'user'
+                    enum: ["admin", "user", "guest"],
+                    defaultValue: "user"
                 })
-                role: string = 'user';
+                role: string = "user";
             }
 
             expect(UserModel).toBeDefined();
         });
 
-        it('should handle service with complex configuration', () => {
+        it("should handle service with complex configuration", () => {
             @Singleton({
                 deps: [],
-                factory: () => new DatabaseService('production')
+                factory: () => new DatabaseService("production")
             })
             class DatabaseService {
                 constructor(private environment: string) {}
 
                 @Input({
-                    name: 'connectionString',
+                    name: "connectionString",
                     required: true,
-                    validator: (value: string) => value.startsWith('mongodb://') || value.startsWith('postgresql://')
+                    validator: (value: string) =>
+                        value.startsWith("mongodb://") ||
+                        value.startsWith("postgresql://")
                 })
-                connectionString: string = '';
+                connectionString: string = "";
 
                 @ReadonlyInput({
-                    name: 'maxConnections',
+                    name: "maxConnections",
                     defaultValue: 10
                 })
                 maxConnections: number = 10;
@@ -218,12 +220,12 @@ describe('Advanced Decorator Features', () => {
             expect(DatabaseService).toBeDefined();
         });
 
-        it('should handle AppInit with dependencies injection', () => {
+        it("should handle AppInit with dependencies injection", () => {
             // 创建一个依赖服务
             @Injectable()
             class ConfigService {
                 getConfig() {
-                    return { database: 'test-db' };
+                    return { database: "test-db" };
                 }
             }
 
@@ -232,12 +234,14 @@ describe('Advanced Decorator Features', () => {
                 deps: [ConfigService]
             })
             class TestModule implements AppInit {
-                constructor(@Inject(ConfigService) private configService: ConfigService) {}
+                constructor(
+                    @Inject(ConfigService) private configService: ConfigService
+                ) {}
 
                 async onInit(): Promise<void> {
                     // 验证依赖注入是否正常工作
                     const config = this.configService.getConfig();
-                    expect(config.database).toBe('test-db');
+                    expect(config.database).toBe("test-db");
                 }
             }
 

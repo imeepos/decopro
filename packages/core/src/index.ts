@@ -212,7 +212,8 @@ export {
     scoped,
     Lifecycle,
     instanceCachingFactory,
-    instancePerContainerCachingFactory
+    instancePerContainerCachingFactory,
+    InjectionToken
 } from "tsyringe";
 
 // 导出我们自己的模块

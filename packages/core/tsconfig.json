@@ -11,20 +11,15 @@
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "skipLibCheck": true,
+        "allowJs": true,
         "strictPropertyInitialization": false,
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
         "outDir": "./dist",
-        "rootDir": "./src",
+        "rootDir": ".",
+        "rootDirs": [],
         "composite": true
     },
-    "include": ["src/**/*"],
-    "exclude": [
-        "src/**/*.test.ts",
-        "src/**/*.spec.ts",
-        "src/__tests__/**/*",
-        "dist",
-        "node_modules"
-    ]
+    "include": ["src/**/*"]
 }

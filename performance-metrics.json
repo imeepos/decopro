@@ -1,77 +1,77 @@
 {
-  "buildTime": 1150.354448,
-  "bundleSize": {
-    "@decopro/ast": {
-      "cjs": 1151,
-      "esm": 1098,
-      "dts": 0
+    "buildTime": 1167.536995,
+    "bundleSize": {
+        "@decopro/ast": {
+            "cjs": 1151,
+            "esm": 1098,
+            "dts": 0
+        },
+        "@decopro/cli": {
+            "cjs": 34769,
+            "esm": 33158,
+            "dts": 0
+        },
+        "@decopro/commander": {
+            "cjs": 2455,
+            "esm": 2326,
+            "dts": 0
+        },
+        "@decopro/core": {
+            "cjs": 34151,
+            "esm": 31783,
+            "dts": 0
+        },
+        "@decopro/docs": {
+            "cjs": 9639,
+            "esm": 8669,
+            "dts": 0
+        },
+        "@decopro/dpml": {
+            "cjs": 14376,
+            "esm": 13112,
+            "dts": 0
+        },
+        "@decopro/mcp": {
+            "cjs": 4137,
+            "esm": 3786,
+            "dts": 0
+        },
+        "@decopro/n8n": {
+            "cjs": 15,
+            "esm": 1,
+            "dts": 0
+        },
+        "@decopro/nakama": {
+            "cjs": 185350,
+            "esm": 184650,
+            "dts": 0
+        },
+        "@decopro/orm": {
+            "cjs": 583,
+            "esm": 477,
+            "dts": 0
+        },
+        "@decopro/platform-axios": {
+            "cjs": 551,
+            "esm": 529,
+            "dts": 0
+        },
+        "@decopro/platform-node": {
+            "cjs": 612,
+            "esm": 592,
+            "dts": 0
+        },
+        "@decopro/rest": {
+            "cjs": 1860,
+            "esm": 1430,
+            "dts": 0
+        },
+        "@decopro/test": {
+            "cjs": 2270,
+            "esm": 2225,
+            "dts": 0
+        }
     },
-    "@decopro/cli": {
-      "cjs": 34622,
-      "esm": 33011,
-      "dts": 0
-    },
-    "@decopro/commander": {
-      "cjs": 769,
-      "esm": 640,
-      "dts": 0
-    },
-    "@decopro/core": {
-      "cjs": 29013,
-      "esm": 27075,
-      "dts": 0
-    },
-    "@decopro/docs": {
-      "cjs": 9639,
-      "esm": 8669,
-      "dts": 0
-    },
-    "@decopro/dpml": {
-      "cjs": 14376,
-      "esm": 13112,
-      "dts": 0
-    },
-    "@decopro/mcp": {
-      "cjs": 4137,
-      "esm": 3786,
-      "dts": 0
-    },
-    "@decopro/n8n": {
-      "cjs": 15,
-      "esm": 1,
-      "dts": 0
-    },
-    "@decopro/nakama": {
-      "cjs": 185350,
-      "esm": 184650,
-      "dts": 0
-    },
-    "@decopro/orm": {
-      "cjs": 583,
-      "esm": 477,
-      "dts": 0
-    },
-    "@decopro/platform-axios": {
-      "cjs": 551,
-      "esm": 529,
-      "dts": 0
-    },
-    "@decopro/platform-node": {
-      "cjs": 545,
-      "esm": 523,
-      "dts": 0
-    },
-    "@decopro/rest": {
-      "cjs": 1860,
-      "esm": 1430,
-      "dts": 0
-    },
-    "@decopro/test": {
-      "cjs": 2270,
-      "esm": 2225,
-      "dts": 0
-    }
-  },
-  "testTime": 1178.0282539999998,
-  "timestamp": "2025-06-28T02:57:02.492Z"
+    "testTime": -1,
+    "timestamp": "2025-06-28T04:23:20.076Z"
 }

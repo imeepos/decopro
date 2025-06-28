@@ -50,7 +50,7 @@ export class CliAppInit implements OnInit {
                 _arguments.map((arg) => {
                     const options = arg.options;
                     const ins = new commander.Argument(
-                        options.name,
+                        options.name || arg.property.toString(),
                         options.description
                     );
                     if (options.defaultValue)
@@ -63,12 +63,15 @@ export class CliAppInit implements OnInit {
                 _options.map((arg) => {
                     const options = arg.options;
                     const ins = new commander.Option(
-                        options.flags,
+                        options.flags || `--${arg.property.toString()}`,
                         options.description
                     );
                     if (options.zod) {
                         ins.argParser((value, previous) => {
-                            return options.zod.parse(value);
+                            if (options.zod) {
+                                return options.zod.parse(value);
+                            }
+                            return value;
                         });
                     }
                     c.addOption(ins);

@@ -1,13 +1,12 @@
 import {
-    ClassMetadata,
+    BaseMethodOptions,
     InjectionToken,
     Injector,
     MethodMetadata,
-    createClassDecorator,
     createMethodDecorator
 } from "@decopro/core";
 
-export interface TestOptions {
+export interface TestOptions extends BaseMethodOptions {
     description?: string;
 }
 export const TEST_TOKEN = `TEST_TOKEN` as InjectionToken<
