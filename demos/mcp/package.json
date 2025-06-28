@@ -1,6 +1,6 @@
 {
     "name": "@decopro/demo_mcp",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
