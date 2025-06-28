@@ -14,7 +14,7 @@
         "build:watch": "tsup --watch",
         "dev": "tsup --watch --sourcemap",
         "build:prod": "NODE_ENV=production tsup",
-        "test": "echo \"No tests specified\" && exit 0",
+        "test": "jest",
         "lint": "echo \"No linting configured for this package\""
     },
     "keywords": [],
@@ -23,5 +23,10 @@
     "dependencies": {
         "@decopro/core": "workspace:*",
         "zod": "^3.25.67"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "@types/jest": "^29.5.12",
+        "ts-jest": "^29.1.2"
     }
 }
