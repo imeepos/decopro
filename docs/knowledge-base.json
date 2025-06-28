@@ -36,30 +36,6 @@
   {
     "package_name": "@decopro/cli",
     "package_version": "1.1.0",
-    "filename": "src/__tests__/cliAppInit.test.ts",
-    "docs": "",
-    "hash": "c0df6218c95838eeb2c55ee2ed0e0fb0",
-    "category": "test",
-    "tags": [
-      "cli",
-      "command",
-      "test",
-      "async",
-      "class"
-    ],
-    "examples": [
-      "// Test: should create instance with injector\nexpect(cliAppInit).toBeInstanceOf(CliAppInit);",
-      "// Test: should add command types to commanders array\nclass TestCommand {}\n            const result = CliAppInit.forRoot([TestCommand]);\n            expect(result).toBe(CliAppInit);",
-      "// Test: should initialize environment and register commands\nawait cliAppInit.onInit();\n\n            // Verify environment initialization\n            expect(mockInjector.get).toHaveBeenCalledWith(EnvService);\n            expect(mockEnvService.onInit).toHaveBeenCalled();\n\n            // Verify command registration\n            expect(mockInjector.getAll).toHaveBeenCalledWith(expect.any(Symbol));",
-      "// Test: should handle empty command list\nmockInjector.getAll.mockReturnValue([]);\n\n            await cliAppInit.onInit();\n\n            expect(mockInjector.getAll).toHaveBeenCalled();"
-    ],
-    "dependencies": [
-      "@decopro/core"
-    ]
-  },
-  {
-    "package_name": "@decopro/cli",
-    "package_version": "1.1.0",
     "filename": "src/agents/index.ts",
     "docs": "",
     "hash": "d41d8cd98f00b204e9800998ecf8427e",
@@ -332,101 +308,6 @@
   {
     "package_name": "@decopro/core",
     "package_version": "1.1.0",
-    "filename": "src/__tests__/bootstrap-deps.test.ts",
-    "docs": "",
-    "hash": "df4c325324c57b8b9eab8b723cbd7d35",
-    "category": "test",
-    "tags": [
-      "test",
-      "dependency-injection",
-      "service",
-      "async",
-      "class"
-    ],
-    "examples": [
-      "// Test: should properly inject deps into AppInit modules\nconst initOrder: string[] = [];\n\n        // 创建一个基础服务\n        @Injectable()\n        class DatabaseService {\n            connect() {\n                return \"database-connected\";\n            }\n        }\n\n        // 创建一个依赖于 DatabaseService 的模块\n        @AppInit({\n            deps: [DatabaseService]",
-      "// Test: should handle complex dependency chains\nconst initOrder: string[] = [];\n\n        // 基础服务\n        @Injectable()\n        class ConfigService {\n            getConfig() {\n                return { env: \"test\" };\n            }\n        }\n\n        @Injectable()\n        class LoggerService {\n            log(message: string) {\n                return `[LOG] ${message}`;\n            }\n        }\n\n        // 第一层模块\n        @AppInit({\n            deps: [ConfigService]"
-    ],
-    "dependencies": [
-      "tsyringe"
-    ]
-  },
-  {
-    "package_name": "@decopro/core",
-    "package_version": "1.1.0",
-    "filename": "src/__tests__/decorator-advanced.test.ts",
-    "docs": "",
-    "hash": "5d5551fd2cb0c7adf3292d88f7713022",
-    "category": "test",
-    "tags": [
-      "test",
-      "dependency-injection",
-      "service",
-      "async",
-      "class"
-    ],
-    "examples": [
-      "// Test: should support optional parameters\nclass TestClass {\n                @Input() // 无参数调用\n                simpleProperty: string = \"\";\n\n                @Input({ name: \"customName\" }) // 带参数调用\n                namedProperty: string = \"\";\n            }\n\n            expect(TestClass).toBeDefined();",
-      "// Test: should support validated input\nclass TestClass {\n                @ValidatedInput({\n                    required: true,\n                    defaultValue: \"default\",\n                    min: 0,\n                    max: 100",
-      "// Test: should support readonly input\nclass TestClass {\n                @ReadonlyInput({ name: \"readonlyProp\" })\n                readonlyProperty: string = \"readonly\";\n            }\n\n            expect(TestClass).toBeDefined();",
-      "// Test: should support required input\nclass TestClass {\n                @RequiredInput({ defaultValue: \"required\" })\n                requiredProperty: string = \"\";\n            }\n\n            expect(TestClass).toBeDefined();",
-      "// Test: should support optional parameters\n@Injectable() // 无参数调用\n            class SimpleService {}\n\n            @Injectable({ singleton: true }) // 带参数调用\n            class ConfiguredService {}\n\n            expect(SimpleService).toBeDefined();\n            expect(ConfiguredService).toBeDefined();",
-      "// Test: should support singleton decorator\n@Singleton()\n            class SingletonService {}\n\n            @Singleton({ deps: [] })\n            class ConfiguredSingletonService {}\n\n            expect(SingletonService).toBeDefined();\n            expect(ConfiguredSingletonService).toBeDefined();",
-      "// Test: should support transient decorator\n@Transient()\n            class TransientService {}\n\n            expect(TransientService).toBeDefined();",
-      "// Test: should support conditional decorators\nconst shouldApply = true;\n\n            @conditional(shouldApply, Injectable())\n            class ConditionalService {}\n\n            expect(ConditionalService).toBeDefined();",
-      "// Test: should support decorator composition\nconst combinedDecorator = compose(Injectable(), (target: any) => {\n                target.prototype.composed = true;\n                return target;",
-      "// Test: should validate options correctly\nconst validator = validateOptions<{ min: number; max: number }>(\n                (options) => {\n                    return options.min <= options.max || \"Min must be <= Max\";",
-      "// Test: should handle complex input validation\nclass UserModel {\n                @ValidatedInput({\n                    required: true,\n                    defaultValue: \"\",\n                    minLength: 2,\n                    maxLength: 50,\n                    pattern: /^[a-zA-Z\\s]+$/,\n                    validator: (value: string) => value.trim().length > 0",
-      "// Test: should handle service with complex configuration\n@Singleton({\n                deps: [],\n                factory: () => new DatabaseService(\"production\")",
-      "// Test: should handle AppInit with dependencies injection\n// 创建一个依赖服务\n            @Injectable()\n            class ConfigService {\n                getConfig() {\n                    return { database: \"test-db\" };\n                }\n            }\n\n            // 创建一个依赖于 ConfigService 的 AppInit 模块\n            @AppInit({\n                deps: [ConfigService]"
-    ],
-    "dependencies": []
-  },
-  {
-    "package_name": "@decopro/core",
-    "package_version": "1.1.0",
-    "filename": "src/__tests__/injector.test.ts",
-    "docs": "",
-    "hash": "d17996a51d2be05c255a5b372dc8033a",
-    "category": "test",
-    "tags": [
-      "test",
-      "async",
-      "class",
-      "function"
-    ],
-    "examples": [
-      "// Test: should resolve dependencies\nconst service = injector.get(TestService);\n            expect(service).toBeInstanceOf(TestService);\n            expect(service.getValue()).toBe(\"test-value\");",
-      "// Test: should check if token can be resolved\nexpect(injector.canResolve(TestService)).toBe(true);",
-      "// Test: should return empty array for non-existent tokens\nconst NON_EXISTENT_TOKEN = Symbol(\"NON_EXISTENT\");\n            const result = injector.getAll(NON_EXISTENT_TOKEN);\n            expect(result).toEqual([]);",
-      "// Test: should handle null and undefined values\nexpect(injector.toJson(null)).toBe(null);\n            expect(injector.toJson(undefined)).toBe(undefined);\n            expect(injector.toJson(\"string\")).toBe(\"string\");\n            expect(injector.toJson(123)).toBe(123);",
-      "// Test: should handle arrays\nconst arr = [1, 2, 3];\n            expect(injector.toJson(arr)).toEqual([1, 2, 3]);",
-      "// Test: should handle Date objects\nconst date = new Date(\"2023-01-01T00:00:00.000Z\");\n            expect(injector.toJson(date)).toBe(\"2023-01-01T00:00:00.000Z\");",
-      "// Test: should handle basic types\nexpect(injector.fromJson(null)).toBe(null);\n            expect(injector.fromJson(undefined)).toBe(undefined);\n            expect(injector.fromJson(\"string\")).toBe(\"string\");\n            expect(injector.fromJson(123)).toBe(123);",
-      "// Test: should handle arrays\nconst arr = [1, 2, 3];\n            expect(injector.fromJson(arr)).toEqual([1, 2, 3]);",
-      "// Test: should cleanup objects with onDestroy method\nconst instance = new CleanupTest();\n            await injector.cleanup(instance);\n            expect(instance.cleaned).toBe(true);",
-      "// Test: should handle objects without onDestroy method\nconst instance = { value: \"test\" };\n            await expect(injector.cleanup(instance)).resolves.toBeUndefined();"
-    ],
-    "dependencies": [
-      "tsyringe"
-    ]
-  },
-  {
-    "package_name": "@decopro/core",
-    "package_version": "1.1.0",
-    "filename": "src/__tests__/setup.ts",
-    "docs": "",
-    "hash": "2a1927ddbb707243e7be3136126a4589",
-    "category": "test",
-    "tags": [
-      "test"
-    ],
-    "examples": [],
-    "dependencies": []
-  },
-  {
-    "package_name": "@decopro/core",
-    "package_version": "1.1.0",
     "filename": "src/decorator.ts",
     "docs": "### Type Alias: `IPropertyDecorator = (target: any, propertyKey: any) => void`\n### Interface: `ClassMetadata`\n\n类元数据接口\n\n\n  - target: Type<any>\n  - options: O\n\n### Interface: `BaseDecoratorOptions`\n\n类装饰器选项的基础接口\n\n\n  - token?: InjectionToken<any> | InjectionToken<any>[]\n\n### Interface: `ClassDecoratorFactory`\n\n类装饰器工厂函数的重载类型\n\n\n\n### Function: `createClassDecorator(token: InjectionToken<ClassMetadata<O>>, defaultOptions?: Partial<O>): ClassDecoratorFactory<O>`\n\n创建类装饰器，支持可选参数\n\n\n### Interface: `PropertyMetadata`\n\n属性元数据接口\n\n\n  - target: Type<any>\n  - property: string | symbol\n  - options: O\n\n### Interface: `BasePropertyOptions`\n\n属性装饰器选项的基础接口\n\n\n  - name?: string\n  - required?: boolean\n  - defaultValue?: any\n  - validator?: (value: any) => boolean | string\n  - transformer?: (value: any) => any\n\n### Interface: `PropertyDecoratorFactory`\n\n属性装饰器工厂函数的重载类型\n\n\n\n### Function: `createPropertyDecorator(token: InjectionToken<PropertyMetadata<O>>, defaultOptions?: Partial<O>): PropertyDecoratorFactory<O>`\n\n创建属性装饰器，支持可选参数\n\n\n### Interface: `MethodMetadata`\n\n方法元数据接口\n\n\n  - target: Type<any>\n  - property: string | symbol\n  - descriptor: TypedPropertyDescriptor<any>\n  - options: O\n\n### Interface: `BaseMethodOptions`\n\n方法装饰器选项的基础接口\n\n\n  - async?: boolean\n  - timeout?: number\n  - retries?: number\n  - cache?: boolean\n  - middleware?: Array<\n        (\n            target: any,\n            property: string | symbol,\n            descriptor: PropertyDescriptor\n        ) => void\n    >\n\n### Interface: `MethodDecoratorFactory`\n\n方法装饰器工厂函数的重载类型\n\n\n\n### Function: `createMethodDecorator(token: InjectionToken<MethodMetadata<O>>, defaultOptions?: Partial<O>): MethodDecoratorFactory<O>`\n\n创建方法装饰器，支持可选参数\n\n\n### Interface: `ParameterMetadata`\n\n参数元数据接口\n\n\n  - target: Type<any>\n  - property: string | symbol | undefined\n  - parameterIndex: number\n  - options: O\n\n### Interface: `BaseParameterOptions`\n\n参数装饰器选项的基础接口\n\n\n  - name?: string\n  - type?: Type<any>\n  - optional?: boolean\n  - defaultValue?: any\n  - validator?: (value: any) => boolean\n  - transformer?: (value: any) => any\n\n### Interface: `ParameterDecoratorFactory`\n\n参数装饰器工厂函数的重载类型\n\n\n\n### Function: `createParameterDecorator(token: InjectionToken<ParameterMetadata<O>>, defaultOptions?: Partial<O>): ParameterDecoratorFactory<O>`\n\n创建参数装饰器，支持可选参数\n\n\n### Function: `conditional(condition: boolean | (() => boolean), decorator: T): T`\n\n条件装饰器：根据条件决定是否应用装饰器\n\n\n### Function: `compose(decorators: Array<ClassDecorator>): ClassDecorator`\n\n组合装饰器：将多个装饰器组合成一个\n\n\n### Function: `async(asyncDecorator: (options?: O) => Promise<ClassDecorator>): (options?: O) => ClassDecorator`\n\n异步装饰器：支持异步初始化的装饰器\n\n\n### Function: `cached(decorator: T): T`\n### Function: `validateOptions(validator: (options: O) => boolean | string, errorMessage?: string): (options: O) => O`\n\n验证装饰器选项\n\n\n### Function: `mergeOptions(defaultOptions: T, userOptions?: Partial<U>): T & Partial<U>`\n\n类型安全的装饰器选项合并\n\n\n### Function: `deepMergeOptions(defaultOptions: T, userOptions?: U): T & U`\n\n装饰器选项的深度合并\n\n",
     "hash": "d54eacff602e84a75d8f0a6f8f76433c",
@@ -574,7 +455,7 @@
     "package_version": "1.1.0",
     "filename": "src/cli.ts",
     "docs": "### Interface: `CLIOptions`\n  - output?: string\n  - format?: \"json\" | \"markdown\" | \"both\"\n  - package?: string\n  - verbose?: boolean\n\n### Function: `parseArgs(): CLIOptions`\n### Function: `showHelp(): void`\n### Function: `log(message: string, verbose: boolean): void`\n### Function: `main(): void`\n### Function: `generatePackageMarkdown(pkg: any): string`\n### Function: `generateProjectMarkdown(project: any): string`",
-    "hash": "98c7129c253379326802b82f0d677cf4",
+    "hash": "930e50d644d934f27aa70db63abb8d55",
     "category": "interface",
     "tags": [
       "cli",
@@ -595,8 +476,8 @@
     "package_name": "@decopro/docs",
     "package_version": "1.1.0",
     "filename": "src/index.ts",
-    "docs": "### Interface: `Knowledge`\n  - package_name: string\n  - package_version: string\n  - filename: string\n  - docs: string\n  - hash: string\n  - category: string\n  - tags: string[]\n  - examples: string[]\n  - dependencies: string[]\n\n### Interface: `PackageDocumentation`\n  - package_name: string\n  - package_version: string\n  - description: string\n  - main_exports: string[]\n  - api_reference: string\n  - usage_examples: string[]\n  - architecture_overview: string\n  - dependencies: string[]\n  - knowledges: Knowledge[]\n\n### Interface: `ProjectDocumentation`\n  - project_name: string\n  - version: string\n  - description: string\n  - architecture: string\n  - packages: PackageDocumentation[]\n  - quick_start: string\n  - api_overview: string\n  - examples: string[]\n\n### Function: `generateTSKnowledges(projectRoot: string): Knowledge[]`\n### Function: `visitNode(node: ts.Node, output: string[], checker: ts.TypeChecker, sourceFile: ts.SourceFile, indentLevel: number): void`\n### Function: `getFunctionSignature(node: ts.FunctionLikeDeclaration, sourceFile: ts.SourceFile): string`\n### Function: `getDocumentation(symbol: ts.Symbol, checker: ts.TypeChecker): string`\n### Function: `getAllTSFiles(dir: string): string[]`\n### Function: `determineFileCategory(filePath: string, sourceFile: ts.SourceFile): string`\n### Function: `extractFileTags(sourceFile: ts.SourceFile, filePath: string): string[]`\n### Function: `extractCodeExamples(sourceFile: ts.SourceFile): string[]`\n### Function: `extractFileDependencies(sourceFile: ts.SourceFile): string[]`\n### Function: `generatePackageDocumentation(packageRoot: string): PackageDocumentation`\n### Function: `extractMainExports(packageRoot: string): string[]`\n### Function: `generateAPIReference(knowledges: Knowledge[]): string`\n### Function: `extractUsageExamples(knowledges: Knowledge[]): string[]`\n### Function: `generateArchitectureOverview(knowledges: Knowledge[]): string`\n### Function: `generateProjectDocumentation(projectRoot: string): ProjectDocumentation`\n### Function: `generateQuickStartGuide(packages: PackageDocumentation[]): string`\n### Function: `generateProjectAPIOverview(packages: PackageDocumentation[]): string`\n### Function: `generateProjectArchitecture(packages: PackageDocumentation[]): string`\n### Function: `sortPackagesByDependency(packages: PackageDocumentation[]): PackageDocumentation[]`",
-    "hash": "54873c60b2f4c55f244eac0d105cae11",
+    "docs": "### Interface: `Knowledge`\n  - package_name: string\n  - package_version: string\n  - filename: string\n  - docs: string\n  - hash: string\n  - category: string\n  - tags: string[]\n  - examples: string[]\n  - dependencies: string[]\n\n### Interface: `PackageDocumentation`\n  - package_name: string\n  - package_version: string\n  - description: string\n  - main_exports: string[]\n  - api_reference: string\n  - usage_examples: string[]\n  - architecture_overview: string\n  - dependencies: string[]\n  - knowledges: Knowledge[]\n\n### Interface: `ProjectDocumentation`\n  - project_name: string\n  - version: string\n  - description: string\n  - architecture: string\n  - packages: PackageDocumentation[]\n  - quick_start: string\n  - api_overview: string\n  - examples: string[]\n\n### Function: `generateTSKnowledges(projectRoot: string): Knowledge[]`\n### Function: `visitNode(node: ts.Node, output: string[], checker: ts.TypeChecker, sourceFile: ts.SourceFile, indentLevel: number): void`\n### Function: `getFunctionSignature(node: ts.FunctionLikeDeclaration, sourceFile: ts.SourceFile): string`\n### Function: `getDocumentation(symbol: ts.Symbol, checker: ts.TypeChecker): string`\n### Function: `getAllTSFiles(dir: string): string[]`\n### Function: `isTestFile(filePath: string): boolean`\n### Function: `determineFileCategory(filePath: string, sourceFile: ts.SourceFile): string`\n### Function: `extractFileTags(sourceFile: ts.SourceFile, filePath: string): string[]`\n### Function: `extractCodeExamples(sourceFile: ts.SourceFile): string[]`\n### Function: `extractFileDependencies(sourceFile: ts.SourceFile): string[]`\n### Function: `generatePackageDocumentation(packageRoot: string): PackageDocumentation`\n### Function: `extractMainExports(packageRoot: string): string[]`\n### Function: `generateAPIReference(knowledges: Knowledge[]): string`\n### Function: `extractUsageExamples(knowledges: Knowledge[]): string[]`\n### Function: `generateArchitectureOverview(knowledges: Knowledge[]): string`\n### Function: `generateProjectDocumentation(projectRoot: string): ProjectDocumentation`\n### Function: `generateQuickStartGuide(packages: PackageDocumentation[]): string`\n### Function: `generateProjectAPIOverview(packages: PackageDocumentation[]): string`\n### Function: `generateProjectArchitecture(packages: PackageDocumentation[]): string`\n### Function: `sortPackagesByDependency(packages: PackageDocumentation[]): PackageDocumentation[]`",
+    "hash": "1e3309515c4f75283099416dffead2d7",
     "category": "entity",
     "tags": [
       "entity",
@@ -1134,45 +1015,6 @@
   {
     "package_name": "@decopro/orm",
     "package_version": "1.1.0",
-    "filename": "src/__tests__/decorator.test.ts",
-    "docs": "",
-    "hash": "d7639efd8d7a05dd36d1344a5b632b70",
-    "category": "test",
-    "tags": [
-      "test",
-      "entity",
-      "database",
-      "column",
-      "relationship",
-      "class"
-    ],
-    "examples": [
-      "// Test: should apply Entity decorator with default options\nexpect(() => {\n                @Entity()\n                class TestEntity {\n                    id: number;\n                }",
-      "// Test: should apply Entity decorator with custom options\nexpect(() => {\n                @Entity({\n                    tableName: \"custom_table\",\n                    schema: \"public\",\n                    comment: \"Test entity\"",
-      "// Test: should work with createEntity factory\nexpect(() => {\n                class TestEntity {\n                    id: number;\n                }\n\n                const EntityClass = createEntity(TestEntity, {\n                    tableName: \"test_table\"",
-      "// Test: should apply Column decorator\nexpect(() => {\n                class TestEntity {\n                    @Column()\n                    name: string;\n\n                    @Column({ type: ColumnType.VARCHAR, length: 100, nullable: false })\n                    email: string;\n                }",
-      "// Test: should apply PrimaryColumn decorator\nexpect(() => {\n                class TestEntity {\n                    @PrimaryColumn()\n                    id: number;\n\n                    @PrimaryColumn({ type: ColumnType.VARCHAR, length: 36 })\n                    uuid: string;\n                }",
-      "// Test: should apply PrimaryGeneratedColumn decorator\nexpect(() => {\n                class TestEntity {\n                    @PrimaryGeneratedColumn()\n                    id: number;\n\n                    @PrimaryGeneratedColumn({ strategy: \"uuid\" })\n                    uuid: string;\n                }",
-      "// Test: should apply OneToOne decorator\nexpect(() => {\n                class TestEntity {\n                    @OneToOne(() => Profile)\n                    profile: Profile;\n\n                    @OneToOne(() => User, { cascade: true })\n                    user: User;\n                }",
-      "// Test: should apply OneToMany decorator\nexpect(() => {\n                class TestEntity {\n                    @OneToMany(() => Post, { mappedBy: \"author\" })\n                    posts: Post[];\n                }",
-      "// Test: should apply ManyToOne decorator\nexpect(() => {\n                class TestEntity {\n                    @ManyToOne(() => User, { joinColumn: \"author_id\" })\n                    author: User;\n                }",
-      "// Test: should apply ManyToMany decorator\nexpect(() => {\n                class TestEntity {\n                    @ManyToMany(() => Role, { joinTable: \"user_roles\" })\n                    roles: Role[];\n                }",
-      "// Test: should apply Index decorator\nexpect(() => {\n                class TestEntity {\n                    @Index()\n                    @Column()\n                    email: string;\n\n                    @Index({ unique: true, name: \"idx_username\" })\n                    @Column()\n                    username: string;\n                }",
-      "// Test: should apply Unique decorator\nexpect(() => {\n                class TestEntity {\n                    @Unique()\n                    @Column()\n                    email: string;\n\n                    @Unique({ name: \"uq_phone\" })\n                    @Column()\n                    phone: string;\n                }",
-      "// Test: should get table name\nclass TestEntity {}\n            expect(getTableName(TestEntity)).toBe(\"testentity\");",
-      "// Test: should get entity columns (placeholder)\nclass TestEntity {}\n            expect(getEntityColumns(TestEntity)).toEqual([]);",
-      "// Test: should get entity relations (placeholder)\nclass TestEntity {}\n            expect(getEntityRelations(TestEntity)).toEqual([]);",
-      "// Test: should have correct ColumnType values\nexpect(ColumnType.INT).toBe(\"int\");\n            expect(ColumnType.VARCHAR).toBe(\"varchar\");\n            expect(ColumnType.TEXT).toBe(\"text\");\n            expect(ColumnType.BOOLEAN).toBe(\"boolean\");\n            expect(ColumnType.JSON).toBe(\"json\");",
-      "// Test: should have correct RelationType values\nexpect(RelationType.ONE_TO_ONE).toBe(\"one-to-one\");\n            expect(RelationType.ONE_TO_MANY).toBe(\"one-to-many\");\n            expect(RelationType.MANY_TO_ONE).toBe(\"many-to-one\");\n            expect(RelationType.MANY_TO_MANY).toBe(\"many-to-many\");",
-      "// Test: should have correct IndexType values\nexpect(IndexType.PRIMARY).toBe(\"primary\");\n            expect(IndexType.UNIQUE).toBe(\"unique\");\n            expect(IndexType.INDEX).toBe(\"index\");\n            expect(IndexType.FULLTEXT).toBe(\"fulltext\");",
-      "// Test: should have correct CascadeType values\nexpect(CascadeType.PERSIST).toBe(\"persist\");\n            expect(CascadeType.REMOVE).toBe(\"remove\");\n            expect(CascadeType.UPDATE).toBe(\"update\");\n            expect(CascadeType.ALL).toBe(\"all\");",
-      "// Test: should have correct FetchType values\nexpect(FetchType.LAZY).toBe(\"lazy\");\n            expect(FetchType.EAGER).toBe(\"eager\");"
-    ],
-    "dependencies": []
-  },
-  {
-    "package_name": "@decopro/orm",
-    "package_version": "1.1.0",
     "filename": "src/decorator.ts",
     "docs": "### Enum: `ColumnType`\n\n数据库列类型枚举\n\n\n  - Member: `INT`\n  - Member: `BIGINT`\n  - Member: `FLOAT`\n  - Member: `DOUBLE`\n  - Member: `DECIMAL`\n  - Member: `VARCHAR`\n  - Member: `TEXT`\n  - Member: `CHAR`\n  - Member: `DATE`\n  - Member: `TIME`\n  - Member: `DATETIME`\n  - Member: `TIMESTAMP`\n  - Member: `BOOLEAN`\n  - Member: `JSON`\n  - Member: `JSONB`\n  - Member: `BLOB`\n  - Member: `BINARY`\n### Enum: `RelationType`\n\n关系类型枚举\n\n\n  - Member: `ONE_TO_ONE`\n  - Member: `ONE_TO_MANY`\n  - Member: `MANY_TO_ONE`\n  - Member: `MANY_TO_MANY`\n### Enum: `IndexType`\n\n索引类型枚举\n\n\n  - Member: `PRIMARY`\n  - Member: `UNIQUE`\n  - Member: `INDEX`\n  - Member: `FULLTEXT`\n  - Member: `SPATIAL`\n### Enum: `CascadeType`\n\n级联操作类型\n\n\n  - Member: `PERSIST`\n  - Member: `REMOVE`\n  - Member: `UPDATE`\n  - Member: `REFRESH`\n  - Member: `ALL`\n### Enum: `FetchType`\n\n获取策略\n\n\n  - Member: `LAZY`\n  - Member: `EAGER`\n### Interface: `EntityOptions`\n\n实体装饰器选项\n\n\n  - tableName?: string\n    \n    表名，如果不指定则使用类名\n    \n  - schema?: string\n    \n    数据库模式名\n    \n  - abstract?: boolean\n    \n    是否为抽象实体（不创建表）\n    \n  - comment?: string\n    \n    表注释\n    \n  - engine?: string\n    \n    表引擎（MySQL）\n    \n  - charset?: string\n    \n    字符集\n    \n  - collation?: string\n    \n    排序规则\n    \n\n### Interface: `BaseColumnOptions`\n\n基础列选项\n\n\n  - name?: string\n    \n    列名，如果不指定则使用属性名\n    \n  - type?: ColumnType | string\n    \n    列类型\n    \n  - length?: number\n    \n    列长度\n    \n  - precision?: number\n    \n    精度（用于 decimal 类型）\n    \n  - scale?: number\n    \n    小数位数（用于 decimal 类型）\n    \n  - nullable?: boolean\n    \n    是否可为空\n    \n  - default?: any\n    \n    默认值\n    \n  - comment?: string\n    \n    列注释\n    \n  - charset?: string\n    \n    字符集\n    \n  - collation?: string\n    \n    排序规则\n    \n  - unsigned?: boolean\n    \n    是否为无符号数（MySQL）\n    \n  - zerofill?: boolean\n    \n    是否自动填充零（MySQL）\n    \n  - validator?: (value: any) => boolean | string\n    \n    数据验证器\n    \n  - zodValidator?: ZodTypeAny\n    \n    Zod 验证模式\n    \n\n### Interface: `ColumnOptions`\n\n普通列选项\n\n\n  - primary?: boolean\n    \n    是否为主键\n    \n  - unique?: boolean\n    \n    是否唯一\n    \n  - generated?: boolean | \"increment\" | \"uuid\" | \"rowid\"\n    \n    是否为生成列\n    \n  - generationStrategy?: \"increment\" | \"uuid\" | \"rowid\"\n    \n    生成策略\n    \n  - select?: boolean\n    \n    是否为选择列（查询时是否默认选择）\n    \n  - insert?: boolean\n    \n    是否为插入列（插入时是否包含）\n    \n  - update?: boolean\n    \n    是否为更新列（更新时是否包含）\n    \n  - enum?: string[] | Record<string, string | number>\n    \n    枚举值（用于 enum 类型）\n    \n  - array?: boolean\n    \n    数组类型（PostgreSQL）\n    \n\n### Interface: `PrimaryColumnOptions`\n\n主键列选项\n\n\n  - generated?: boolean | \"increment\" | \"uuid\" | \"rowid\"\n    \n    生成策略\n    \n\n### Interface: `PrimaryGeneratedColumnOptions`\n\n自增主键列选项\n\n\n  - strategy?: \"increment\" | \"uuid\" | \"rowid\"\n    \n    生成策略\n    \n\n### Interface: `BaseRelationOptions`\n\n基础关系选项\n\n\n  - type?: () => Function\n    \n    目标实体类型\n    \n  - eager?: boolean\n    \n    获取策略\n    \n  - cascade?: CascadeType[] | boolean\n    \n    级联操作\n    \n  - nullable?: boolean\n    \n    关系是否可为空\n    \n  - onDelete?: \"RESTRICT\" | \"CASCADE\" | \"SET NULL\" | \"NO ACTION\" | \"SET DEFAULT\"\n    \n    当目标实体被删除时的行为\n    \n  - onUpdate?: \"RESTRICT\" | \"CASCADE\" | \"SET NULL\" | \"NO ACTION\" | \"SET DEFAULT\"\n    \n    当目标实体被更新时的行为\n    \n\n### Interface: `OneToOneOptions`\n\n一对一关系选项\n\n\n  - joinColumn?: string\n    \n    外键列名\n    \n  - owner?: boolean\n    \n    是否为关系的拥有方\n    \n  - inverseSide?: string\n    \n    反向关系的属性名\n    \n\n### Function: `OneToOne(): PropertyDecorator`\n\nOneToOne 装饰器 - 用于标记一对一关系\n\n\n### Function: `OneToOne(type: () => Function, options?: Omit<OneToOneOptions, 'type'>): PropertyDecorator`\n\nOneToOne 装饰器 - 用于标记一对一关系\n\n\n### Function: `OneToOne(options: OneToOneOptions): PropertyDecorator`\n\nOneToOne 装饰器 - 用于标记一对一关系\n\n\n### Function: `OneToOne(typeOrOptions?: (() => Function) | OneToOneOptions, options?: Omit<OneToOneOptions, 'type'>): PropertyDecorator`\n\nOneToOne 装饰器 - 用于标记一对一关系\n\n\n### Interface: `OneToManyOptions`\n\n一对多关系选项\n\n\n  - mappedBy?: string\n    \n    反向关系的属性名\n    \n\n### Function: `OneToMany(): PropertyDecorator`\n\nOneToMany 装饰器 - 用于标记一对多关系\n\n\n### Function: `OneToMany(type: () => Function, options?: Omit<OneToManyOptions, 'type'>): PropertyDecorator`\n\nOneToMany 装饰器 - 用于标记一对多关系\n\n\n### Function: `OneToMany(options: OneToManyOptions): PropertyDecorator`\n\nOneToMany 装饰器 - 用于标记一对多关系\n\n\n### Function: `OneToMany(typeOrOptions?: (() => Function) | OneToManyOptions, options?: Omit<OneToManyOptions, 'type'>): PropertyDecorator`\n\nOneToMany 装饰器 - 用于标记一对多关系\n\n\n### Interface: `ManyToOneOptions`\n\n多对一关系选项\n\n\n  - joinColumn?: string\n    \n    外键列名\n    \n\n### Function: `ManyToOne(): PropertyDecorator`\n\nManyToOne 装饰器 - 用于标记多对一关系\n\n\n### Function: `ManyToOne(type: () => Function, options?: Omit<ManyToOneOptions, 'type'>): PropertyDecorator`\n\nManyToOne 装饰器 - 用于标记多对一关系\n\n\n### Function: `ManyToOne(options: ManyToOneOptions): PropertyDecorator`\n\nManyToOne 装饰器 - 用于标记多对一关系\n\n\n### Function: `ManyToOne(typeOrOptions?: (() => Function) | ManyToOneOptions, options?: Omit<ManyToOneOptions, 'type'>): PropertyDecorator`\n\nManyToOne 装饰器 - 用于标记多对一关系\n\n\n### Interface: `ManyToManyOptions`\n\n多对多关系选项\n\n\n  - joinTable?: string\n    \n    中间表名\n    \n  - joinColumn?: string\n    \n    当前实体的外键列名\n    \n  - inverseJoinColumn?: string\n    \n    目标实体的外键列名\n    \n  - mappedBy?: string\n    \n    反向关系的属性名\n    \n\n### Function: `ManyToMany(): PropertyDecorator`\n\nManyToMany 装饰器 - 用于标记多对多关系\n\n\n### Function: `ManyToMany(type: () => Function, options?: Omit<ManyToManyOptions, 'type'>): PropertyDecorator`\n\nManyToMany 装饰器 - 用于标记多对多关系\n\n\n### Function: `ManyToMany(options: ManyToManyOptions): PropertyDecorator`\n\nManyToMany 装饰器 - 用于标记多对多关系\n\n\n### Function: `ManyToMany(typeOrOptions?: (() => Function) | ManyToManyOptions, options?: Omit<ManyToManyOptions, 'type'>): PropertyDecorator`\n\nManyToMany 装饰器 - 用于标记多对多关系\n\n\n### Interface: `IndexOptions`\n\n索引选项\n\n\n  - name?: string\n    \n    索引名称\n    \n  - type?: IndexType\n    \n    索引类型\n    \n  - unique?: boolean\n    \n    是否唯一索引\n    \n  - columns?: string[]\n    \n    索引列（用于复合索引）\n    \n  - where?: string\n    \n    索引条件（部分索引）\n    \n  - using?: \"btree\" | \"hash\" | \"gist\" | \"gin\" | \"spgist\" | \"brin\"\n    \n    索引方法（PostgreSQL）\n    \n\n### Interface: `UniqueOptions`\n\n唯一索引选项\n\n\n  - name?: string\n    \n    约束名称\n    \n  - columns?: string[]\n    \n    约束列（用于复合唯一约束）\n    \n\n### Interface: `LifecycleOptions`\n\n生命周期钩子选项\n\n\n  - async?: boolean\n    \n    是否异步执行\n    \n  - order?: number\n    \n    执行顺序\n    \n\n### Function: `isEntityToken(token: InjectionToken<any>): boolean`\n\n检查给定的令牌是否为实体装饰器令牌\n\n\n### Function: `isColumnToken(token: InjectionToken<any>): boolean`\n\n检查给定的令牌是否为列装饰器令牌\n\n\n### Function: `isRelationToken(token: InjectionToken<any>): boolean`\n\n检查给定的令牌是否为关系装饰器令牌\n\n\n### Function: `isIndexToken(token: InjectionToken<any>): boolean`\n\n检查给定的令牌是否为索引装饰器令牌\n\n\n### Function: `isLifecycleToken(token: InjectionToken<any>): boolean`\n\n检查给定的令牌是否为生命周期装饰器令牌\n\n\n### Function: `createEntity(entityClass: new () => T, options?: EntityOptions): new () => T`\n\n创建实体类的工厂函数\n\n\n### Function: `getTableName(entityClass: new () => T): string`\n\n获取实体的表名\n\n\n### Function: `getEntityColumns(entityClass: new () => T): Array<{\n    propertyName: string;\n    columnName: string;\n    type: ColumnType | string;\n    options: ColumnOptions;\n}>`\n\n获取实体的列信息\n\n\n### Function: `getEntityRelations(entityClass: new () => T): Array<{\n    propertyName: string;\n    type: RelationType;\n    targetEntity: Function;\n    options: BaseRelationOptions;\n}>`\n\n获取实体的关系信息\n\n\n### Function: `getEntityIndexes(entityClass: new () => T): Array<{\n    name?: string;\n    columns: string[];\n    unique?: boolean;\n    options: IndexOptions;\n}>`\n\n获取实体的索引信息\n\n",
     "hash": "c62ee5bd7f92ef072cacdfdacbf173de",
@@ -1234,21 +1076,6 @@
     "dependencies": [
       "tsup"
     ]
-  },
-  {
-    "package_name": "@decopro/orm-drivers",
-    "package_version": "1.1.0",
-    "filename": "src/__tests__/setup.ts",
-    "docs": "",
-    "hash": "7c500dd3fa69c047d9c720223d239f89",
-    "category": "test",
-    "tags": [
-      "test"
-    ],
-    "examples": [
-      "// Test: should setup test environment\nexpect(process.env.NODE_ENV).toBe('test');"
-    ],
-    "dependencies": []
   },
   {
     "package_name": "@decopro/orm-drivers",
@@ -1394,7 +1221,6 @@
     "hash": "c084ba24a8092b7b8252881e4c1bba42",
     "category": "utility",
     "tags": [
-      "test",
       "async",
       "class",
       "function",
@@ -1480,29 +1306,6 @@
     "dependencies": [
       "tsup"
     ]
-  },
-  {
-    "package_name": "@decopro/rest",
-    "package_version": "1.1.0",
-    "filename": "src/__tests__/decorators.test.ts",
-    "docs": "",
-    "hash": "4b2e0d4b24699a0d06aeb64b57b90592",
-    "category": "test",
-    "tags": [
-      "test",
-      "controller",
-      "api",
-      "class",
-      "function"
-    ],
-    "examples": [
-      "// Test: should return false for non-HTTP method tokens\nexpect(isHttpMethodToken(BODY_TOKEN)).toBe(false);\n                expect(isHttpMethodToken(QUERY_TOKEN)).toBe(false);\n                expect(isHttpMethodToken(PARAM_TOKEN)).toBe(false);\n                expect(isHttpMethodToken(HEADER_TOKEN)).toBe(false);\n                expect(isHttpMethodToken(CONTROLLER_TOKEN)).toBe(false);",
-      "// Test: should return true for parameter tokens\nexpect(isParameterToken(BODY_TOKEN)).toBe(true);\n                expect(isParameterToken(QUERY_TOKEN)).toBe(true);\n                expect(isParameterToken(PARAM_TOKEN)).toBe(true);\n                expect(isParameterToken(HEADER_TOKEN)).toBe(true);",
-      "// Test: should return false for non-parameter tokens\nexpect(isParameterToken(GET_TOKEN)).toBe(false);\n                expect(isParameterToken(POST_TOKEN)).toBe(false);\n                expect(isParameterToken(CONTROLLER_TOKEN)).toBe(false);",
-      "// Test: should have correct status codes\nexpect(HttpStatus.OK).toBe(200);\n                expect(HttpStatus.CREATED).toBe(201);\n                expect(HttpStatus.BAD_REQUEST).toBe(400);\n                expect(HttpStatus.UNAUTHORIZED).toBe(401);\n                expect(HttpStatus.NOT_FOUND).toBe(404);\n                expect(HttpStatus.INTERNAL_SERVER_ERROR).toBe(500);",
-      "// Test: should have correct method values\nexpect(HttpMethod.GET).toBe(\"GET\");\n                expect(HttpMethod.POST).toBe(\"POST\");\n                expect(HttpMethod.PUT).toBe(\"PUT\");\n                expect(HttpMethod.DELETE).toBe(\"DELETE\");\n                expect(HttpMethod.PATCH).toBe(\"PATCH\");\n                expect(HttpMethod.HEAD).toBe(\"HEAD\");\n                expect(HttpMethod.OPTIONS).toBe(\"OPTIONS\");"
-    ],
-    "dependencies": []
   },
   {
     "package_name": "@decopro/rest",

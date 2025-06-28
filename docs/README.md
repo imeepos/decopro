@@ -21,11 +21,6 @@ const app = await bootstrap([
 ]);
 ```
 
-## @decopro/cli
-
-// Test: should create instance with injector
-expect(cliAppInit).toBeInstanceOf(CliAppInit);
-
 
 # Project Architecture
 
@@ -40,14 +35,13 @@ Core dependency injection and module system for decopro framework
 This package contains the following components:
 
 - **class**: 5 file(s)
-- **test**: 4 file(s)
 - **interface**: 4 file(s)
 - **types**: 1 file(s)
 - **module**: 1 file(s)
 
 ### Key Dependencies
 
-- **tsyringe**: used in 8 file(s)
+- **tsyringe**: used in 6 file(s)
 - **tsyringe/dist/typings/types**: used in 1 file(s)
 - **path**: used in 1 file(s)
 - **tsup**: used in 1 file(s)
@@ -126,14 +120,13 @@ This package contains the following components:
 
 This package contains the following components:
 
-- **test**: 1 file(s)
 - **module**: 7 file(s)
 - **interface**: 2 file(s)
 - **class**: 3 file(s)
 
 ### Key Dependencies
 
-- **@decopro/core**: used in 7 file(s)
+- **@decopro/core**: used in 6 file(s)
 - **@modelcontextprotocol/sdk/server/mcp.js**: used in 2 file(s)
 - **@decopro/mcp**: used in 2 file(s)
 - **commander**: used in 1 file(s)
@@ -291,7 +284,6 @@ This package contains the following components:
 
 This package contains the following components:
 
-- **test**: 1 file(s)
 - **entity**: 1 file(s)
 - **module**: 2 file(s)
 
@@ -315,7 +307,6 @@ Database drivers for @decopro/orm
 
 This package contains the following components:
 
-- **test**: 1 file(s)
 - **orm**: 2 file(s)
 - **module**: 2 file(s)
 - **class**: 2 file(s)
@@ -384,7 +375,6 @@ This package contains the following components:
 
 This package contains the following components:
 
-- **test**: 1 file(s)
 - **controller**: 1 file(s)
 - **module**: 1 file(s)
 
@@ -444,10 +434,6 @@ graph TD
 - tsup.config.ts
 
 ## @decopro/cli
-
-### Test
-
-- src/__tests__/cliAppInit.test.ts
 
 ### Module
 
@@ -521,13 +507,6 @@ Core dependency injection and module system for decopro framework
 - src/UndirectedGraph.ts
 - src/error.ts
 - src/injector.ts
-
-### Test
-
-- src/__tests__/bootstrap-deps.test.ts
-- src/__tests__/decorator-advanced.test.ts
-- src/__tests__/injector.test.ts
-- src/__tests__/setup.ts
 
 ### Interface
 
@@ -648,10 +627,6 @@ Documentation generator for Decopro framework - optimized for AI/LLM consumption
 
 ## @decopro/orm
 
-### Test
-
-- src/__tests__/decorator.test.ts
-
 ### Entity
 
 - src/decorator.ts
@@ -675,10 +650,6 @@ Database drivers for @decopro/orm
 - `MySQLDatabaseManager`
 - `isDriverAvailable`
 - `getAvailableDrivers`
-
-### Test
-
-- src/__tests__/setup.ts
 
 ### Orm
 
@@ -789,10 +760,6 @@ Database drivers for @decopro/orm
 - `isHttpMethodToken`
 - `isParameterToken`
 - `getHttpMethodToken`
-
-### Test
-
-- src/__tests__/decorators.test.ts
 
 ### Controller
 

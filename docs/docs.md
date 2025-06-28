@@ -93,6 +93,7 @@ This package contains the following components:
 ### Function: `getFunctionSignature(node: ts.FunctionLikeDeclaration, sourceFile: ts.SourceFile): string`
 ### Function: `getDocumentation(symbol: ts.Symbol, checker: ts.TypeChecker): string`
 ### Function: `getAllTSFiles(dir: string): string[]`
+### Function: `isTestFile(filePath: string): boolean`
 ### Function: `determineFileCategory(filePath: string, sourceFile: ts.SourceFile): string`
 ### Function: `extractFileTags(sourceFile: ts.SourceFile, filePath: string): string[]`
 ### Function: `extractCodeExamples(sourceFile: ts.SourceFile): string[]`

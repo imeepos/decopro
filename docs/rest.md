@@ -62,7 +62,6 @@
 
 This package contains the following components:
 
-- **test**: 1 file(s)
 - **controller**: 1 file(s)
 - **module**: 1 file(s)
 
@@ -74,12 +73,6 @@ This package contains the following components:
 
 
 ## API Reference
-
-## Test
-
-### src/__tests__/decorators.test.ts
-
-**Tags**: test, controller, api, class, function
 
 ## Controller
 
@@ -252,51 +245,6 @@ HTTP 状态码类型
 
 
 ## Usage Examples
-
-```typescript
-// Test: should return false for non-HTTP method tokens
-expect(isHttpMethodToken(BODY_TOKEN)).toBe(false);
-                expect(isHttpMethodToken(QUERY_TOKEN)).toBe(false);
-                expect(isHttpMethodToken(PARAM_TOKEN)).toBe(false);
-                expect(isHttpMethodToken(HEADER_TOKEN)).toBe(false);
-                expect(isHttpMethodToken(CONTROLLER_TOKEN)).toBe(false);
-```
-
-```typescript
-// Test: should return true for parameter tokens
-expect(isParameterToken(BODY_TOKEN)).toBe(true);
-                expect(isParameterToken(QUERY_TOKEN)).toBe(true);
-                expect(isParameterToken(PARAM_TOKEN)).toBe(true);
-                expect(isParameterToken(HEADER_TOKEN)).toBe(true);
-```
-
-```typescript
-// Test: should return false for non-parameter tokens
-expect(isParameterToken(GET_TOKEN)).toBe(false);
-                expect(isParameterToken(POST_TOKEN)).toBe(false);
-                expect(isParameterToken(CONTROLLER_TOKEN)).toBe(false);
-```
-
-```typescript
-// Test: should have correct status codes
-expect(HttpStatus.OK).toBe(200);
-                expect(HttpStatus.CREATED).toBe(201);
-                expect(HttpStatus.BAD_REQUEST).toBe(400);
-                expect(HttpStatus.UNAUTHORIZED).toBe(401);
-                expect(HttpStatus.NOT_FOUND).toBe(404);
-                expect(HttpStatus.INTERNAL_SERVER_ERROR).toBe(500);
-```
-
-```typescript
-// Test: should have correct method values
-expect(HttpMethod.GET).toBe("GET");
-                expect(HttpMethod.POST).toBe("POST");
-                expect(HttpMethod.PUT).toBe("PUT");
-                expect(HttpMethod.DELETE).toBe("DELETE");
-                expect(HttpMethod.PATCH).toBe("PATCH");
-                expect(HttpMethod.HEAD).toBe("HEAD");
-                expect(HttpMethod.OPTIONS).toBe("OPTIONS");
-```
 
 ```typescript
 ```typescript

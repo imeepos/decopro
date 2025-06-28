@@ -19,7 +19,6 @@ Database drivers for @decopro/orm
 
 This package contains the following components:
 
-- **test**: 1 file(s)
 - **orm**: 2 file(s)
 - **module**: 2 file(s)
 - **class**: 2 file(s)
@@ -36,12 +35,6 @@ This package contains the following components:
 
 
 ## API Reference
-
-## Test
-
-### src/__tests__/setup.ts
-
-**Tags**: test
 
 ## Orm
 
@@ -1484,12 +1477,5 @@ Having 条件接口
 
 
 
-**Tags**: test, async, class, function, export
+**Tags**: async, class, function, export
 
-
-## Usage Examples
-
-```typescript
-// Test: should setup test environment
-expect(process.env.NODE_ENV).toBe('test');
-```

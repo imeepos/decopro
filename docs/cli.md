@@ -6,14 +6,13 @@
 
 This package contains the following components:
 
-- **test**: 1 file(s)
 - **module**: 7 file(s)
 - **interface**: 2 file(s)
 - **class**: 3 file(s)
 
 ### Key Dependencies
 
-- **@decopro/core**: used in 7 file(s)
+- **@decopro/core**: used in 6 file(s)
 - **@modelcontextprotocol/sdk/server/mcp.js**: used in 2 file(s)
 - **@decopro/mcp**: used in 2 file(s)
 - **commander**: used in 1 file(s)
@@ -26,12 +25,6 @@ This package contains the following components:
 
 
 ## API Reference
-
-## Test
-
-### src/__tests__/cliAppInit.test.ts
-
-**Tags**: cli, command, test, async, class
 
 ## Module
 
@@ -241,38 +234,3 @@ CLI 应用初始化器
 
 **Tags**: async, class, export
 
-
-## Usage Examples
-
-```typescript
-// Test: should create instance with injector
-expect(cliAppInit).toBeInstanceOf(CliAppInit);
-```
-
-```typescript
-// Test: should add command types to commanders array
-class TestCommand {}
-            const result = CliAppInit.forRoot([TestCommand]);
-            expect(result).toBe(CliAppInit);
-```
-
-```typescript
-// Test: should initialize environment and register commands
-await cliAppInit.onInit();
-
-            // Verify environment initialization
-            expect(mockInjector.get).toHaveBeenCalledWith(EnvService);
-            expect(mockEnvService.onInit).toHaveBeenCalled();
-
-            // Verify command registration
-            expect(mockInjector.getAll).toHaveBeenCalledWith(expect.any(Symbol));
-```
-
-```typescript
-// Test: should handle empty command list
-mockInjector.getAll.mockReturnValue([]);
-
-            await cliAppInit.onInit();
-
-            expect(mockInjector.getAll).toHaveBeenCalled();
-```
