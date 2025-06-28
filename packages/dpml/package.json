@@ -1,29 +1,29 @@
 {
-    "name": "@decopro/dpml",
-    "version": "1.1.0",
-    "description": "",
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "src/index.ts",
-    "publishConfig": {
-        "access": "public",
-        "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules"
-    },
-    "scripts": {
-        "build": "tsup",
-        "test": "tsx src/main.ts",
-        "build:watch": "tsup --watch",
-        "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules",
-        "dev": "tsup --watch --sourcemap",
-        "build:prod": "NODE_ENV=production tsup",
-        "lint": "echo \"No linting configured for this package\""
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "@decopro/core": "workspace:*",
-        "@decopro/ast": "workspace:*",
-        "zod": "^3.25.67"
-    }
+  "name": "@decopro/dpml",
+  "version": "1.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "src/index.ts",
+  "publishConfig": {
+    "access": "public",
+    "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "tsx src/main.ts",
+    "build:watch": "tsup --watch",
+    "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules",
+    "dev": "tsup --watch --sourcemap",
+    "build:prod": "NODE_ENV=production tsup",
+    "lint": "echo \"No linting configured for this package\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@decopro/core": "workspace:*",
+    "@decopro/ast": "workspace:*",
+    "zod": "^3.25.67"
+  }
 }

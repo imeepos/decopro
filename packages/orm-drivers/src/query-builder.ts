@@ -1,4 +1,5 @@
-import { ZodTypeAny } from "zod";
+import { Type } from "@decopro/core";
+import { IDatabaseManager, QueryResult } from "./database";
 
 // ============================================================================
 // Query Builder Types - 查询构建器类型
@@ -135,12 +136,17 @@ export interface QueryOptions {
 export class QueryBuilder<T = any> {
     private options: QueryOptions = {};
     private entityClass?: new () => T;
+    private databaseManager?: IDatabaseManager;
 
-    constructor(entityClass?: new () => T) {
-        this.entityClass = entityClass;
+    constructor(entityClass?: new () => T, alias?: string, databaseManager?: IDatabaseManager) {
+        this.entityClass = entityClass || undefined;
+        this.databaseManager = databaseManager;
         if (entityClass) {
-            // 从实体类获取表名（这里需要从装饰器元数据中获取）
-            this.options.from = entityClass.name.toLowerCase();
+            // 从实体类获取表名（保持原始大小写）
+            this.options.from = entityClass.name;
+            if (alias) {
+                this.options.alias = alias;
+            }
         }
     }
 
@@ -165,7 +171,9 @@ export class QueryBuilder<T = any> {
      */
     from(table: string, alias?: string): this {
         this.options.from = table;
-        this.options.alias = alias;
+        if (alias) {
+            this.options.alias = alias;
+        }
         return this;
     }
 
@@ -256,12 +264,15 @@ export class QueryBuilder<T = any> {
         if (!this.options.joins) {
             this.options.joins = [];
         }
-        this.options.joins.push({
+        const joinCondition: any = {
             type,
             table,
-            alias,
             on
-        });
+        };
+        if (alias) {
+            joinCondition.alias = alias;
+        }
+        this.options.joins.push(joinCondition);
         return this;
     }
 
@@ -392,8 +403,8 @@ export class QueryBuilder<T = any> {
 
         // FROM 子句
         if (this.options.from) {
-            const fromClause = this.options.alias 
-                ? `${this.options.from} AS ${this.options.alias}`
+            const fromClause = this.options.alias
+                ? `${this.options.from} ${this.options.alias}`
                 : this.options.from;
             parts.push(`FROM ${fromClause}`);
         }
@@ -462,18 +473,170 @@ export class QueryBuilder<T = any> {
     }
 
     /**
+     * 构建参数化 SQL 查询语句
+     */
+    toParameterizedSQL(): { sql: string; parameters: any[] } {
+        const parts: string[] = [];
+        const parameters: any[] = [];
+
+        // SELECT 子句
+        const selectFields = this.options.select?.join(", ") || "*";
+        const distinctKeyword = this.options.distinct ? "DISTINCT " : "";
+        parts.push(`SELECT ${distinctKeyword}${selectFields}`);
+
+        // FROM 子句
+        if (this.options.from) {
+            const fromClause = this.options.alias
+                ? `${this.options.from} ${this.options.alias}`
+                : this.options.from;
+            parts.push(`FROM ${fromClause}`);
+        }
+
+        // JOIN 子句
+        if (this.options.joins?.length) {
+            this.options.joins.forEach(join => {
+                const joinClause = join.alias
+                    ? `${join.type} ${join.table} AS ${join.alias} ON ${join.on}`
+                    : `${join.type} ${join.table} ON ${join.on}`;
+                parts.push(joinClause);
+            });
+        }
+
+        // WHERE 子句
+        if (this.options.where?.length) {
+            const whereConditions = this.options.where.map(condition => {
+                if (condition.operator === QueryOperator.IN || condition.operator === QueryOperator.NOT_IN) {
+                    const placeholders = condition.values?.map(() => "?").join(", ");
+                    condition.values?.forEach(v => parameters.push(v));
+                    return `${condition.field} ${condition.operator} (${placeholders})`;
+                } else if (condition.operator === QueryOperator.BETWEEN || condition.operator === QueryOperator.NOT_BETWEEN) {
+                    const [min, max] = condition.values || [];
+                    parameters.push(min, max);
+                    return `${condition.field} ${condition.operator} ? AND ?`;
+                } else if (condition.operator === QueryOperator.IS_NULL || condition.operator === QueryOperator.IS_NOT_NULL) {
+                    return `${condition.field} ${condition.operator}`;
+                } else {
+                    parameters.push(condition.value);
+                    return `${condition.field} ${condition.operator} ?`;
+                }
+            });
+            parts.push(`WHERE ${whereConditions.join(" AND ")}`);
+        }
+
+        // GROUP BY 子句
+        if (this.options.groupBy?.length) {
+            const groupFields = this.options.groupBy.map(g => g.field).join(", ");
+            parts.push(`GROUP BY ${groupFields}`);
+        }
+
+        // HAVING 子句
+        if (this.options.having?.length) {
+            const havingConditions = this.options.having.map(condition => {
+                parameters.push(condition.value);
+                return `${condition.field} ${condition.operator} ?`;
+            });
+            parts.push(`HAVING ${havingConditions.join(" AND ")}`);
+        }
+
+        // ORDER BY 子句
+        if (this.options.orderBy?.length) {
+            const orderFields = this.options.orderBy.map(order => `${order.field} ${order.direction}`).join(", ");
+            parts.push(`ORDER BY ${orderFields}`);
+        }
+
+        // LIMIT 子句
+        if (this.options.limit !== undefined) {
+            parts.push(`LIMIT ${this.options.limit}`);
+        }
+
+        // OFFSET 子句
+        if (this.options.offset !== undefined) {
+            parts.push(`OFFSET ${this.options.offset}`);
+        }
+
+        return {
+            sql: parts.join(" "),
+            parameters
+        };
+    }
+
+    /**
      * 克隆查询构建器
      */
     clone(): QueryBuilder<T> {
-        const cloned = new QueryBuilder<T>(this.entityClass);
+        const cloned = new QueryBuilder<T>(this.entityClass, undefined, this.databaseManager);
         cloned.options = JSON.parse(JSON.stringify(this.options));
         return cloned;
+    }
+
+    /**
+     * 设置数据库管理器
+     */
+    setDatabaseManager(databaseManager: IDatabaseManager): this {
+        this.databaseManager = databaseManager;
+        return this;
+    }
+
+    /**
+     * 执行查询并获取单个结果
+     */
+    async getOne(): Promise<T | null> {
+        if (!this.databaseManager) {
+            throw new Error("Database manager is not set. Use setDatabaseManager() or provide it in constructor.");
+        }
+
+        // 设置 LIMIT 1 确保只返回一个结果
+        const queryBuilder = this.clone().limit(1);
+        const { sql, parameters } = queryBuilder.toParameterizedSQL();
+
+        const result = await this.databaseManager.query<T>(sql, parameters);
+        return result.rows.length > 0 ? (result.rows[0] || null) : null;
+    }
+
+    /**
+     * 执行查询并获取结果数量
+     */
+    async getCount(): Promise<number> {
+        if (!this.databaseManager) {
+            throw new Error("Database manager is not set. Use setDatabaseManager() or provide it in constructor.");
+        }
+
+        // 创建 COUNT 查询
+        const countBuilder = this.clone();
+        countBuilder.options.select = ["COUNT(*) as count"];
+        // 移除 ORDER BY、LIMIT、OFFSET，因为 COUNT 查询不需要这些
+        delete countBuilder.options.orderBy;
+        delete countBuilder.options.limit;
+        delete countBuilder.options.offset;
+
+        const { sql, parameters } = countBuilder.toParameterizedSQL();
+
+        const result = await this.databaseManager.query<{ count: number }>(sql, parameters);
+        return result.rows.length > 0 ? Number(result.rows[0]?.count || 0) : 0;
+    }
+
+    /**
+     * 执行查询并获取多个结果
+     */
+    async getMany(): Promise<T[]> {
+        if (!this.databaseManager) {
+            throw new Error("Database manager is not set. Use setDatabaseManager() or provide it in constructor.");
+        }
+
+        const { sql, parameters } = this.toParameterizedSQL();
+
+        const result = await this.databaseManager.query<T>(sql, parameters);
+        return result.rows;
     }
 }
 
 /**
  * 创建查询构建器
  */
-export function createQueryBuilder<T>(entityClass?: new () => T): QueryBuilder<T> {
-    return new QueryBuilder<T>(entityClass);
+export function createQueryBuilder<T>(
+    entityClass?: new () => T,
+    alias?: string,
+    databaseManager?: IDatabaseManager
+): QueryBuilder<T> {
+    return new QueryBuilder<T>(entityClass, alias, databaseManager);
 }

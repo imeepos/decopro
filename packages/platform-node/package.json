@@ -1,29 +1,29 @@
 {
-    "name": "@decopro/platform-node",
-    "version": "1.1.0",
-    "description": "",
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "src/index.ts",
-    "publishConfig": {
-        "access": "public"
-    },
-    "scripts": {
-        "build": "tsup",
-        "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules",
-        "build:watch": "tsup --watch",
-        "dev": "tsup --watch --sourcemap",
-        "build:prod": "NODE_ENV=production tsup",
-        "test": "echo \"No tests specified\" && exit 0",
-        "lint": "echo \"No linting configured for this package\""
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "@microsoft/api-extractor": "^7.52.8",
-        "@decopro/core": "workspace:*",
-        "tslib": "^2.6.0",
-        "zod": "^3.25.67"
-    }
+  "name": "@decopro/platform-node",
+  "version": "1.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules",
+    "build:watch": "tsup --watch",
+    "dev": "tsup --watch --sourcemap",
+    "build:prod": "NODE_ENV=production tsup",
+    "test": "echo \"No tests specified\" && exit 0",
+    "lint": "echo \"No linting configured for this package\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@microsoft/api-extractor": "^7.52.8",
+    "@decopro/core": "workspace:*",
+    "tslib": "^2.6.0",
+    "zod": "^3.25.67"
+  }
 }

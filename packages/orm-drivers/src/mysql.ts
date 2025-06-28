@@ -7,7 +7,7 @@ import {
     QueryResult,
     TransactionOptions,
     BaseDatabaseManager
-} from "@decopro/orm";
+} from "./database";
 
 // ============================================================================
 // MySQL Connection Implementation

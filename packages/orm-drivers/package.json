@@ -7,13 +7,15 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
+    "dev": "tsup --watch --sourcemap",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "build:watch": "tsup --watch",
+    "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules"
   },
   "keywords": [
     "orm",
@@ -44,6 +46,7 @@
     "pg": "^8.12.0"
   },
   "peerDependencies": {
+    "tslib": "^2.6.0",
     "@decopro/orm": "^1.1.0"
   },
   "files": [

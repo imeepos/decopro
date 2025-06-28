@@ -88,10 +88,24 @@ export class ORMManager {
      */
     registerEntity(entityClass: Function): void {
         this.entities.add(entityClass);
-        
+
         if (this.config?.logging) {
             console.log(`[ORM] Registered entity: ${entityClass.name}`);
         }
+    }
+
+    /**
+     * 检查是否已注册实体
+     */
+    hasEntity(entityClass: Function): boolean {
+        return this.entities.has(entityClass);
+    }
+
+    /**
+     * 获取所有已注册的实体类
+     */
+    getEntityClasses(): Function[] {
+        return Array.from(this.entities);
     }
 
     /**
@@ -102,13 +116,17 @@ export class ORMManager {
             throw new Error("ORM is not initialized. Call initialize() first.");
         }
 
+        if (!this.entities.has(entityClass)) {
+            throw new Error(`Entity ${entityClass.name} is not registered. Please register it first.`);
+        }
+
         // 检查是否已创建仓储
         if (this.repositories.has(entityClass)) {
             return this.repositories.get(entityClass)!;
         }
 
         // 创建新仓储
-        const repository = createRepository(entityClass);
+        const repository = createRepository(entityClass, this.databaseManager!);
         this.repositories.set(entityClass, repository);
 
         if (this.config?.logging) {

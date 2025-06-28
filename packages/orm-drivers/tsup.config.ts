@@ -7,6 +7,7 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
+    treeshake: true,
   target: 'es2020',
   external: [
     '@decopro/orm',

@@ -7,7 +7,7 @@ import {
     QueryResult,
     TransactionOptions,
     BaseDatabaseManager
-} from "@decopro/orm";
+} from "./database";
 
 // ============================================================================
 // SQLite Connection Implementation

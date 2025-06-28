@@ -9,7 +9,7 @@ import {
     DatabaseType,
     DatabaseDriverRegistry,
     IDatabaseManager
-} from "@decopro/orm";
+} from "./database";
 
 // 导入驱动实现
 import { SQLiteDatabaseManager } from "./sqlite";
@@ -112,7 +112,7 @@ export type {
     DatabaseConfig,
     QueryResult,
     TransactionOptions
-} from "@decopro/orm";
+} from "./database";
 
 // ============================================================================
 // 默认导出

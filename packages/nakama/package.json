@@ -1,30 +1,30 @@
 {
-    "name": "@decopro/nakama",
-    "version": "1.1.0",
-    "description": "",
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "dist/index.ts",
-    "publishConfig": {
-        "access": "public"
-    },
-    "scripts": {
-        "build": "tsup",
-        "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules",
-        "build:watch": "tsup --watch",
-        "dev": "tsup --watch --sourcemap",
-        "build:prod": "NODE_ENV=production tsup",
-        "test": "echo \"No tests specified\" && exit 0",
-        "lint": "echo \"No linting configured for this package\""
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "@decopro/core": "workspace:*",
-        "base64-arraybuffer": "^1.0.2",
-        "js-base64": "^3.7.7",
-        "whatwg-fetch": "^3.6.20",
-        "zod": "^3.25.67"
-    }
+  "name": "@decopro/nakama",
+  "version": "1.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules",
+    "build:watch": "tsup --watch",
+    "dev": "tsup --watch --sourcemap",
+    "build:prod": "NODE_ENV=production tsup",
+    "test": "echo \"No tests specified\" && exit 0",
+    "lint": "echo \"No linting configured for this package\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@decopro/core": "workspace:*",
+    "base64-arraybuffer": "^1.0.2",
+    "js-base64": "^3.7.7",
+    "whatwg-fetch": "^3.6.20",
+    "zod": "^3.25.67"
+  }
 }
