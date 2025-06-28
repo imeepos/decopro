@@ -239,7 +239,54 @@ export interface IDatabaseManager {
 }
 
 /**
+ * 数据库驱动注册器
+ */
+export class DatabaseDriverRegistry {
+    private static drivers = new Map<DatabaseType, () => Promise<IDatabaseManager>>();
+
+    /**
+     * 注册数据库驱动
+     */
+    static register(type: DatabaseType, driverFactory: () => Promise<IDatabaseManager>): void {
+        this.drivers.set(type, driverFactory);
+    }
+
+    /**
+     * 创建数据库管理器
+     */
+    static async create(type: DatabaseType): Promise<IDatabaseManager> {
+        const driverFactory = this.drivers.get(type);
+        if (!driverFactory) {
+            throw new Error(`No driver registered for database type: ${type}. Please install and register the appropriate driver package.`);
+        }
+        return driverFactory();
+    }
+
+    /**
+     * 检查是否支持指定的数据库类型
+     */
+    static isSupported(type: DatabaseType): boolean {
+        return this.drivers.has(type);
+    }
+
+    /**
+     * 获取支持的数据库类型
+     */
+    static getSupportedTypes(): DatabaseType[] {
+        return Array.from(this.drivers.keys());
+    }
+
+    /**
+     * 清除所有注册的驱动（主要用于测试）
+     */
+    static clear(): void {
+        this.drivers.clear();
+    }
+}
+
+/**
  * 基础数据库管理器实现
+ * 这是一个抽象类，具体的数据库驱动需要继承并实现抽象方法
  */
 export abstract class BaseDatabaseManager implements IDatabaseManager {
     protected config?: DatabaseConfig;
@@ -253,9 +300,9 @@ export abstract class BaseDatabaseManager implements IDatabaseManager {
         this.config = config;
         this.connectionPool = await this.createConnectionPool(config);
         this.isInitialized = true;
-        
+
         if (config.logging) {
-            console.log(`Database initialized: ${config.type}://${config.host}:${config.port}/${config.database}`);
+            console.log(`[Database] Initialized: ${config.type}://${config.host || 'localhost'}:${config.port || 'default'}/${config.database}`);
         }
     }
 
@@ -316,6 +363,10 @@ export abstract class BaseDatabaseManager implements IDatabaseManager {
             this.connectionPool = undefined;
         }
         this.isInitialized = false;
+
+        if (this.config?.logging) {
+            console.log(`[Database] Closed: ${this.config.type}`);
+        }
     }
 
     /**
@@ -484,32 +535,80 @@ export abstract class BaseMigrationManager implements IMigrationManager {
 
 /**
  * 数据库管理器工厂
+ * 提供创建和管理数据库连接的统一接口
  */
 export class DatabaseManagerFactory {
-    private static managers = new Map<DatabaseType, new () => BaseDatabaseManager>();
-
-    /**
-     * 注册数据库管理器
-     */
-    static register(type: DatabaseType, managerClass: new () => BaseDatabaseManager): void {
-        this.managers.set(type, managerClass);
-    }
-
     /**
      * 创建数据库管理器
      */
-    static create(type: DatabaseType): BaseDatabaseManager {
-        const ManagerClass = this.managers.get(type);
-        if (!ManagerClass) {
-            throw new Error(`Unsupported database type: ${type}`);
-        }
-        return new ManagerClass();
+    static async create(config: DatabaseConfig): Promise<IDatabaseManager> {
+        return DatabaseDriverRegistry.create(config.type);
+    }
+
+    /**
+     * 创建并初始化数据库管理器
+     */
+    static async createAndInitialize(config: DatabaseConfig): Promise<IDatabaseManager> {
+        const manager = await this.create(config);
+        await manager.initialize(config);
+        return manager;
     }
 
     /**
      * 获取支持的数据库类型
      */
     static getSupportedTypes(): DatabaseType[] {
-        return Array.from(this.managers.keys());
+        return DatabaseDriverRegistry.getSupportedTypes();
     }
+
+    /**
+     * 检查是否支持指定的数据库类型
+     */
+    static isSupported(type: DatabaseType): boolean {
+        return DatabaseDriverRegistry.isSupported(type);
+    }
+}
+
+// ============================================================================
+// ORM Configuration - ORM 配置
+// ============================================================================
+
+/**
+ * ORM 配置接口
+ */
+export interface ORMConfig {
+    /** 数据库配置 */
+    database: DatabaseConfig | string;
+    /** 实体类列表 */
+    entities: Function[];
+    /** 是否同步数据库结构 */
+    synchronize?: boolean;
+    /** 是否启用日志 */
+    logging?: boolean | string[];
+    /** 迁移文件路径 */
+    migrations?: string[];
+    /** 是否自动运行迁移 */
+    migrationsRun?: boolean;
+}
+
+/**
+ * 解析数据库配置
+ */
+export function parseDatabaseConfig(config: DatabaseConfig | string): DatabaseConfig {
+    if (typeof config === 'string') {
+        // 解析连接字符串，例如: "sqlite://./database.db" 或 "mysql://user:pass@host:port/db"
+        const url = new URL(config);
+        const type = url.protocol.slice(0, -1) as DatabaseType;
+
+        return {
+            type,
+            host: url.hostname || undefined,
+            port: url.port ? parseInt(url.port) : undefined,
+            database: url.pathname.slice(1) || url.pathname,
+            username: url.username || undefined,
+            password: url.password || undefined,
+        };
+    }
+
+    return config;
 }

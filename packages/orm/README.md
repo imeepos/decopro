@@ -19,6 +19,8 @@ DecoPro 框架的对象关系映射（ORM）模块，提供类型安全的数据
 
 ## 📦 安装
 
+### 核心包
+
 ```bash
 npm install @decopro/orm @decopro/core reflect-metadata zod
 # 或
@@ -27,7 +29,24 @@ pnpm add @decopro/orm @decopro/core reflect-metadata zod
 yarn add @decopro/orm @decopro/core reflect-metadata zod
 ```
 
-> **注意**: `reflect-metadata` 是必需的依赖，用于装饰器元数据支持。
+### 数据库驱动
+
+根据您使用的数据库类型，还需要安装相应的驱动包：
+
+```bash
+# 数据库驱动包（包含 SQLite、MySQL 等驱动）
+npm install @decopro/orm-drivers
+
+# 可选：直接安装数据库依赖
+npm install sqlite3        # SQLite
+npm install mysql2         # MySQL
+npm install pg @types/pg   # PostgreSQL
+```
+
+> **注意**:
+> - `reflect-metadata` 是必需的依赖，用于装饰器元数据支持
+> - `@decopro/orm-drivers` 包含具体的数据库驱动实现
+> - 核心 ORM 包可以在浏览器和 Node.js 环境中运行，驱动包仅在 Node.js 中使用
 
 ## 🎯 快速开始
 

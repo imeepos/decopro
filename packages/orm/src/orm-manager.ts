@@ -3,14 +3,10 @@ import {
     DatabaseConfig,
     DatabaseType,
     IDatabaseManager,
-    IMigrationManager
+    IMigrationManager,
+    DatabaseManagerFactory,
+    parseDatabaseConfig
 } from "./database";
-import {
-    createDatabaseManager,
-    registerBuiltinDrivers,
-    parseConnectionString,
-    validateDatabaseConfig
-} from "./drivers";
 import { BaseRepository, createRepository } from "./repository";
 
 // ============================================================================
@@ -18,9 +14,9 @@ import { BaseRepository, createRepository } from "./repository";
 // ============================================================================
 
 /**
- * ORM 配置选项
+ * ORM 管理器配置选项
  */
-export interface ORMConfig {
+export interface ORMManagerConfig {
     /** 数据库配置 */
     database: DatabaseConfig | string;
     /** 实体类列表 */
@@ -46,7 +42,7 @@ export interface ORMConfig {
 export class ORMManager {
     private databaseManager?: IDatabaseManager;
     private migrationManager?: IMigrationManager;
-    private config?: ORMConfig;
+    private config?: ORMManagerConfig;
     private repositories = new Map<Function, BaseRepository<any, any>>();
     private entities = new Set<Function>();
     private isInitialized = false;
@@ -54,32 +50,22 @@ export class ORMManager {
     /**
      * 初始化 ORM
      */
-    async initialize(config: ORMConfig): Promise<void> {
+    async initialize(config: ORMManagerConfig): Promise<void> {
         if (this.isInitialized) {
             throw new Error("ORM is already initialized");
         }
 
         this.config = config;
 
-        // 注册内置驱动
-        registerBuiltinDrivers();
-
         // 解析数据库配置
-        const databaseConfig = this.parseDatabaseConfig(config.database);
+        const databaseConfig = parseDatabaseConfig(config.database);
 
-        // 验证配置
-        const errors = validateDatabaseConfig(databaseConfig);
-        if (errors.length > 0) {
-            throw new Error(`Invalid database configuration: ${errors.join(', ')}`);
-        }
-
-        // 创建数据库管理器
-        this.databaseManager = createDatabaseManager(databaseConfig.type);
-        await this.databaseManager.initialize(databaseConfig);
+        // 创建并初始化数据库管理器
+        this.databaseManager = await DatabaseManagerFactory.createAndInitialize(databaseConfig);
 
         // 注册实体
         if (config.entities) {
-            config.entities.forEach(entity => this.registerEntity(entity));
+            config.entities.forEach((entity: Function) => this.registerEntity(entity));
         }
 
         // 运行迁移
@@ -95,24 +81,7 @@ export class ORMManager {
         }
     }
 
-    /**
-     * 解析数据库配置
-     */
-    private parseDatabaseConfig(config: DatabaseConfig | string): DatabaseConfig {
-        if (typeof config === 'string') {
-            const parsed = parseConnectionString(config);
-            return {
-                type: parsed.type,
-                host: parsed.host,
-                port: parsed.port,
-                database: parsed.database,
-                username: parsed.username,
-                password: parsed.password,
-                ...parsed.options
-            };
-        }
-        return config;
-    }
+
 
     /**
      * 注册实体
@@ -258,17 +227,23 @@ export class ORMManager {
 /**
  * 创建 ORM 实例
  */
-export async function createORM(config: ORMConfig): Promise<ORMManager> {
+export async function createORM(config: ORMManagerConfig): Promise<ORMManager> {
     const orm = new ORMManager();
     await orm.initialize(config);
     return orm;
 }
 
 /**
- * 创建内存 SQLite ORM（用于测试）
+ * 创建测试 ORM（使用模拟驱动）
  */
 export async function createTestORM(entities?: Function[]): Promise<ORMManager> {
-    const config: ORMConfig = {
+    // 动态导入测试工具
+    const { registerMockDrivers } = await import("./test-utils");
+
+    // 注册模拟驱动
+    registerMockDrivers();
+
+    const config: ORMManagerConfig = {
         database: {
             type: DatabaseType.SQLITE,
             database: ':memory:'

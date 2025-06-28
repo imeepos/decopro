@@ -727,9 +727,6 @@ export * from "./repository";
 // 数据库管理
 export * from "./database";
 
-// 数据库驱动
-export * from "./drivers";
-
 // ORM 管理器
 export * from "./orm-manager";
 
@@ -875,3 +872,18 @@ export function getEntityRelations<T>(entityClass: new () => T): Array<{
     // 暂时返回空数组
     return [];
 }
+
+// ============================================================================
+// Test Utilities - 测试工具（仅在测试环境中使用）
+// ============================================================================
+
+export {
+    MockConnection,
+    MockConnectionPool,
+    MockDatabaseManager,
+    registerMockDrivers,
+    clearAllDrivers,
+    createTestDatabaseConfig,
+    isTestEnvironment,
+    autoRegisterMockDriversInTest
+} from "./test-utils";
