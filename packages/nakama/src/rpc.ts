@@ -16,9 +16,16 @@ export interface AddAdminPlanRpcOutput {
     groupId: string;
 }
 export class NakamaRpc {
-    constructor(private client: Client, private session: Session) { }
+    constructor(
+        private client: Client,
+        private session: Session
+    ) {}
 
-    async addAdminPlanRpc(input: AddAdminPlanRpcInput): Promise<AddAdminPlanRpcOutput | undefined> {
-        return await this.client.rpc(this.session, `add_admin_plan`, input).then(res => res.payload as AddAdminPlanRpcOutput)
+    async addAdminPlanRpc(
+        input: AddAdminPlanRpcInput
+    ): Promise<AddAdminPlanRpcOutput | undefined> {
+        return await this.client
+            .rpc(this.session, `add_admin_plan`, input)
+            .then((res) => res.payload as AddAdminPlanRpcOutput);
     }
 }

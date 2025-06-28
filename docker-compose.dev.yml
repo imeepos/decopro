@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  decopro-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: decopro-dev
+    ports:
+      - "3000:3000"
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/packages/*/node_modules
+    environment:
+      - NODE_ENV=development
+    command: pnpm run dev
+    restart: unless-stopped
+
+  # 可选：添加数据库服务
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: decopro-postgres
+  #   environment:
+  #     POSTGRES_DB: decopro
+  #     POSTGRES_USER: decopro
+  #     POSTGRES_PASSWORD: decopro
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: decopro-redis
+  #   ports:
+  #     - "6379:6379"
+
+# volumes:
+#   postgres_data:

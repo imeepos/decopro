@@ -1,8 +1,11 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-    entry: ["src/index.ts", "src/bin.ts"],
+    entry: ["src/index.ts"],
     format: ["cjs", "esm"],
-    dts: true,
-    clean: true
+    dts: false,
+    clean: true,
+    splitting: false,
+    treeshake: true,
+    external: ["@decopro/core", "reflect-metadata", "tsyringe"]
 });

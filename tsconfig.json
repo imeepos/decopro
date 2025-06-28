@@ -1,13 +1,40 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "target": "ES2020",
+        "lib": ["ES2020"],
+        "module": "commonjs",
+        "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "module": "commonjs",
         "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "exactOptionalPropertyTypes": true,
         "skipLibCheck": true,
-        "strictPropertyInitialization": false
-    }
+        "strictPropertyInitialization": false,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "removeComments": false,
+        "importHelpers": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "incremental": true,
+        "tsBuildInfoFile": ".tsbuildinfo"
+    },
+    "include": ["packages/*/src/**/*", "demos/*/src/**/*"],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "coverage",
+        "**/*.test.ts",
+        "**/*.spec.ts"
+    ]
 }

@@ -383,7 +383,7 @@ export class Parser {
         attributes: Attributes[]
     ): TerminologyElement {
         const element = new TerminologyElement();
-        element.attributes = attributes
+        element.attributes = attributes;
         element.children = [];
 
         // 跳过开标签后的内容

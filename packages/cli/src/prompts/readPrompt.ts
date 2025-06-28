@@ -17,7 +17,7 @@ const xml = `
 
 # 输出要求
 - 用精简的语言描述你学到了什么？
-`
+`;
 
 @injectable()
 export class ReadPrompt {

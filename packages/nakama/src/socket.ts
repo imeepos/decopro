@@ -1,9 +1,9 @@
-import { decode } from 'js-base64'
+import { decode } from "js-base64";
 
 import { ApiNotification, ApiRpc } from "./api.gen";
 import { Session } from "./session";
 import { Notification } from "./types";
-import { WebSocketAdapter, WebSocketAdapterText } from "./web_socket_adapter"
+import { WebSocketAdapter, WebSocketAdapterText } from "./web_socket_adapter";
 
 /** Stores function references for resolve/reject with a DOM Promise. */
 interface PromiseExecutor {
@@ -116,9 +116,9 @@ interface ChannelMessageSend {
 interface ChannelMessageUpdate {
     channel_message_update: {
         /** The server-assigned channel ID. */
-        channel_id: string,
+        channel_id: string;
         /** A unique ID for the chat message to be updated. */
-        message_id: string,
+        message_id: string;
         /** The content payload. */
         content: any;
     };
@@ -314,7 +314,7 @@ interface MatchDataSend {
         presences: Presence[];
         /** True if the data should be sent reliably. */
         reliable?: boolean;
-    }
+    };
 }
 
 /** Incoming information about a party. */
@@ -340,7 +340,7 @@ export interface PartyCreate {
         open: boolean;
         /** The maximum number of party members. */
         max_size: number;
-    }
+    };
 }
 
 /** Join a party. */
@@ -348,7 +348,7 @@ interface PartyJoin {
     party_join: {
         /** The unique party identifier. */
         party_id: string;
-    }
+    };
 }
 
 /** Leave a party. */
@@ -356,7 +356,7 @@ interface PartyLeave {
     party_leave: {
         /** The unique party identifier. */
         party_id: string;
-    }
+    };
 }
 
 /** Promote a new party leader. */
@@ -366,7 +366,7 @@ interface PartyPromote {
         party_id: string;
         /** The user presence being promoted to leader. */
         presence: Presence;
-    }
+    };
 }
 
 /** Announcement of a new party leader. */
@@ -384,7 +384,7 @@ interface PartyAccept {
         party_id: string;
         /** The presence being accepted to join the party. */
         presence: Presence;
-    }
+    };
 }
 
 /** End a party, kicking all party members and closing it. */
@@ -392,7 +392,7 @@ interface PartyClose {
     party_close: {
         /** The unique party identifier. */
         party_id: string;
-    }
+    };
 }
 
 /** Incoming party data delivered from the server. */
@@ -416,7 +416,7 @@ interface PartyDataSend {
         op_code: number;
         /** Data payload, if any. */
         data: string | Uint8Array;
-    }
+    };
 }
 
 /** Incoming notification for one or more new presences attempting to join the party. */
@@ -432,7 +432,7 @@ export interface PartyJoinRequestList {
     party_join_request_list: {
         /** The ID of the party to get a list of join requests for. */
         party_id: string;
-    }
+    };
 }
 
 /** Begin matchmaking as a party. */
@@ -450,7 +450,7 @@ interface PartyMatchmakerAdd {
         string_properties?: Record<string, string>;
         /** Numeric properties describing the party (e.g. rank). */
         numeric_properties?: Record<string, number>;
-    }
+    };
 }
 
 /** Cancel a party matchmaking process using a ticket. */
@@ -460,7 +460,7 @@ interface PartyMatchmakerRemove {
         party_id: string;
         /** The ticket to remove. */
         ticket: string;
-    }
+    };
 }
 
 /** A response from starting a new party matchmaking process. */
@@ -488,7 +488,7 @@ interface PartyRemove {
         party_id: string;
         /** The presence to remove/reject. */
         presence: Presence;
-    }
+    };
 }
 
 /** Execute an Lua function on the server. */
@@ -497,9 +497,7 @@ interface Rpc {
 }
 
 /** Application-level heartbeat ping. */
-interface Ping {
-
-}
+interface Ping {}
 
 /** A snapshot of statuses for some set of users. */
 export interface Status {
@@ -510,7 +508,7 @@ export interface Status {
 /** Start receiving status updates for some set of users. */
 interface StatusFollow {
     /** The IDs of the users to follow. */
-    status_follow: { user_ids: string[]; }
+    status_follow: { user_ids: string[] };
 }
 
 /** A batch of status updates for a given user. */
@@ -524,13 +522,13 @@ export interface StatusPresenceEvent {
 /** Stop receiving status updates for some set of users. */
 interface StatusUnfollow {
     /** The IDs of user to unfollow. */
-    status_unfollow: { user_ids: string[]; };
+    status_unfollow: { user_ids: string[] };
 }
 
 /** Set the user's own status. */
 interface StatusUpdate {
     /** Status string to set, if not present the user will appear offline. */
-    status_update: { status?: string; };
+    status_update: { status?: string };
 }
 
 /** A socket connection to Nakama server. */
@@ -545,14 +543,23 @@ export interface Socket {
     acceptPartyMember(party_id: string, presence: Presence): Promise<void>;
 
     /** Join the matchmaker pool and search for opponents on the server. */
-    addMatchmaker(query: string, minCount: number, maxCount: number,
-        stringProperties?: Record<string, string>, numericProperties?: Record<string, number>)
-        : Promise<MatchmakerTicket>;
+    addMatchmaker(
+        query: string,
+        minCount: number,
+        maxCount: number,
+        stringProperties?: Record<string, string>,
+        numericProperties?: Record<string, number>
+    ): Promise<MatchmakerTicket>;
 
     /** Begin matchmaking as a party. */
-    addMatchmakerParty(party_id: string, query: string, min_count: number, max_count: number,
-        string_properties?: Record<string, string>, numericProperties?: Record<string, number>)
-        : Promise<PartyMatchmakerTicket>;
+    addMatchmakerParty(
+        party_id: string,
+        query: string,
+        min_count: number,
+        max_count: number,
+        string_properties?: Record<string, string>,
+        numericProperties?: Record<string, number>
+    ): Promise<PartyMatchmakerTicket>;
 
     /** End a party, kicking all party members and closing it. */
     closeParty(party_id: string): Promise<void>;
@@ -567,7 +574,12 @@ export interface Socket {
     followUsers(user_ids: string[]): Promise<Status>;
 
     /** Join a chat channel on the server. */
-    joinChat(target: string, type: number, persistence: boolean, hidden: boolean): Promise<Channel>;
+    joinChat(
+        target: string,
+        type: number,
+        persistence: boolean,
+        hidden: boolean
+    ): Promise<Channel>;
 
     /** Join a party. */
     joinParty(party_id: string): Promise<void>;
@@ -588,10 +600,16 @@ export interface Socket {
     listPartyJoinRequests(party_id: string): Promise<PartyJoinRequest>;
 
     /** Promote a new party leader. */
-    promotePartyMember(party_id: string, party_member: Presence): Promise<PartyLeader>;
+    promotePartyMember(
+        party_id: string,
+        party_member: Presence
+    ): Promise<PartyLeader>;
 
     /** Remove a chat message from a chat channel on the server. */
-    removeChatMessage(channel_id: string, message_id: string): Promise<ChannelMessageAck>;
+    removeChatMessage(
+        channel_id: string,
+        message_id: string
+    ): Promise<ChannelMessageAck>;
 
     /** Leave the matchmaker pool with the provided ticket. */
     removeMatchmaker(ticket: string): Promise<void>;
@@ -603,26 +621,42 @@ export interface Socket {
     removePartyMember(party_id: string, presence: Presence): Promise<void>;
 
     /** Execute an RPC function to the server. */
-    rpc(id?: string, payload?: string, http_key?: string): Promise<ApiRpc>
+    rpc(id?: string, payload?: string, http_key?: string): Promise<ApiRpc>;
 
     /** Send input to a multiplayer match on the server. */
     /** When no presences are supplied the new match state will be sent to all presences. */
-    sendMatchState(matchId: string, opCode: number, data: string | Uint8Array, presence?: Presence[]): Promise<void>;
+    sendMatchState(
+        matchId: string,
+        opCode: number,
+        data: string | Uint8Array,
+        presence?: Presence[]
+    ): Promise<void>;
 
     /** Send data to a party. */
-    sendPartyData(party_id: string, opcode: number, data: string | Uint8Array): Promise<void>;
+    sendPartyData(
+        party_id: string,
+        opcode: number,
+        data: string | Uint8Array
+    ): Promise<void>;
 
     /** Unfollow one or more users from their status updates. */
     unfollowUsers(user_ids: string[]): Promise<void>;
 
     /** Update a chat message on a chat channel in the server. */
-    updateChatMessage(channel_id: string, message_id: string, content: any): Promise<ChannelMessageAck>;
+    updateChatMessage(
+        channel_id: string,
+        message_id: string,
+        content: any
+    ): Promise<ChannelMessageAck>;
 
     /** Update the status for the current user online. */
     updateStatus(status?: string): Promise<void>;
 
     /** Send a chat message to a chat channel on the server. */
-    writeChatMessage(channel_id: string, content: any): Promise<ChannelMessageAck>;
+    writeChatMessage(
+        channel_id: string,
+        content: any
+    ): Promise<ChannelMessageAck>;
 
     /** Handle disconnect events received from the socket. */
     ondisconnect: (evt: Event) => void;
@@ -664,7 +698,9 @@ export interface Socket {
     onpartypresence: (partyPresence: PartyPresenceEvent) => void;
 
     /** Receive matchmaking results. */
-    onpartymatchmakerticket: (partyMatchmakerMatched: PartyMatchmakerTicket) => void;
+    onpartymatchmakerticket: (
+        partyMatchmakerMatched: PartyMatchmakerTicket
+    ) => void;
 
     /** Receive status presence updates. */
     onstatuspresence: (statusPresence: StatusPresenceEvent) => void;
@@ -733,21 +769,31 @@ export class DefaultSocket implements Socket {
         return cid;
     }
 
-    connect(session: Session, createStatus: boolean = false, connectTimeoutMs: number = DefaultSocket.DefaultConnectTimeoutMs): Promise<Session> {
+    connect(
+        session: Session,
+        createStatus: boolean = false,
+        connectTimeoutMs: number = DefaultSocket.DefaultConnectTimeoutMs
+    ): Promise<Session> {
         if (this.adapter.isOpen()) {
             return Promise.resolve(session);
         }
 
-        const scheme = (this.useSSL) ? "wss://" : "ws://";
-        this.adapter.connect(scheme, this.host, this.port, createStatus, session.token);
+        const scheme = this.useSSL ? "wss://" : "ws://";
+        this.adapter.connect(
+            scheme,
+            this.host,
+            this.port,
+            createStatus,
+            session.token
+        );
 
         this.adapter.onClose = (evt: Event) => {
             this.ondisconnect(evt);
-        }
+        };
 
         this.adapter.onError = (evt: Event) => {
             this.onerror(evt);
-        }
+        };
 
         this.adapter.onMessage = (message: any) => {
             if (this.verbose && window && window.console) {
@@ -757,32 +803,56 @@ export class DefaultSocket implements Socket {
             /** Inbound message from server. */
             if (!message.cid) {
                 if (message.notifications) {
-                    message.notifications.notifications.forEach((n: ApiNotification) => {
-                        n.content = n.content ? JSON.parse(n.content) : undefined;
-                        this.onnotification(n);
-                    });
+                    message.notifications.notifications.forEach(
+                        (n: ApiNotification) => {
+                            n.content = n.content
+                                ? JSON.parse(n.content)
+                                : undefined;
+                            this.onnotification(n);
+                        }
+                    );
                 } else if (message.match_data) {
-                    message.match_data.op_code = parseInt(message.match_data.op_code);
+                    message.match_data.op_code = parseInt(
+                        message.match_data.op_code
+                    );
                     this.onmatchdata(message.match_data);
                 } else if (message.match_presence_event) {
-                    this.onmatchpresence(<MatchPresenceEvent>message.match_presence_event);
+                    this.onmatchpresence(
+                        <MatchPresenceEvent>message.match_presence_event
+                    );
                 } else if (message.matchmaker_ticket) {
-                    this.onmatchmakerticket(<MatchmakerTicket>message.matchmaker_ticket);
+                    this.onmatchmakerticket(
+                        <MatchmakerTicket>message.matchmaker_ticket
+                    );
                 } else if (message.matchmaker_matched) {
-                    this.onmatchmakermatched(<MatchmakerMatched>message.matchmaker_matched);
+                    this.onmatchmakermatched(
+                        <MatchmakerMatched>message.matchmaker_matched
+                    );
                 } else if (message.status_presence_event) {
-                    this.onstatuspresence(<StatusPresenceEvent>message.status_presence_event);
+                    this.onstatuspresence(
+                        <StatusPresenceEvent>message.status_presence_event
+                    );
                 } else if (message.stream_presence_event) {
-                    this.onstreampresence(<StreamPresenceEvent>message.stream_presence_event);
+                    this.onstreampresence(
+                        <StreamPresenceEvent>message.stream_presence_event
+                    );
                 } else if (message.stream_data) {
                     this.onstreamdata(<StreamData>message.stream_data);
                 } else if (message.channel_message) {
-                    message.channel_message.content = JSON.parse(message.channel_message.content);
-                    this.onchannelmessage(<ChannelMessage>message.channel_message);
+                    message.channel_message.content = JSON.parse(
+                        message.channel_message.content
+                    );
+                    this.onchannelmessage(
+                        <ChannelMessage>message.channel_message
+                    );
                 } else if (message.channel_presence_event) {
-                    this.onchannelpresence(<ChannelPresenceEvent>message.channel_presence_event);
+                    this.onchannelpresence(
+                        <ChannelPresenceEvent>message.channel_presence_event
+                    );
                 } else if (message.party_data) {
-                    message.party_data.op_code = parseInt(message.party_data.op_code);
+                    message.party_data.op_code = parseInt(
+                        message.party_data.op_code
+                    );
                     this.onpartydata(<PartyData>message.party_data);
                 } else if (message.party_close) {
                     this.onpartyclose(<PartyClose>message.party_close);
@@ -791,21 +861,31 @@ export class DefaultSocket implements Socket {
                 } else if (message.party_leader) {
                     this.onpartyleader(<PartyLeader>message.party_leader);
                 } else if (message.party_matchmaker_ticket) {
-                    this.onpartymatchmakerticket(message.party_matchmaker_ticket);
+                    this.onpartymatchmakerticket(
+                        message.party_matchmaker_ticket
+                    );
                 } else if (message.party_presence_event) {
-                    this.onpartypresence(<PartyPresenceEvent>message.party_presence_event);
+                    this.onpartypresence(
+                        <PartyPresenceEvent>message.party_presence_event
+                    );
                 } else if (message.party) {
                     this.onparty(<Party>message.party);
                 } else {
                     if (this.verbose && window && window.console) {
-                        console.log("Unrecognized message received: %o", message);
+                        console.log(
+                            "Unrecognized message received: %o",
+                            message
+                        );
                     }
                 }
             } else {
                 const executor = this.cIds[message.cid];
                 if (!executor) {
                     if (this.verbose && window && window.console) {
-                        console.error("No promise executor for message: %o", message);
+                        console.error(
+                            "No promise executor for message: %o",
+                            message
+                        );
                     }
                     return;
                 }
@@ -817,7 +897,7 @@ export class DefaultSocket implements Socket {
                     executor.resolve(message);
                 }
             }
-        }
+        };
 
         return new Promise((resolve, reject) => {
             this.adapter.onOpen = (evt: Event) => {
@@ -827,15 +907,14 @@ export class DefaultSocket implements Socket {
 
                 this.pingPong();
                 resolve(session);
-            }
+            };
             this.adapter.onError = (evt: Event) => {
                 reject(evt);
 
                 if (this.adapter.isOpen()) {
                     this.adapter.close();
                 }
-            }
-
+            };
 
             setTimeout(() => {
                 // if promise has resolved by now, the reject() is a no-op
@@ -951,7 +1030,6 @@ export class DefaultSocket implements Socket {
         }
     }
 
-
     onpartypresence(partyPresence: PartyPresenceEvent) {
         if (this.verbose && window && window.console) {
             console.log(partyPresence);
@@ -982,38 +1060,68 @@ export class DefaultSocket implements Socket {
         }
     }
 
-    send(message: ChannelJoin | ChannelLeave | ChannelMessageSend | ChannelMessageUpdate |
-        ChannelMessageRemove | CreateMatch | JoinMatch | LeaveMatch | MatchDataSend | MatchmakerAdd |
-        MatchmakerRemove | PartyAccept | PartyClose | PartyCreate | PartyDataSend | PartyJoin |
-        PartyJoinRequestList | PartyLeave | PartyMatchmakerAdd | PartyMatchmakerRemove | PartyPromote |
-        PartyRemove | Rpc | StatusFollow | StatusUnfollow | StatusUpdate | Ping, sendTimeout = DefaultSocket.DefaultSendTimeoutMs): Promise<any> {
+    send(
+        message:
+            | ChannelJoin
+            | ChannelLeave
+            | ChannelMessageSend
+            | ChannelMessageUpdate
+            | ChannelMessageRemove
+            | CreateMatch
+            | JoinMatch
+            | LeaveMatch
+            | MatchDataSend
+            | MatchmakerAdd
+            | MatchmakerRemove
+            | PartyAccept
+            | PartyClose
+            | PartyCreate
+            | PartyDataSend
+            | PartyJoin
+            | PartyJoinRequestList
+            | PartyLeave
+            | PartyMatchmakerAdd
+            | PartyMatchmakerRemove
+            | PartyPromote
+            | PartyRemove
+            | Rpc
+            | StatusFollow
+            | StatusUnfollow
+            | StatusUpdate
+            | Ping,
+        sendTimeout = DefaultSocket.DefaultSendTimeoutMs
+    ): Promise<any> {
         const untypedMessage = message as any;
 
         return new Promise<void>((resolve, reject) => {
             if (!this.adapter.isOpen()) {
                 reject("Socket connection has not been established yet.");
-            }
-            else {
+            } else {
                 if (untypedMessage.match_data_send) {
                     this.adapter.send(untypedMessage);
                     resolve();
-                }
-                else if (untypedMessage.party_data_send) {
+                } else if (untypedMessage.party_data_send) {
                     this.adapter.send(untypedMessage);
                     resolve();
-                }
-                else {
-
+                } else {
                     if (untypedMessage.channel_message_send) {
-                        untypedMessage.channel_message_send.content = JSON.stringify(untypedMessage.channel_message_send.content);
+                        untypedMessage.channel_message_send.content =
+                            JSON.stringify(
+                                untypedMessage.channel_message_send.content
+                            );
                     } else if (untypedMessage.channel_message_update) {
-                        untypedMessage.channel_message_update.content = JSON.stringify(untypedMessage.channel_message_update.content);
+                        untypedMessage.channel_message_update.content =
+                            JSON.stringify(
+                                untypedMessage.channel_message_update.content
+                            );
                     }
 
                     const cid = this.generatecid();
                     this.cIds[cid] = { resolve, reject };
                     setTimeout(() => {
-                        reject("The socket timed out while waiting for a response.")
+                        reject(
+                            "The socket timed out while waiting for a response."
+                        );
                     }, sendTimeout);
 
                     /** Add id for promise executor. */
@@ -1025,10 +1133,20 @@ export class DefaultSocket implements Socket {
             if (this.verbose && window && window.console) {
                 const loggedMessage = { ...untypedMessage };
 
-                if (loggedMessage.match_data_send && loggedMessage.match_data_send.data) {
-                    loggedMessage.match_data_send.data = decode(loggedMessage.match_data_send.data);
-                } else if (loggedMessage.party_data_send && loggedMessage.party_data_send.data) {
-                    loggedMessage.party_data_send.data = decode(loggedMessage.party_data_send.data);
+                if (
+                    loggedMessage.match_data_send &&
+                    loggedMessage.match_data_send.data
+                ) {
+                    loggedMessage.match_data_send.data = decode(
+                        loggedMessage.match_data_send.data
+                    );
+                } else if (
+                    loggedMessage.party_data_send &&
+                    loggedMessage.party_data_send.data
+                ) {
+                    loggedMessage.party_data_send.data = decode(
+                        loggedMessage.party_data_send.data
+                    );
                 }
 
                 console.log("Sent message: %o", JSON.stringify(loggedMessage));
@@ -1037,15 +1155,20 @@ export class DefaultSocket implements Socket {
     }
 
     acceptPartyMember(party_id: string, presence: Presence): Promise<void> {
-        return this.send({ party_accept: { party_id: party_id, presence: presence } });
+        return this.send({
+            party_accept: { party_id: party_id, presence: presence }
+        });
     }
 
-    async addMatchmaker(query: string, min_count: number, max_count: number,
-        string_properties?: Record<string, string>, numeric_properties?: Record<string, number>)
-        : Promise<MatchmakerTicket> {
-
+    async addMatchmaker(
+        query: string,
+        min_count: number,
+        max_count: number,
+        string_properties?: Record<string, string>,
+        numeric_properties?: Record<string, number>
+    ): Promise<MatchmakerTicket> {
         const response = await this.send({
-            "matchmaker_add": {
+            matchmaker_add: {
                 min_count: min_count,
                 max_count: max_count,
                 query: query,
@@ -1057,8 +1180,14 @@ export class DefaultSocket implements Socket {
         return response.matchmaker_ticket;
     }
 
-    async addMatchmakerParty(party_id: string, query: string, min_count: number, max_count: number, string_properties?: Record<string, string>, numeric_properties?: Record<string, number>): Promise<PartyMatchmakerTicket> {
-
+    async addMatchmakerParty(
+        party_id: string,
+        query: string,
+        min_count: number,
+        max_count: number,
+        string_properties?: Record<string, string>,
+        numeric_properties?: Record<string, number>
+    ): Promise<PartyMatchmakerTicket> {
         const response = await this.send({
             party_matchmaker_add: {
                 party_id: party_id,
@@ -1083,17 +1212,25 @@ export class DefaultSocket implements Socket {
     }
 
     async createParty(open: boolean, max_size: number): Promise<Party> {
-        const response = await this.send({ party_create: { open: open, max_size: max_size } });
+        const response = await this.send({
+            party_create: { open: open, max_size: max_size }
+        });
         return response.party;
     }
 
     async followUsers(userIds: string[]): Promise<Status> {
-        const response = await this.send({ status_follow: { user_ids: userIds } });
+        const response = await this.send({
+            status_follow: { user_ids: userIds }
+        });
         return response.status;
     }
 
-    async joinChat(target: string, type: number, persistence: boolean, hidden: boolean): Promise<Channel> {
-
+    async joinChat(
+        target: string,
+        type: number,
+        persistence: boolean,
+        hidden: boolean
+    ): Promise<Channel> {
         const response = await this.send({
             channel_join: {
                 target: target,
@@ -1101,20 +1238,21 @@ export class DefaultSocket implements Socket {
                 persistence: persistence,
                 hidden: hidden
             }
-        }
-        );
+        });
 
         return response.channel;
     }
 
-    async joinMatch(match_id?: string, token?: string, metadata?: {}): Promise<Match> {
-
+    async joinMatch(
+        match_id?: string,
+        token?: string,
+        metadata?: {}
+    ): Promise<Match> {
         const join: JoinMatch = { match_join: { metadata: metadata } };
 
         if (token) {
             join.match_join.token = token;
-        }
-        else {
+        } else {
             join.match_join.match_id = match_id;
         }
 
@@ -1139,24 +1277,32 @@ export class DefaultSocket implements Socket {
     }
 
     async listPartyJoinRequests(party_id: string): Promise<PartyJoinRequest> {
-        const response = await this.send({ party_join_request_list: { party_id: party_id } });
+        const response = await this.send({
+            party_join_request_list: { party_id: party_id }
+        });
         return response.party_join_request;
     }
 
-    async promotePartyMember(party_id: string, party_member: Presence): Promise<PartyLeader> {
-        const response = await this.send({ party_promote: { party_id: party_id, presence: party_member } });
+    async promotePartyMember(
+        party_id: string,
+        party_member: Presence
+    ): Promise<PartyLeader> {
+        const response = await this.send({
+            party_promote: { party_id: party_id, presence: party_member }
+        });
         return response.party_leader;
     }
 
-    async removeChatMessage(channel_id: string, message_id: string): Promise<ChannelMessageAck> {
-        const response = await this.send(
-            {
-                channel_message_remove: {
-                    channel_id: channel_id,
-                    message_id: message_id
-                }
+    async removeChatMessage(
+        channel_id: string,
+        message_id: string
+    ): Promise<ChannelMessageAck> {
+        const response = await this.send({
+            channel_message_remove: {
+                channel_id: channel_id,
+                message_id: message_id
             }
-        );
+        });
 
         return response.channel_message_ack;
     }
@@ -1166,13 +1312,12 @@ export class DefaultSocket implements Socket {
     }
 
     removeMatchmakerParty(party_id: string, ticket: string): Promise<void> {
-        return this.send(
-            {
-                party_matchmaker_remove: {
-                    party_id: party_id,
-                    ticket: ticket
-                }
-            })
+        return this.send({
+            party_matchmaker_remove: {
+                party_id: party_id,
+                ticket: ticket
+            }
+        });
     }
 
     async removePartyMember(party_id: string, member: Presence): Promise<void> {
@@ -1184,42 +1329,70 @@ export class DefaultSocket implements Socket {
         });
     }
 
-    async rpc(id?: string, payload?: string, http_key?: string): Promise<ApiRpc> {
-        const response = await this.send(
-            {
-                rpc: {
-                    id: id,
-                    payload: payload,
-                    http_key: http_key,
-                }
-            });
+    async rpc(
+        id?: string,
+        payload?: string,
+        http_key?: string
+    ): Promise<ApiRpc> {
+        const response = await this.send({
+            rpc: {
+                id: id,
+                payload: payload,
+                http_key: http_key
+            }
+        });
 
         return response.rpc;
     }
 
-    async sendMatchState(matchId: string, opCode: number, data: string | Uint8Array, presences?: Presence[], reliable?: boolean): Promise<void> {
-        return this.send(
-            {
-                match_data_send: {
-                    match_id: matchId,
-                    op_code: opCode,
-                    data: data,
-                    presences: presences ?? [],
-                    reliable: reliable
-                }
-            });
+    async sendMatchState(
+        matchId: string,
+        opCode: number,
+        data: string | Uint8Array,
+        presences?: Presence[],
+        reliable?: boolean
+    ): Promise<void> {
+        return this.send({
+            match_data_send: {
+                match_id: matchId,
+                op_code: opCode,
+                data: data,
+                presences: presences ?? [],
+                reliable: reliable
+            }
+        });
     }
 
-    sendPartyData(party_id: string, op_code: number, data: string | Uint8Array): Promise<void> {
-        return this.send({ party_data_send: { party_id: party_id, op_code: op_code, data: data } })
+    sendPartyData(
+        party_id: string,
+        op_code: number,
+        data: string | Uint8Array
+    ): Promise<void> {
+        return this.send({
+            party_data_send: {
+                party_id: party_id,
+                op_code: op_code,
+                data: data
+            }
+        });
     }
 
     unfollowUsers(user_ids: string[]): Promise<void> {
         return this.send({ status_unfollow: { user_ids: user_ids } });
     }
 
-    async updateChatMessage(channel_id: string, message_id: string, content: any): Promise<ChannelMessageAck> {
-        const response = await this.send({ channel_message_update: { channel_id: channel_id, message_id: message_id, content: content } });
+    async updateChatMessage(
+        channel_id: string,
+        message_id: string,
+        content: any
+    ): Promise<ChannelMessageAck> {
+        const response = await this.send({
+            channel_message_update: {
+                channel_id: channel_id,
+                message_id: message_id,
+                content: content
+            }
+        });
         return response.channel_message_ack;
     }
 
@@ -1227,8 +1400,13 @@ export class DefaultSocket implements Socket {
         return this.send({ status_update: { status: status } });
     }
 
-    async writeChatMessage(channel_id: string, content: any): Promise<ChannelMessageAck> {
-        const response = await this.send({ channel_message_send: { channel_id: channel_id, content: content } });
+    async writeChatMessage(
+        channel_id: string,
+        content: any
+    ): Promise<ChannelMessageAck> {
+        const response = await this.send({
+            channel_message_send: { channel_id: channel_id, content: content }
+        });
         return response.channel_message_ack;
     }
 
@@ -1255,4 +1433,4 @@ export class DefaultSocket implements Socket {
         // we can separate them out into separate values if needed later.
         setTimeout(() => this.pingPong(), this._heartbeatTimeoutMs);
     }
-};
+}

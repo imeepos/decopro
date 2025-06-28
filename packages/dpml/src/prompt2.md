@@ -623,7 +623,6 @@ export class Parser {
             this.pos < this.tokens.length ? this.tokens[this.pos++] : null;
     }
 }
-
 ```
 
 ```ts
@@ -753,7 +752,6 @@ export class Tokenizer {
         }
     }
 }
-
 ```
 
 ```ts
@@ -916,9 +914,7 @@ const promptString = `
 const ast = parsePrompt(promptString);
 const injector = container.resolve(Injector);
 console.log(JSON.stringify(injector.toJson(ast, PromptElement), null, 2)); // 输出完整的 AST 结构
-
 ```
-
 
 # 结果
 
@@ -947,7 +943,6 @@ console.log(JSON.stringify(injector.toJson(ast, PromptElement), null, 2)); // �
   ]
 }
 ```
-
 
 结果不对，请仔细检查
 分析原因及解决方案

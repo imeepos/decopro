@@ -1,5 +1,5 @@
-
 # ast定义
+
 ```ts
 import { Ast, Visitor } from "@decopro/ast";
 import { Input } from "@decopro/core";
@@ -363,7 +363,6 @@ registry_element ::= '<registry>' markdown_content '</registry>'
 markdown_content ::= (* 任何有效的Markdown文本，包括代码块、表格等 *)
 ```
 
-
 ```ebnf
 resource_reference ::= ('[@]' | '@!' | '@?') protocol_name ':' resource_location [query_params]
 resource_location ::= uri | nested_reference
@@ -372,7 +371,6 @@ nested_reference ::= ['[@]' | '@!' | '@?'] protocol_name ':' resource_location
 path ::= path_segment {'/' path_segment}
 query_params ::= '?' param_name '=' param_value {'&' param_name '=' param_value}
 ```
-
 
 ```ebnf
 (* EBNF形式化定义 *)
@@ -397,7 +395,6 @@ value ::= [^"]*
 markdown_content ::= (* 符合Markdown语法的内容 *)
 ```
 
-
 ```ebnf
 (* EBNF形式化定义 *)
 terminologies_element ::= '<terminologies>' terminology+ '</terminologies>'
@@ -412,7 +409,6 @@ example_element ::= '<example>' markdown_content '</example>'
 text ::= (* 任何文本内容 *)
 markdown_content ::= (* 任何有效的Markdown文本 *)
 ```
-
 
 ```ebnf
 (* EBNF形式化定义 *)
@@ -483,10 +479,10 @@ export class Tokenizer {
         const endIndex = input.indexOf(">", this.pos);
         if (endIndex === -1) throw new Error("Unclosed open tag");
         // 检查是否为自闭合标签
-        const isSelfClosing = input[endIndex - 1] === '/';
+        const isSelfClosing = input[endIndex - 1] === "/";
         const tagEndIndex = isSelfClosing ? endIndex - 1 : endIndex;
         const tagContent = input.substring(this.pos + 1, tagEndIndex).trim();
-        
+
         this.pos = endIndex + 1;
 
         // 分离标签名和属性
@@ -559,7 +555,6 @@ export class Tokenizer {
         }
     }
 }
-
 ```
 
 ```ts
@@ -1145,9 +1140,8 @@ export class Parser {
             this.pos < this.tokens.length ? this.tokens[this.pos++] : null;
     }
 }
+```
 
 ```
 
-
-```
 ```

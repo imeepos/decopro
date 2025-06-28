@@ -12,9 +12,7 @@ import { ReadPrompt } from "./prompts";
     description: `启动mcp http and sse server`
 })
 export class McpServerCommand {
-    private prompts: Type<any>[] = [
-        ReadPrompt
-    ]
+    private prompts: Type<any>[] = [ReadPrompt];
 
     @Option({
         flags: `--port [port]`,

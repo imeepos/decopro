@@ -1,22 +1,24 @@
 {
-    "name": "@decopro/test",
-    "version": "1.0.5",
-    "description": "",
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "dist/index.d.ts",
-    "publishConfig": {
-        "access": "public"
-    },
-    "scripts": {
-        "build": "tsup",
-        "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "@decopro/core": "workspace:*",
-        "zod": "^3.25.67"
-    }
+  "name": "@decopro/test",
+  "version": "1.0.5",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf ./.turbo && rm -rf ./dist && rm -rf ./node_modules",
+    "build:watch": "tsup --watch",
+    "dev": "tsup --watch --sourcemap"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@decopro/core": "workspace:*",
+    "zod": "^3.25.67"
+  }
 }

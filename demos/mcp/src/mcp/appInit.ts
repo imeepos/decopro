@@ -1,9 +1,4 @@
-import {
-    AppInit,
-    inject,
-    Injector,
-    Type,
-} from "@decopro/core";
+import { AppInit, inject, Injector, Type } from "@decopro/core";
 
 import { RunJsCodeTool } from "./tools/RunJsCodeTool";
 import { EnvResource } from "./resources";

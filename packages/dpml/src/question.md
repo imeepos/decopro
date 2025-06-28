@@ -611,9 +611,7 @@ export class Parser {
             this.pos < this.tokens.length ? this.tokens[this.pos++] : null;
     }
 }
-
 ```
-
 
 ```ts
 export interface Token {
@@ -668,10 +666,10 @@ export class Tokenizer {
         const endIndex = input.indexOf(">", this.pos);
         if (endIndex === -1) throw new Error("Unclosed open tag");
         // 检查是否为自闭合标签
-        const isSelfClosing = input[endIndex - 1] === '/';
+        const isSelfClosing = input[endIndex - 1] === "/";
         const tagEndIndex = isSelfClosing ? endIndex - 1 : endIndex;
         const tagContent = input.substring(this.pos + 1, tagEndIndex).trim();
-        
+
         this.pos = endIndex + 1;
 
         // 分离标签名和属性
@@ -732,9 +730,9 @@ export class Tokenizer {
         let text = "";
         while (this.pos < input.length) {
             const char = input[this.pos];
-            
+
             if (char === "<" || char === "@") break;
-            
+
             // 检查是否为非空白字符
             if (char.trim() !== "") {
                 text += char;
@@ -746,9 +744,8 @@ export class Tokenizer {
         }
     }
 }
-
-
 ```
+
 ## 信息：
 
 ```
@@ -785,7 +782,6 @@ export class Tokenizer {
   ]
 }
 ```
-
 
 结果中 @aws-s3:design-specs?version=latest 应该解析成 ResourceElement
 分析报错原因及解决方案

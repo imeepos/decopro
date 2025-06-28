@@ -1,12 +1,11 @@
-import { injectable } from '@decopro/core'
+import { injectable } from "@decopro/core";
 import { decode, encode } from "base64-arraybuffer";
-import { btoa } from "js-base64"
+import { btoa } from "js-base64";
 
 /**
  * An interface used by Nakama's web socket to determine the payload protocol.
  */
 export interface WebSocketAdapter {
-
     /**
      * Dispatched when the web socket closes.
      */
@@ -29,7 +28,13 @@ export interface WebSocketAdapter {
 
     isOpen(): boolean;
     close(): void;
-    connect(scheme: string, host: string, port: string, createStatus: boolean, token: string): void;
+    connect(
+        scheme: string,
+        host: string,
+        port: string,
+        createStatus: boolean,
+        token: string
+    ): void;
     send(message: any): void;
 }
 
@@ -59,7 +64,7 @@ export interface SocketMessageHandler {
  * SocketOpenHandler defines a lambda that handles WebSocket open events.
  */
 export interface SocketOpenHandler {
-    (this: WebSocket, evt: Event): void
+    (this: WebSocket, evt: Event): void;
 }
 
 /**
@@ -94,15 +99,18 @@ export class WebSocketAdapterText implements WebSocketAdapter {
                 const message: any = JSON.parse(evt.data);
 
                 if (message.match_data && message.match_data.data) {
-                    message.match_data.data = new Uint8Array(decode(message.match_data.data));
+                    message.match_data.data = new Uint8Array(
+                        decode(message.match_data.data)
+                    );
                 } else if (message.party_data && message.party_data.data) {
-                    message.party_data.data = new Uint8Array(decode(message.party_data.data));
+                    message.party_data.data = new Uint8Array(
+                        decode(message.party_data.data)
+                    );
                 }
 
                 value!(message);
             };
-        }
-        else {
+        } else {
             value = null;
         }
     }
@@ -119,7 +127,13 @@ export class WebSocketAdapterText implements WebSocketAdapter {
         return this._socket?.readyState == WebSocket.OPEN;
     }
 
-    connect(scheme: string, host: string, port: string, createStatus: boolean, token: string): void {
+    connect(
+        scheme: string,
+        host: string,
+        port: string,
+        createStatus: boolean,
+        token: string
+    ): void {
         const url = `${scheme}${host}:${port}/ws?lang=en&status=${encodeURIComponent(createStatus.toString())}&token=${encodeURIComponent(token)}`;
         this._socket = new WebSocket(url);
     }
@@ -132,20 +146,28 @@ export class WebSocketAdapterText implements WebSocketAdapter {
     send(msg: any): void {
         if (msg.match_data_send) {
             // according to protobuf docs, int64 is encoded to JSON as string.
-            msg.match_data_send.op_code = msg.match_data_send.op_code.toString();
+            msg.match_data_send.op_code =
+                msg.match_data_send.op_code.toString();
             let payload = msg.match_data_send.data;
             if (payload && payload instanceof Uint8Array) {
-                msg.match_data_send.data = encode(payload.buffer as ArrayBuffer);
-            } else if (payload) { // it's a string
+                msg.match_data_send.data = encode(
+                    payload.buffer as ArrayBuffer
+                );
+            } else if (payload) {
+                // it's a string
                 msg.match_data_send.data = btoa(payload);
             }
         } else if (msg.party_data_send) {
             // according to protobuf docs, int64 is encoded to JSON as string.
-            msg.party_data_send.op_code = msg.party_data_send.op_code.toString();
+            msg.party_data_send.op_code =
+                msg.party_data_send.op_code.toString();
             let payload = msg.party_data_send.data;
             if (payload && payload instanceof Uint8Array) {
-                msg.party_data_send.data = encode(payload.buffer as ArrayBuffer);
-            } else if (payload) { // it's a string
+                msg.party_data_send.data = encode(
+                    payload.buffer as ArrayBuffer
+                );
+            } else if (payload) {
+                // it's a string
                 msg.party_data_send.data = btoa(payload);
             }
         }
