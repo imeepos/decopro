@@ -1,19 +1,22 @@
 import "reflect-metadata";
-import { 
-    Input, 
-    ValidatedInput, 
-    ReadonlyInput, 
+import {
+    Input,
+    ValidatedInput,
+    ReadonlyInput,
     RequiredInput,
     Injectable,
     Singleton,
-    Transient
+    Transient,
+    Inject
 } from "../input";
-import { 
-    conditional, 
-    compose, 
-    validateOptions, 
-    deepMergeOptions 
+import {
+    conditional,
+    compose,
+    validateOptions,
+    deepMergeOptions
 } from "../decorator";
+import { AppInit } from "../tokens";
+import { inject } from "tsyringe";
 
 describe('Advanced Decorator Features', () => {
     describe('Input Decorator Variations', () => {
@@ -213,6 +216,33 @@ describe('Advanced Decorator Features', () => {
             }
 
             expect(DatabaseService).toBeDefined();
+        });
+
+        it('should handle AppInit with dependencies injection', () => {
+            // 创建一个依赖服务
+            @Injectable()
+            class ConfigService {
+                getConfig() {
+                    return { database: 'test-db' };
+                }
+            }
+
+            // 创建一个依赖于 ConfigService 的 AppInit 模块
+            @AppInit({
+                deps: [ConfigService]
+            })
+            class TestModule implements AppInit {
+                constructor(@Inject(ConfigService) private configService: ConfigService) {}
+
+                async onInit(): Promise<void> {
+                    // 验证依赖注入是否正常工作
+                    const config = this.configService.getConfig();
+                    expect(config.database).toBe('test-db');
+                }
+            }
+
+            expect(TestModule).toBeDefined();
+            expect(ConfigService).toBeDefined();
         });
     });
 });

@@ -1,11 +1,12 @@
-import { InjectionToken } from "tsyringe";
+import { inject, InjectionToken } from "tsyringe";
 import {
     ClassMetadata,
     PropertyMetadata,
     createClassDecorator,
     createPropertyDecorator,
     BasePropertyOptions,
-    BaseDecoratorOptions
+    BaseDecoratorOptions,
+    IPropertyDecorator,
 } from "./decorator";
 import { Type } from "./types";
 
@@ -63,7 +64,7 @@ export const Input = createPropertyDecorator(INPUT_TOKEN, defaultInputOptions);
 /**
  * 创建带验证的 Input 装饰器
  */
-export function ValidatedInput<T = any>(options: InputOptions<T>): PropertyDecorator {
+export function ValidatedInput<T = any>(options: InputOptions<T>): IPropertyDecorator {
     // 验证必需字段
     if (options.required && options.defaultValue === undefined) {
         throw new Error('Required field must have a default value or be explicitly handled');
@@ -85,7 +86,9 @@ export function ValidatedInput<T = any>(options: InputOptions<T>): PropertyDecor
 /**
  * 创建只读 Input 装饰器
  */
-export function ReadonlyInput<T = any>(options?: Omit<InputOptions<T>, 'readonly'>): PropertyDecorator {
+export function ReadonlyInput<T = any>(): IPropertyDecorator;
+export function ReadonlyInput<T = any>(options: Omit<InputOptions<T>, 'readonly'>): IPropertyDecorator;
+export function ReadonlyInput<T = any>(options?: Omit<InputOptions<T>, 'readonly'>): IPropertyDecorator {
     const finalOptions: InputOptions<T> = { readonly: true, ...options };
     return Input(finalOptions);
 }
@@ -93,7 +96,9 @@ export function ReadonlyInput<T = any>(options?: Omit<InputOptions<T>, 'readonly
 /**
  * 创建必需 Input 装饰器
  */
-export function RequiredInput<T = any>(options?: Omit<InputOptions<T>, 'required'>): PropertyDecorator {
+export function RequiredInput<T = any>(): IPropertyDecorator;
+export function RequiredInput<T = any>(options: Omit<InputOptions<T>, 'required'>): IPropertyDecorator;
+export function RequiredInput<T = any>(options?: Omit<InputOptions<T>, 'required'>): IPropertyDecorator {
     const finalOptions: InputOptions<T> = { required: true, ...options };
     return Input(finalOptions);
 }
@@ -130,7 +135,9 @@ const defaultInjectableOptions: Partial<InjectableOptions> = {
  * Injectable 装饰器 - 支持可选参数和高级配置
  */
 export const Injectable = createClassDecorator(INJECTABLE_TOKEN, defaultInjectableOptions);
-
+export const Inject = (token: InjectionToken<any>, options?: {
+    isOptional?: boolean;
+}) => inject(token, options)
 /**
  * 创建单例 Injectable 装饰器
  */

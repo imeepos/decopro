@@ -59,6 +59,22 @@ export async function bootstrap(
             );
         }
 
+        // 首先注册所有模块到容器中，确保依赖注入能够正常工作
+        for (const init of appInits) {
+            // 注册模块本身
+            if (!container.isRegistered(init.target)) {
+                container.register(init.target, { useClass: init.target });
+            }
+
+            // 注册模块的依赖项
+            const deps = init.options.deps || [];
+            for (const dep of deps) {
+                if (!container.isRegistered(dep)) {
+                    container.register(dep, { useClass: dep });
+                }
+            }
+        }
+
         // 创建映射：target -> 初始化任务信息
         const initMap = new Map<any, { instance: any; deps: any[] }>();
 

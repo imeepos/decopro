@@ -1,5 +1,6 @@
 import { InjectionToken, container, injectable } from "tsyringe";
 import { Type, hasToken } from "./types";
+export type IPropertyDecorator = (target: any, propertyKey: any) => void;
 
 /**
  * 类元数据接口
@@ -86,8 +87,8 @@ export interface BasePropertyOptions {
  * 属性装饰器工厂函数的重载类型
  */
 export interface PropertyDecoratorFactory<O> {
-    (): PropertyDecorator;
-    (options: O): PropertyDecorator;
+    (): IPropertyDecorator;
+    (options: O): IPropertyDecorator;
 }
 
 export const PROPERTY_TOKEN = Symbol.for(`PROPERTY_TOKEN`) as InjectionToken<

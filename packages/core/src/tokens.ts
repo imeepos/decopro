@@ -1,12 +1,12 @@
 import { InjectionToken } from "tsyringe";
 import { Type } from "./types";
-import { ClassMetadata, createClassDecorator } from "./decorator";
+import { BaseDecoratorOptions, ClassMetadata, createClassDecorator } from "./decorator";
 
 export const CORE_MODULE = Symbol.for(`CORE_MODULE`) as InjectionToken<
     Type<any>
 >;
 
-export interface AppInitOptions {
+export interface AppInitOptions extends BaseDecoratorOptions {
     deps?: Type<any>[];
 }
 export interface AppInit {
