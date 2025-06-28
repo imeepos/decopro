@@ -319,7 +319,7 @@ export class Parser {
                 contents.push(this.parseResourceRef(this.currentToken));
                 this.advance();
             } else if (this.currentToken.type === "Text") {
-                // 将文本和资源引用都作为字符串处理
+                // 将文本作为字符串处理
                 contents.push(this.currentToken.value);
                 this.advance();
             } else {

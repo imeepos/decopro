@@ -14,6 +14,37 @@ export interface Attributes {
 
 export type MarkdownContent = string;
 
+// DPML Visitor 接口
+export interface DpmlVisitor<O, C> extends Visitor<O, C> {
+    visitCriteriaElement(node: CriteriaElement, ctx: C): Promise<O>;
+    visitConstraintElement(node: ConstraintElement, ctx: C): Promise<O>;
+    visitRuleElement(node: RuleElement, ctx: C): Promise<O>;
+    visitGuidelineElement(node: GuidelineElement, ctx: C): Promise<O>;
+    visitProcessElement(node: ProcessElement, ctx: C): Promise<O>;
+    visitExecutionElement(node: ExecutionElement, ctx: C): Promise<O>;
+    visitResourceElement(node: ResourceElement, ctx: C): Promise<O>;
+    visitLocationElement(node: LocationElement, ctx: C): Promise<O>;
+    visitParamsElement(node: ParamsElement, ctx: C): Promise<O>;
+    visitRegistryElement(node: RegistryElement, ctx: C): Promise<O>;
+    visitRoleElement(node: RoleElement, ctx: C): Promise<O>;
+    visitPersonalityElement(node: PersonalityElement, ctx: C): Promise<O>;
+    visitPrincipleElement(node: PrincipleElement, ctx: C): Promise<O>;
+    visitKnowledgeElement(node: KnowledgeElement, ctx: C): Promise<O>;
+    visitTerminologiesElement(node: TerminologiesElement, ctx: C): Promise<O>;
+    visitTerminologyElement(node: TerminologyElement, ctx: C): Promise<O>;
+    visitZhElement(node: ZhElement, ctx: C): Promise<O>;
+    visitEnElement(node: EnElement, ctx: C): Promise<O>;
+    visitDefinitionElement(node: DefinitionElement, ctx: C): Promise<O>;
+    visitExamplesElement(node: ExamplesElement, ctx: C): Promise<O>;
+    visitExampleElement(node: ExampleElement, ctx: C): Promise<O>;
+    visitThoughtElement(node: ThoughtElement, ctx: C): Promise<O>;
+    visitExplorationElement(node: ExplorationElement, ctx: C): Promise<O>;
+    visitReasoningElement(node: ReasoningElement, ctx: C): Promise<O>;
+    visitPlanElement(node: PlanElement, ctx: C): Promise<O>;
+    visitChallengeElement(node: ChallengeElement, ctx: C): Promise<O>;
+    visitPromptElement(node: PromptElement, ctx: C): Promise<O>;
+}
+
 @Ast({ description: `标准` })
 export class CriteriaElement extends BaseAst {
     @Input({}) attributes: Attributes[] = [];
@@ -70,7 +101,8 @@ export type ExecutionElementContent =
     | GuidelineElement
     | RuleElement
     | ConstraintElement
-    | CriteriaElement;
+    | CriteriaElement
+    | ResourceElement;
 
 @Ast({ description: `行为提示单元` })
 export class ExecutionElement extends BaseAst {

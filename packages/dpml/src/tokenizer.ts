@@ -91,7 +91,8 @@ export class Tokenizer {
     }
 
     private handleResourceReference(input: string) {
-        const refRegex = /^(@[!?]?)([a-zA-Z][a-zA-Z0-9_-]*):(\/\/[^\s]+)/;
+        // 匹配资源引用格式: [@!|@?|@]protocol:location[?params]
+        const refRegex = /^(@[!?]?)([a-zA-Z][a-zA-Z0-9_-]*):([^\s<>]+)/;
         const match = refRegex.exec(input.substring(this.pos));
 
         if (match) {
@@ -113,12 +114,10 @@ export class Tokenizer {
 
             if (char === "<" || char === "@") break;
 
-            // 检查是否为非空白字符
-            if (char.trim() !== "") {
-                text += char;
-            }
+            text += char;
             this.pos++;
         }
+
         if (text) {
             this.tokens.push({ type: "Text", value: text });
         }
