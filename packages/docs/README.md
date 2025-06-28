@@ -1,286 +1,209 @@
-```ts
-import * as ts from "typescript";
-import * as fs from "fs";
-import * as path from "path";
+# @decopro/docs
 
-export function generateTSDocumentation(
-    projectRoot: string,
-    outputFile: string
-): void {
-    const host: ts.LanguageServiceHost = {
-        getCurrentDirectory: () => projectRoot,
-        getDefaultLibFileName: (options) => ts.getDefaultLibFileName(options),
-        getCompilationSettings: () => ts.getDefaultCompilerOptions(),
-        getScriptFileNames: () => getAllTSFiles(projectRoot),
-        getScriptSnapshot: (fileName) => {
-            if (fs.existsSync(fileName)) {
-                return ts.ScriptSnapshot.fromString(
-                    fs.readFileSync(fileName, "utf-8")
-                );
-            }
-            return undefined;
-        },
-        readFile: (path) =>
-            fs.existsSync(path) ? fs.readFileSync(path, "utf-8") : undefined,
-        fileExists: (path) => fs.existsSync(path),
-        getScriptVersion: () => "1.0",
-        getScriptKind: (fileName) => {
-            const ext = path.extname(fileName).toLowerCase();
-            return ext === ".tsx"
-                ? ts.ScriptKind.TSX
-                : ext === ".ts"
-                  ? ts.ScriptKind.TS
-                  : ts.ScriptKind.Unknown;
-        }
-    };
+AI/LLM-optimized documentation generator for the Decopro framework.
 
-    const service = ts.createLanguageService(host);
-    const program = service.getProgram();
+## Features
 
-    if (!program) {
-        throw new Error("Failed to create TypeScript program");
-    }
+- 🤖 **AI-Friendly**: Generates structured documentation optimized for large language models
+- 📚 **Comprehensive**: Extracts TypeScript types, interfaces, classes, and functions
+- 🏗️ **Architecture Aware**: Analyzes project structure and dependencies
+- 📝 **Multiple Formats**: Outputs JSON and Markdown formats
+- 🔍 **Smart Categorization**: Automatically categorizes code by purpose and type
+- 💡 **Example Extraction**: Pulls code examples from JSDoc comments and tests
+- 🏷️ **Intelligent Tagging**: Auto-tags code with relevant keywords
 
-    const output: string[] = ["# TypeScript API Documentation\n"];
-    const checker = program.getTypeChecker();
+## Installation
 
-    // 处理所有文件
-    const files = host.getScriptFileNames();
-    files.forEach((file) => {
-        const sourceFile = program.getSourceFile(file);
-        if (!sourceFile) return;
+```bash
+npm install @decopro/docs
+```
 
-        output.push(`## File: \`${path.relative(projectRoot, file)}\`\n`);
+## Usage
 
-        // 遍历 AST 节点
-        ts.forEachChild(sourceFile, (node) => {
-            visitNode(node, output, checker, sourceFile);
-        });
+### CLI Usage
 
-        output.push("\n---\n");
-    });
+```bash
+# Generate docs for entire project
+npx decopro-docs
 
-    // 写入输出文件
-    fs.writeFileSync(outputFile, output.join("\n"), "utf-8");
-    console.log(`Documentation generated at: ${outputFile}`);
-}
+# Generate docs for specific package
+npx decopro-docs --package @decopro/core
 
-function visitNode(
-    node: ts.Node,
-    output: string[],
-    checker: ts.TypeChecker,
-    sourceFile: ts.SourceFile,
-    indentLevel: number = 0
-) {
-    const indent = "  ".repeat(indentLevel);
+# Output to custom directory
+npx decopro-docs --output ./documentation
 
-    // 处理类声明
-    if (ts.isClassDeclaration(node) && node.name) {
-        const symbol = checker.getSymbolAtLocation(node.name);
-        if (!symbol) return;
+# Generate only JSON format
+npx decopro-docs --format json
 
-        const className = node.name.getText(sourceFile);
-        const docs = getDocumentation(symbol, checker);
+# Verbose output
+npx decopro-docs --verbose
+```
 
-        output.push(`${indent}### Class: \`${className}\``);
-        if (docs) output.push(`${indent}${docs}\n`);
+### Programmatic Usage
 
-        // 处理类成员
-        node.members.forEach((member) => {
-            visitNode(member, output, checker, sourceFile, indentLevel + 1);
-        });
-        output.push("");
-    }
+```typescript
+import {
+  generateProjectDocumentation,
+  generatePackageDocumentation
+} from "@decopro/docs";
 
-    // 处理接口声明
-    else if (ts.isInterfaceDeclaration(node) && node.name) {
-        const symbol = checker.getSymbolAtLocation(node.name);
-        if (!symbol) return;
+// Generate documentation for entire project
+const projectDocs = generateProjectDocumentation("/path/to/project");
 
-        const interfaceName = node.name.getText(sourceFile);
-        const docs = getDocumentation(symbol, checker);
+// Generate documentation for specific package
+const packageDocs = generatePackageDocumentation("/path/to/package");
 
-        output.push(`${indent}### Interface: \`${interfaceName}\``);
-        if (docs) output.push(`${indent}${docs}\n`);
+// Access structured data
+console.log(projectDocs.packages.length); // Number of packages
+console.log(packageDocs.knowledges.length); // Number of knowledge items
+```
 
-        // 处理接口成员
-        node.members.forEach((member) => {
-            visitNode(member, output, checker, sourceFile, indentLevel + 1);
-        });
-        output.push("");
-    }
+## Output Structure
 
-    // 处理函数声明
-    else if (ts.isFunctionDeclaration(node) && node.name) {
-        const symbol = checker.getSymbolAtLocation(node.name);
-        if (!symbol) return;
+### Project Documentation
 
-        const functionName = node.name.getText(sourceFile);
-        const docs = getDocumentation(symbol, checker);
-        const signature = getFunctionSignature(node, sourceFile);
-
-        output.push(`${indent}### Function: \`${functionName}${signature}\``);
-        if (docs) output.push(`${indent}${docs}\n`);
-    }
-
-    // 处理方法声明
-    else if (ts.isMethodDeclaration(node) && node.name) {
-        const symbol = checker.getSymbolAtLocation(node.name);
-        if (!symbol) return;
-
-        const methodName = node.name.getText(sourceFile);
-        const docs = getDocumentation(symbol, checker);
-        const signature = getFunctionSignature(node, sourceFile);
-
-        output.push(`${indent}- Method: \`${methodName}${signature}\``);
-        if (docs)
-            output.push(
-                `${indent}  ${docs.replace(/\n/g, "\n" + indent + "  ")}`
-            );
-    }
-
-    // 处理属性声明
-    else if (ts.isPropertyDeclaration(node) && node.name) {
-        const symbol = checker.getSymbolAtLocation(node.name);
-        if (!symbol) return;
-
-        const propName = node.name.getText(sourceFile);
-        const docs = getDocumentation(symbol, checker);
-        const type = node.type ? node.type.getText(sourceFile) : "any";
-
-        output.push(`${indent}- Property: \`${propName}: ${type}\``);
-        if (docs)
-            output.push(
-                `${indent}  ${docs.replace(/\n/g, "\n" + indent + "  ")}`
-            );
-    }
-    // 处理接口属性签名
-    else if (ts.isPropertySignature(node) && node.name) {
-        const symbol = checker.getSymbolAtLocation(node.name);
-        if (!symbol) return;
-
-        const propName = node.name.getText(sourceFile);
-        const docs = getDocumentation(symbol, checker);
-        const type = node.type ? node.type.getText(sourceFile) : "any";
-        const optional = node.questionToken ? "?" : "";
-
-        output.push(`${indent}- Property: \`${propName}${optional}: ${type}\``);
-        if (docs)
-            output.push(
-                `${indent}  ${docs.replace(/\n/g, "\n" + indent + "  ")}`
-            );
-    }
-    // 处理构造函数
-    else if (ts.isConstructorDeclaration(node)) {
-        const signature = getFunctionSignature(node, sourceFile);
-        output.push(`${indent}- Constructor: \`constructor${signature}\``);
-
-        // 处理参数
-        node.parameters.forEach((param) => {
-            if (ts.isParameter(param) && param.name) {
-                const paramSymbol = checker.getSymbolAtLocation(param.name);
-                if (!paramSymbol) return;
-
-                const paramName = param.name.getText(sourceFile);
-                const paramType = param.type?.getText(sourceFile) || "any";
-                const paramDocs = getDocumentation(paramSymbol, checker);
-
-                output.push(
-                    `${indent}  - Parameter: \`${paramName}: ${paramType}\``
-                );
-                if (paramDocs)
-                    output.push(
-                        `${indent}    ${paramDocs.replace(/\n/g, "\n" + indent + "    ")}`
-                    );
-            }
-        });
-    }
-
-    // 处理类型别名
-    else if (ts.isTypeAliasDeclaration(node) && node.name) {
-        const symbol = checker.getSymbolAtLocation(node.name);
-        if (!symbol) return;
-
-        const typeName = node.name.getText(sourceFile);
-        const docs = getDocumentation(symbol, checker);
-        const type = node.type.getText(sourceFile);
-
-        output.push(`${indent}### Type Alias: \`${typeName} = ${type}\``);
-        if (docs) output.push(`${indent}${docs}\n`);
-    }
-
-    // 处理枚举
-    else if (ts.isEnumDeclaration(node) && node.name) {
-        const symbol = checker.getSymbolAtLocation(node.name);
-        if (!symbol) return;
-
-        const enumName = node.name.getText(sourceFile);
-        const docs = getDocumentation(symbol, checker);
-
-        output.push(`${indent}### Enum: \`${enumName}\``);
-        if (docs) output.push(`${indent}${docs}\n`);
-
-        // 处理枚举成员
-        node.members.forEach((member) => {
-            if (member.name) {
-                const memberSymbol = checker.getSymbolAtLocation(member.name);
-                if (!memberSymbol) return;
-
-                const memberName = member.name.getText(sourceFile);
-                const memberDocs = getDocumentation(memberSymbol, checker);
-
-                output.push(`${indent}  - Member: \`${memberName}\``);
-                if (memberDocs)
-                    output.push(
-                        `${indent}    ${memberDocs.replace(/\n/g, "\n" + indent + "    ")}`
-                    );
-            }
-        });
-    }
-}
-
-// 获取函数/方法的签名
-function getFunctionSignature(
-    node: ts.FunctionLikeDeclaration,
-    sourceFile: ts.SourceFile
-): string {
-    const parameters = node.parameters.map((param) => {
-        const name = param.name.getText(sourceFile);
-        const type = param.type?.getText(sourceFile) || "any";
-        const optional = param.questionToken ? "?" : "";
-        return `${name}${optional}: ${type}`;
-    });
-
-    const returnType = node.type?.getText(sourceFile) || "void";
-    return `(${parameters.join(", ")}): ${returnType}`;
-}
-
-// 获取文档注释
-function getDocumentation(symbol: ts.Symbol, checker: ts.TypeChecker): string {
-    const docs = ts.displayPartsToString(
-        symbol.getDocumentationComment(checker)
-    );
-    return docs ? `\n${docs}\n` : "";
-}
-
-// 获取所有 TypeScript 文件
-function getAllTSFiles(dir: string): string[] {
-    return fs.readdirSync(dir).flatMap((file) => {
-        const fullPath = path.join(dir, file);
-        if (fs.statSync(fullPath).isDirectory()) {
-            return getAllTSFiles(fullPath);
-        } else if (/\.tsx?$/.test(file)) {
-            return [fullPath];
-        }
-        return [];
-    });
+```typescript
+interface ProjectDocumentation {
+  project_name: string;
+  version: string;
+  description: string;
+  architecture: string;           // Mermaid diagram + description
+  packages: PackageDocumentation[];
+  quick_start: string;           // Generated quick start guide
+  api_overview: string;          // High-level API overview
+  examples: string[];            // Collected usage examples
 }
 ```
 
-解析下面代码时 description丢失了 请分析
+### Package Documentation
 
-```ts
-export interface AstOptions {
-    description?: string;
+```typescript
+interface PackageDocumentation {
+  package_name: string;
+  package_version: string;
+  description: string;
+  main_exports: string[];        // Main exported symbols
+  api_reference: string;         // Detailed API docs
+  usage_examples: string[];      // Code examples
+  architecture_overview: string; // Package architecture
+  dependencies: string[];        // External dependencies
+  knowledges: Knowledge[];       // Detailed knowledge items
 }
 ```
+
+### Knowledge Items
+
+```typescript
+interface Knowledge {
+  package_name: string;
+  package_version: string;
+  filename: string;
+  docs: string;                  // Generated documentation
+  hash: string;                  // Content hash for caching
+  category: string;              // Auto-detected category
+  tags: string[];               // Relevant tags
+  examples: string[];           // Code examples
+  dependencies: string[];       // File dependencies
+}
+```
+
+## Categories
+
+The documentation generator automatically categorizes code into:
+
+- **core**: Core framework functionality
+- **orm**: Database and ORM related code
+- **api**: REST API and controllers
+- **service**: Business logic services
+- **entity**: Database entities
+- **decorator**: Decorators and metadata
+- **utility**: Helper functions and utilities
+- **test**: Test files
+- **example**: Example code
+- **types**: Type definitions
+- **interface**: Interface definitions
+- **class**: Class definitions
+- **module**: General modules
+
+## Tags
+
+Automatic tagging includes:
+
+- **Technology tags**: `orm`, `rest`, `api`, `database`, `async`
+- **Pattern tags**: `decorator`, `dependency-injection`, `repository`
+- **Type tags**: `interface`, `class`, `function`, `types`
+- **Feature tags**: `query-builder`, `entity`, `relationship`
+
+## AI/LLM Optimization
+
+The generated documentation is specifically optimized for AI consumption:
+
+1. **Structured Data**: All information is available in JSON format
+2. **Semantic Categorization**: Code is categorized by purpose and functionality
+3. **Rich Metadata**: Includes tags, dependencies, and relationships
+4. **Example-Rich**: Extracts and includes relevant code examples
+5. **Context-Aware**: Provides architectural context and relationships
+6. **Searchable**: Knowledge items can be easily filtered and searched
+
+## Example Output
+
+### Knowledge Base JSON
+
+```json
+[
+  {
+    "package_name": "@decopro/orm",
+    "package_version": "1.0.0",
+    "filename": "src/decorators/entity.ts",
+    "docs": "### Class: `Entity`\nDecorator for marking classes as database entities...",
+    "hash": "abc123...",
+    "category": "decorator",
+    "tags": ["decorator", "entity", "database", "orm"],
+    "examples": [
+      "@Entity('users')\nclass User {\n  @Column()\n  name: string;\n}"
+    ],
+    "dependencies": ["reflect-metadata"]
+  }
+]
+```
+
+### Generated Markdown
+
+```markdown
+# @decopro/orm
+
+Database ORM package for the Decopro framework.
+
+## Main Exports
+
+- `Entity`
+- `Column`
+- `Repository`
+- `QueryBuilder`
+
+## Architecture Overview
+
+This package contains the following components:
+
+- **decorator**: 5 file(s)
+- **entity**: 3 file(s)
+- **repository**: 2 file(s)
+
+### Key Dependencies
+
+- **reflect-metadata**: used in 8 file(s)
+- **typescript**: used in 5 file(s)
+```
+
+## Integration with AI Tools
+
+The generated documentation can be easily integrated with:
+
+- **RAG Systems**: Use the knowledge base JSON for retrieval-augmented generation
+- **Code Assistants**: Feed the structured data to AI coding assistants
+- **Documentation Bots**: Use the markdown output for automated documentation
+- **Search Systems**: Index the categorized and tagged content
+
+## License
+
+ISC

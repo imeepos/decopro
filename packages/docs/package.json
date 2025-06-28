@@ -1,10 +1,13 @@
 {
   "name": "@decopro/docs",
   "version": "1.1.0",
-  "description": "",
+  "description": "Documentation generator for Decopro framework - optimized for AI/LLM consumption",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "src/index.ts",
+  "bin": {
+    "decopro-docs": "dist/cli.js"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -15,7 +18,9 @@
     "dev": "tsup --watch --sourcemap",
     "build:prod": "NODE_ENV=production tsup",
     "test": "echo \"No tests specified\" && exit 0",
-    "lint": "echo \"No linting configured for this package\""
+    "lint": "echo \"No linting configured for this package\"",
+    "docs": "node dist/cli.js",
+    "docs:dev": "npm run build && npm run docs"
   },
   "keywords": [],
   "author": "",
